@@ -1,15 +1,21 @@
 ---
 title: BrightForest Ecosystem Roadmap
-description: Comprehensive roadmap for the BrightForest documentation ecosystem spanning 13 domains with unified BDD testing strategy
+description:
+  Comprehensive roadmap for the BrightForest documentation ecosystem spanning 13 domains with
+  unified BDD testing strategy
 ---
 
 # BrightForest Ecosystem Roadmap
 
-Welcome to the BrightForest ecosystem roadmap. This documentation covers our comprehensive multi-domain platform strategy, encompassing 13 distinct domains that work together to deliver AI-powered development tools, educational content, and enterprise solutions.
+Welcome to the BrightForest ecosystem roadmap. This documentation covers our comprehensive
+multi-domain platform strategy, encompassing 13 distinct domains that work together to deliver
+AI-powered development tools, educational content, and enterprise solutions.
 
 ## Overview
 
-The BrightForest ecosystem is designed as a cohesive platform that spans multiple domains, each serving specific purposes while sharing common infrastructure, design patterns, and testing strategies. Our approach emphasizes:
+The BrightForest ecosystem is designed as a cohesive platform that spans multiple domains, each
+serving specific purposes while sharing common infrastructure, design patterns, and testing
+strategies. Our approach emphasizes:
 
 - **Unified Testing Strategy**: BDD-driven development with Playwright and Cucumber
 - **Shared Infrastructure**: Common components, utilities, and design systems
@@ -18,30 +24,101 @@ The BrightForest ecosystem is designed as a cohesive platform that spans multipl
 
 ## The 13 Domains
 
-### Core Platform
-
-1. **[brightforest.io](/docs/roadmap/sites/brightforest-io)** - Primary platform and documentation hub
-2. **[brightforestx.com](/docs/roadmap/sites/brightforestx-com)** - Extended enterprise solutions
-3. **[brightforest.ai](/docs/roadmap/sites/brightforest-ai)** - AI-powered development platform
-
-### AI-Powered Development Tools
-
-4. **[brightpath.ai](/docs/roadmap/sites/brightpath-ai)** - AI-guided development pathways
-5. **[pathx.ai](/docs/roadmap/sites/pathx-ai)** - Advanced AI development accelerator
-6. **[figmatofullstack.com](/docs/roadmap/sites/figmatofullstack-com)** - Design-to-code automation
-7. **[figmatofullstack.ai](/docs/roadmap/sites/figmatofullstack-ai)** - AI-enhanced design transformation
-
-### DIY Solutions
-
-8. **[getdiyai.com](/docs/roadmap/sites/getdiyai-com)** - Self-service AI implementation tools
-9. **[getdiyrpa.com](/docs/roadmap/sites/getdiyrpa-com)** - DIY robotic process automation platform
-
-### Specialized Platforms
-
-10. **[mlninjas.com](/docs/roadmap/sites/mlninjas-com)** - Machine learning community and resources
-11. **[clifforddalsoniii.com](/docs/roadmap/sites/clifforddalsoniii-com)** - Personal brand and thought leadership
-12. **[appnowhq.com](/docs/roadmap/sites/appnowhq-com)** - Rapid application development platform
-13. **[iheartai.ai](/docs/roadmap/sites/iheartai-ai)** - AI passion project and community hub
+<DomainGrid
+  domains={[
+    {
+      name: "BrightForest",
+      domain: "brightforest.io",
+      description: "Primary platform and documentation hub",
+      status: "preview",
+      href: "/docs/roadmap/sites/brightforest-io",
+    },
+    {
+      name: "BrightForestX",
+      domain: "brightforestx.com",
+      description: "Extended enterprise solutions",
+      status: "preview",
+      href: "/docs/roadmap/sites/brightforestx-com",
+    },
+    {
+      name: "BrightForest AI",
+      domain: "brightforest.ai",
+      description: "AI-powered development platform",
+      status: "preview",
+      href: "/docs/roadmap/sites/brightforest-ai",
+    },
+    {
+      name: "BrightPath",
+      domain: "brightpath.ai",
+      description: "AI-guided development pathways",
+      status: "preview",
+      href: "/docs/roadmap/sites/brightpath-ai",
+    },
+    {
+      name: "PathX",
+      domain: "pathx.ai",
+      description: "Advanced AI development accelerator",
+      status: "preview",
+      href: "/docs/roadmap/sites/pathx-ai",
+    },
+    {
+      name: "FigmaToFullStack",
+      domain: "figmatofullstack.com",
+      description: "Design-to-code automation",
+      status: "preview",
+      href: "/docs/roadmap/sites/figmatofullstack-com",
+    },
+    {
+      name: "FigmaToFullStack AI",
+      domain: "figmatofullstack.ai",
+      description: "AI-enhanced design transformation",
+      status: "preview",
+      href: "/docs/roadmap/sites/figmatofullstack-ai",
+    },
+    {
+      name: "DIY AI",
+      domain: "getdiyai.com",
+      description: "Self-service AI implementation tools",
+      status: "preview",
+      href: "/docs/roadmap/sites/getdiyai-com",
+    },
+    {
+      name: "DIY RPA",
+      domain: "getdiyrpa.com",
+      description: "DIY robotic process automation platform",
+      status: "preview",
+      href: "/docs/roadmap/sites/getdiyrpa-com",
+    },
+    {
+      name: "ML Ninjas",
+      domain: "mlninjas.com",
+      description: "Machine learning community and resources",
+      status: "preview",
+      href: "/docs/roadmap/sites/mlninjas-com",
+    },
+    {
+      name: "Clifford Dalson III",
+      domain: "clifforddalsoniii.com",
+      description: "Personal brand and thought leadership",
+      status: "preview",
+      href: "/docs/roadmap/sites/clifforddalsoniii-com",
+    },
+    {
+      name: "AppNow HQ",
+      domain: "appnowhq.com",
+      description: "Rapid application development platform",
+      status: "preview",
+      href: "/docs/roadmap/sites/appnowhq-com",
+    },
+    {
+      name: "iHeartAI",
+      domain: "iheartai.ai",
+      description: "AI passion project and community hub",
+      status: "preview",
+      href: "/docs/roadmap/sites/iheartai-ai",
+    },
+  ]}
+/>
 
 ## Feature Coverage
 
@@ -68,24 +145,28 @@ Learn more about our [Testing Strategy](/docs/roadmap/testing).
 ## Development Phases
 
 ### Phase 1: Foundation (Current)
+
 - Core infrastructure setup
 - Shared component library
 - Base BDD test framework
 - Initial documentation
 
 ### Phase 2: Domain Expansion
+
 - Launch all 13 domains
 - Implement site-specific features
 - Complete BDD test coverage
 - Visual regression testing setup
 
 ### Phase 3: Enhancement
+
 - Advanced AI features across platforms
 - Enhanced user experiences
 - Performance optimization
 - Extended integrations
 
 ### Phase 4: Scale & Optimize
+
 - Enterprise features
 - Advanced analytics
 - Multi-region deployment
@@ -94,18 +175,21 @@ Learn more about our [Testing Strategy](/docs/roadmap/testing).
 ## Architecture Principles
 
 ### Shared Infrastructure
+
 - Unified design system with TailwindCSS
 - Common React components library
 - Shared authentication and authorization
 - Centralized configuration management
 
 ### Independent Deployments
+
 - Each domain can deploy independently
 - Isolated environments for testing
 - Domain-specific customization
 - Flexible scaling per domain
 
 ### Quality Assurance
+
 - Automated testing at every level
 - Continuous integration/deployment
 - Monitoring and alerting
@@ -139,11 +223,13 @@ Each domain has specific contribution guidelines, but general principles apply:
 
 ## Roadmap Timeline
 
-Our roadmap is continuously evolving based on user needs, market demands, and technical capabilities. We maintain transparency through:
+Our roadmap is continuously evolving based on user needs, market demands, and technical
+capabilities. We maintain transparency through:
 
 - Regular documentation updates
 - Open development tracking
 - Community feedback integration
 - Quarterly roadmap reviews
 
-For the latest updates and detailed progress, follow individual domain roadmaps and our testing coverage reports.
+For the latest updates and detailed progress, follow individual domain roadmaps and our testing
+coverage reports.

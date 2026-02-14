@@ -8,27 +8,32 @@ sidebar_icon: gears
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **GetDIYRPA.com RPA Workflow Agent** builds automation recipes, creates integration connectors, and orchestrates robotic process automation workflows without code.
+The **GetDIYRPA.com RPA Workflow Agent** builds automation recipes, creates integration connectors,
+and orchestrates robotic process automation workflows without code.
 
 ## Overview
 
-This agent specializes in workflow automation, helping users automate repetitive tasks and integrate disparate systems through visual workflow design and pre-built connectors.
+This agent specializes in workflow automation, helping users automate repetitive tasks and integrate
+disparate systems through visual workflow design and pre-built connectors.
 
 ## Key Capabilities
 
 ### Automation Recipe Builder
+
 - Visual workflow designer (no-code)
 - Pre-built automation templates
 - Conditional logic and branching
 - Error handling and retry mechanisms
 
 ### Integration Connectors
+
 - 500+ pre-built app connectors
 - Custom API integration wizard
 - Data transformation and mapping
 - Authentication management (OAuth, API keys)
 
 ### Workflow Orchestration
+
 - Schedule automations (cron, triggers, webhooks)
 - Monitor workflow execution
 - Debug and troubleshoot failures
@@ -58,8 +63,11 @@ Create a new automation workflow.
       "trigger": {
         "type": "object",
         "properties": {
-          "type": {"type": "string", "enum": ["schedule", "webhook", "email", "file_upload", "manual"]},
-          "config": {"type": "object"}
+          "type": {
+            "type": "string",
+            "enum": ["schedule", "webhook", "email", "file_upload", "manual"]
+          },
+          "config": { "type": "object" }
         }
       },
       "steps": {
@@ -67,10 +75,10 @@ Create a new automation workflow.
         "items": {
           "type": "object",
           "properties": {
-            "action": {"type": "string"},
-            "connector": {"type": "string"},
-            "config": {"type": "object"},
-            "error_handling": {"type": "string", "enum": ["retry", "skip", "fail", "fallback"]}
+            "action": { "type": "string" },
+            "connector": { "type": "string" },
+            "config": { "type": "object" },
+            "error_handling": { "type": "string", "enum": ["retry", "skip", "fail", "fallback"] }
           }
         }
       },
@@ -111,8 +119,8 @@ Add an integration connector to a workflow.
       "authentication": {
         "type": "object",
         "properties": {
-          "method": {"type": "string", "enum": ["oauth", "api_key", "basic"]},
-          "credentials": {"type": "object"}
+          "method": { "type": "string", "enum": ["oauth", "api_key", "basic"] },
+          "credentials": { "type": "object" }
         }
       },
       "config": {
@@ -152,8 +160,8 @@ Execute a workflow immediately or on schedule.
       "schedule": {
         "type": "object",
         "properties": {
-          "cron": {"type": "string"},
-          "timezone": {"type": "string"}
+          "cron": { "type": "string" },
+          "timezone": { "type": "string" }
         },
         "description": "Schedule configuration (if execution_mode is 'scheduled')"
       },
@@ -207,8 +215,8 @@ Monitor workflow execution and get logs.
       "time_range": {
         "type": "object",
         "properties": {
-          "start": {"type": "string", "format": "date-time"},
-          "end": {"type": "string", "format": "date-time"}
+          "start": { "type": "string", "format": "date-time" },
+          "end": { "type": "string", "format": "date-time" }
         }
       }
     },
@@ -241,22 +249,16 @@ GETDIYRPA_API_KEY=your-api-key
 
 <Tabs>
   <Tab title="Create Workflow">
-    ```
-    Create a workflow that sends a Slack message when a new customer
-    signs up, adds them to our CRM, and sends a welcome email.
-    ```
+    ``` Create a workflow that sends a Slack message when a new customer signs up, adds them to our
+    CRM, and sends a welcome email. ```
   </Tab>
   <Tab title="Add Connector">
-    ```
-    Add a Google Sheets connector to my data sync workflow,
-    append new rows from form submissions every hour.
-    ```
+    ``` Add a Google Sheets connector to my data sync workflow, append new rows from form
+    submissions every hour. ```
   </Tab>
   <Tab title="Schedule">
-    ```
-    Schedule my daily report workflow to run at 9 AM EST every
-    weekday, email results to the team.
-    ```
+    ``` Schedule my daily report workflow to run at 9 AM EST every weekday, email results to the
+    team. ```
   </Tab>
 </Tabs>
 

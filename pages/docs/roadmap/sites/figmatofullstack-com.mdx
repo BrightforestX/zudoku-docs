@@ -1,6 +1,7 @@
 ---
 title: figmatofullstack.com Roadmap
-description: Design-to-code automation platform transforming Figma designs into production-ready code
+description:
+  Design-to-code automation platform transforming Figma designs into production-ready code
 ---
 
 import { DomainHero } from "@/components/DomainHero";
@@ -15,7 +16,9 @@ import { DomainHero } from "@/components/DomainHero";
 
 ## Overview
 
-**figmatofullstack.com** bridges the gap between design and development by automatically converting Figma designs into clean, production-ready code. It streamlines the design-to-development handoff and accelerates frontend development.
+**figmatofullstack.com** bridges the gap between design and development by automatically converting
+Figma designs into clean, production-ready code. It streamlines the design-to-development handoff
+and accelerates frontend development.
 
 ## Domain Purpose
 
@@ -30,6 +33,7 @@ figmatofullstack.com is designed to:
 ## Planned Features
 
 ### Core Features (Shared)
+
 - ✅ Figma plugin installation
 - ✅ User authentication and projects
 - ✅ Web dashboard for management
@@ -37,6 +41,7 @@ figmatofullstack.com is designed to:
 - ✅ Multiple framework support
 
 ### AI-Powered Tools (Shared with brightpath.ai, pathx.ai, figmatofullstack.ai, brightforest.ai)
+
 - 📝 **AI Model Integration**: ML models for design understanding
 - 📝 **Intelligent Component Detection**: Auto-identify UI patterns
 - 📝 **Code Generation**: Production-ready code output
@@ -46,6 +51,7 @@ figmatofullstack.com is designed to:
 - 📝 **Usage Tracking**: Monitor conversion quotas
 
 ### Design-to-Code Features (Shared with figmatofullstack.ai)
+
 - 📝 **Figma Plugin**: Seamless Figma integration
 - 📝 **Component Recognition**: Identify and map UI components
 - 📝 **Style Extraction**: Auto-extract design tokens
@@ -53,9 +59,11 @@ figmatofullstack.com is designed to:
 ### Unique Features
 
 #### 1. Figma Plugin Integration
+
 **Status**: 🔨 In Development
 
 Seamless integration with Figma:
+
 - **One-Click Export**: Select frames and generate code instantly
 - **Live Sync**: Real-time updates as designs change
 - **Batch Processing**: Convert multiple screens simultaneously
@@ -67,6 +75,7 @@ Seamless integration with Figma:
 **User Value**: Fastest path from design to code
 
 **Plugin Features**:
+
 - Right-click context menu actions
 - Keyboard shortcuts for quick access
 - Progress indicators for conversions
@@ -76,9 +85,11 @@ Seamless integration with Figma:
 - Integration with version control
 
 #### 2. Component Recognition & Mapping
+
 **Status**: 🔨 In Development
 
 Intelligent UI component detection:
+
 - **Pattern Recognition**: Identify common UI patterns (buttons, forms, cards)
 - **Component Hierarchy**: Understand component composition
 - **Props Inference**: Automatically determine component props
@@ -91,6 +102,7 @@ Intelligent UI component detection:
 **User Value**: Generates component-based, maintainable code structure
 
 **Supported Components**:
+
 - Buttons (all variants)
 - Forms (inputs, selects, checkboxes, radio)
 - Navigation (headers, footers, breadcrumbs)
@@ -101,9 +113,11 @@ Intelligent UI component detection:
 - Data tables
 
 #### 3. Multi-Framework Export
+
 **Status**: 📋 Planned
 
 Export designs to multiple frameworks:
+
 - **React**: Functional components with hooks
 - **Vue**: Vue 3 with Composition API
 - **Angular**: Angular components
@@ -118,12 +132,14 @@ Export designs to multiple frameworks:
 ## Technical Architecture
 
 ### Figma Integration
+
 - **Plugin SDK**: Official Figma Plugin API
 - **Real-Time Sync**: WebSocket connections for live updates
 - **Asset Management**: Efficient image and asset handling
 - **Design System**: Design token extraction and management
 
 ### Code Generation Engine
+
 - **AST Generation**: Build abstract syntax trees
 - **Template Engine**: Customizable code templates
 - **Style Processing**: CSS-in-JS, CSS Modules, Tailwind support
@@ -131,6 +147,7 @@ Export designs to multiple frameworks:
 - **Formatting**: Prettier integration for code formatting
 
 ### ML/AI Components
+
 - **Component Classification**: ML models for UI pattern recognition
 - **Layout Analysis**: Understand spatial relationships
 - **Typography Matching**: Match fonts to web-safe alternatives
@@ -142,24 +159,28 @@ Export designs to multiple frameworks:
 figmatofullstack.com stands out through:
 
 ### 1. Code Quality
+
 - **Production-Ready**: Clean, maintainable code from day one
 - **Best Practices**: Follows framework conventions
 - **TypeScript Support**: Full type definitions
 - **Accessibility**: WCAG-compliant markup
 
 ### 2. Design Fidelity
+
 - **Pixel-Perfect**: Accurate design translation
 - **Responsive**: Mobile-first responsive output
 - **Interactions**: Preserve Figma interactions
 - **Variants**: All component variants supported
 
 ### 3. Developer Experience
+
 - **Customizable**: Adjust code generation templates
 - **Version Control**: Git-friendly code output
 - **Documentation**: Auto-generated component docs
 - **Testing**: Snapshot tests included
 
 ### 4. Workflow Integration
+
 - **CI/CD**: Integrate with build pipelines
 - **Design Systems**: Works with existing design systems
 - **Storybook**: Generate Storybook stories
@@ -168,6 +189,7 @@ figmatofullstack.com stands out through:
 ## Development Phases
 
 ### Phase 1: Core Conversion (Current)
+
 - ✅ Basic Figma plugin
 - ✅ React component generation
 - 🔨 Component recognition ML model
@@ -175,6 +197,7 @@ figmatofullstack.com stands out through:
 - 🔨 Web dashboard
 
 ### Phase 2: Enhanced Features (Q2 2026)
+
 - 📋 Multiple framework support
 - 📋 Design system integration
 - 📋 Live preview functionality
@@ -182,6 +205,7 @@ figmatofullstack.com stands out through:
 - 📋 Advanced customization
 
 ### Phase 3: Advanced Capabilities (Q3 2026)
+
 - 📋 Responsive code generation
 - 📋 Animation and interaction export
 - 📋 Component variants handling
@@ -189,6 +213,7 @@ figmatofullstack.com stands out through:
 - 📋 Version control integration
 
 ### Phase 4: Enterprise & AI (Q4 2026)
+
 - 📋 Team features and sharing
 - 📋 Custom design system training
 - 📋 Advanced AI enhancements
@@ -198,40 +223,43 @@ figmatofullstack.com stands out through:
 ## User Personas
 
 ### 1. Frontend Developer
-**Profile**: Implements designs daily
-**Needs**: Fast, accurate code generation
-**Journey**: Receive design → Install plugin → Export → Customize → Deploy
+
+**Profile**: Implements designs daily **Needs**: Fast, accurate code generation **Journey**: Receive
+design → Install plugin → Export → Customize → Deploy
 
 ### 2. UI/UX Designer
-**Profile**: Creates designs, wants to code
-**Needs**: Learn code through design conversion
+
+**Profile**: Creates designs, wants to code **Needs**: Learn code through design conversion
 **Journey**: Design in Figma → Export code → Learn patterns → Iterate
 
 ### 3. Full-Stack Developer
-**Profile**: Builds complete applications
-**Needs**: Rapid frontend prototyping
-**Journey**: Mockup in Figma → Generate code → Focus on backend
+
+**Profile**: Builds complete applications **Needs**: Rapid frontend prototyping **Journey**: Mockup
+in Figma → Generate code → Focus on backend
 
 ### 4. Agency Team
-**Profile**: Delivers client projects
-**Needs**: Consistent code quality, fast delivery
-**Journey**: Client design → Batch convert → Customize → Client review
+
+**Profile**: Delivers client projects **Needs**: Consistent code quality, fast delivery **Journey**:
+Client design → Batch convert → Customize → Client review
 
 ## Success Metrics
 
 ### Conversion Quality
+
 - **Code Accuracy**: 95%+ design fidelity
 - **Build Success**: Generated code builds without errors
 - **Accessibility Score**: 90+ Lighthouse accessibility
 - **Performance**: Optimized bundle sizes
 
 ### User Satisfaction
+
 - **Time Saved**: Average 70% reduction in implementation time
 - **User Rating**: 4.5+ stars average rating
 - **Adoption Rate**: % of users converting regularly
 - **Retention**: Monthly active user retention
 
 ### Technical Metrics
+
 - **Conversion Speed**: < 30 seconds for standard screens
 - **Plugin Performance**: No Figma slowdown
 - **Export Quality**: Clean, lintable code
@@ -240,6 +268,7 @@ figmatofullstack.com stands out through:
 ## Supported Design Patterns
 
 ### Layout Patterns
+
 - Flexbox layouts
 - Grid systems
 - Absolute positioning
@@ -247,6 +276,7 @@ figmatofullstack.com stands out through:
 - Responsive containers
 
 ### UI Patterns
+
 - Navigation menus
 - Hero sections
 - Feature grids
@@ -256,6 +286,7 @@ figmatofullstack.com stands out through:
 - Footer layouts
 
 ### Component Patterns
+
 - Atomic design components
 - Compound components
 - Render props patterns
@@ -265,12 +296,14 @@ figmatofullstack.com stands out through:
 ## Pricing Model
 
 ### Starter (Free)
+
 - 10 conversions/month
 - React output only
 - Basic components
 - Community support
 
 ### Professional ($29/month)
+
 - Unlimited conversions
 - All frameworks
 - Advanced components
@@ -279,6 +312,7 @@ figmatofullstack.com stands out through:
 - Commercial use
 
 ### Team ($99/month, 5 seats)
+
 - All Professional features
 - Shared component library
 - Team collaboration
@@ -287,6 +321,7 @@ figmatofullstack.com stands out through:
 - Dedicated support
 
 ### Enterprise (Custom)
+
 - Custom integrations
 - White-label option
 - On-premise deployment
@@ -297,6 +332,7 @@ figmatofullstack.com stands out through:
 ## Best Practices
 
 ### For Designers
+
 1. **Use Auto Layout**: Leverage Figma's Auto Layout for better code
 2. **Name Layers**: Meaningful layer names improve component names
 3. **Use Components**: Figma components become code components
@@ -304,6 +340,7 @@ figmatofullstack.com stands out through:
 5. **Design Tokens**: Define color and typography tokens
 
 ### For Developers
+
 1. **Review Generated Code**: Always review before committing
 2. **Customize Templates**: Adjust templates for your needs
 3. **Extract Styles**: Use design tokens for consistency
@@ -332,6 +369,7 @@ Transform designs to code:
 ---
 
 **Status Legend**:
+
 - ✅ Completed
 - 🔨 In Development
 - 📋 Planned

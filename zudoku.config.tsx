@@ -2,6 +2,16 @@ import { lazy } from "react";
 import type { ZudokuConfig } from "zudoku";
 import { Button } from "zudoku/ui/Button.js";
 import { components, docs } from "./sidebar";
+import {
+  AgentCapability,
+  CliCommand,
+  ComparisonTable,
+  DomainGrid,
+  DomainHero,
+  FeatureCard,
+  StatusBadge,
+  StepByStep,
+} from "./src/components/shared/index.js";
 import DiscordIcon from "./src/DiscordIcon";
 import GithubIcon from "./src/GithubIcon";
 
@@ -156,6 +166,18 @@ const config: ZudokuConfig = {
     },
     ...getMcpApiConfig(),
   ],
+  mdx: {
+    components: {
+      DomainHero,
+      FeatureCard,
+      StatusBadge,
+      DomainGrid,
+      StepByStep,
+      CliCommand,
+      AgentCapability,
+      ComparisonTable,
+    },
+  },
   slots: {
     "head-navigation-end": () => (
       <div className="flex items-center border-r pe-2">

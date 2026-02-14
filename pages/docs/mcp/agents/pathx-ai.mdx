@@ -8,27 +8,32 @@ sidebar_icon: chart-line
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **PathX.ai Algorithm Optimization Agent** runs benchmarks, tunes hyperparameters, and optimizes algorithm performance for machine learning and data processing workflows.
+The **PathX.ai Algorithm Optimization Agent** runs benchmarks, tunes hyperparameters, and optimizes
+algorithm performance for machine learning and data processing workflows.
 
 ## Overview
 
-This agent specializes in algorithm optimization, helping data scientists and ML engineers find optimal configurations through systematic experimentation and performance profiling.
+This agent specializes in algorithm optimization, helping data scientists and ML engineers find
+optimal configurations through systematic experimentation and performance profiling.
 
 ## Key Capabilities
 
 ### Benchmark Automation
+
 - Run standardized ML benchmarks (MLPerf, GLUE, SuperGLUE)
 - Create custom benchmark suites
 - Compare algorithm performance across datasets
 - Generate performance reports with visualizations
 
 ### Hyperparameter Tuning
+
 - Automated hyperparameter search (grid, random, Bayesian)
 - Multi-objective optimization (accuracy vs. speed vs. cost)
 - Early stopping and pruning for efficient search
 - Track and visualize tuning progress
 
 ### Performance Profiling
+
 - Profile compute and memory usage
 - Identify bottlenecks in ML pipelines
 - Optimize data loading and preprocessing
@@ -58,12 +63,12 @@ Execute a benchmark suite on an algorithm or model.
       },
       "datasets": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Specific datasets to benchmark on"
       },
       "metrics": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Metrics to collect (accuracy, f1, latency, throughput)"
       },
       "hardware": {
@@ -98,10 +103,10 @@ Perform hyperparameter optimization.
         "additionalProperties": {
           "type": "object",
           "properties": {
-            "type": {"type": "string", "enum": ["float", "int", "categorical"]},
-            "min": {"type": "number"},
-            "max": {"type": "number"},
-            "values": {"type": "array"}
+            "type": { "type": "string", "enum": ["float", "int", "categorical"] },
+            "min": { "type": "number" },
+            "max": { "type": "number" },
+            "values": { "type": "array" }
           }
         }
       },
@@ -179,17 +184,17 @@ Compare performance of multiple algorithms on same task.
     "properties": {
       "algorithm_ids": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Algorithms to compare"
       },
       "test_datasets": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Datasets for comparison"
       },
       "metrics": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Metrics to evaluate"
       },
       "generate_report": {
@@ -227,22 +232,16 @@ PATHX_API_KEY=your-api-key
 
 <Tabs>
   <Tab title="Benchmark">
-    ```
-    Run MLPerf inference benchmark on my BERT model using GPU,
-    measure latency and throughput.
+    ``` Run MLPerf inference benchmark on my BERT model using GPU, measure latency and throughput.
     ```
   </Tab>
   <Tab title="Tuning">
-    ```
-    Tune learning rate (1e-5 to 1e-2) and batch size (8, 16, 32)
-    for my image classifier, optimize for validation accuracy.
-    ```
+    ``` Tune learning rate (1e-5 to 1e-2) and batch size (8, 16, 32) for my image classifier,
+    optimize for validation accuracy. ```
   </Tab>
   <Tab title="Profiling">
-    ```
-    Profile my data preprocessing pipeline, identify memory bottlenecks,
-    and suggest optimization opportunities.
-    ```
+    ``` Profile my data preprocessing pipeline, identify memory bottlenecks, and suggest
+    optimization opportunities. ```
   </Tab>
 </Tabs>
 

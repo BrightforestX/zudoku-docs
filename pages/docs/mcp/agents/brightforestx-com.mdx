@@ -8,27 +8,33 @@ sidebar_icon: building
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **BrightForestX.com Enterprise Configuration Agent** manages multi-tenant configurations, SLA monitoring, compliance settings, and enterprise-grade operational requirements for large-scale BrightForest deployments.
+The **BrightForestX.com Enterprise Configuration Agent** manages multi-tenant configurations, SLA
+monitoring, compliance settings, and enterprise-grade operational requirements for large-scale
+BrightForest deployments.
 
 ## Overview
 
-This agent specializes in enterprise operations, handling complex multi-tenant architectures, ensuring SLA compliance, and managing enterprise security and governance requirements.
+This agent specializes in enterprise operations, handling complex multi-tenant architectures,
+ensuring SLA compliance, and managing enterprise security and governance requirements.
 
 ## Key Capabilities
 
 ### Multi-Tenant Management
+
 - Configure tenant isolation and resource allocation
 - Manage tenant-specific settings and branding
 - Handle tenant provisioning and deprovisioning
 - Monitor cross-tenant resource usage
 
 ### SLA Management
+
 - Define and monitor service level agreements
 - Track uptime, latency, and error rate metrics
 - Trigger alerts when SLA thresholds are breached
 - Generate SLA compliance reports
 
 ### Compliance & Governance
+
 - Enforce security policies across tenants
 - Manage data residency requirements
 - Configure audit logging and retention
@@ -59,10 +65,10 @@ Provision a new tenant with enterprise configuration.
       "configuration": {
         "type": "object",
         "properties": {
-          "custom_domain": {"type": "string"},
-          "sso_enabled": {"type": "boolean"},
-          "data_region": {"type": "string"},
-          "retention_days": {"type": "integer"}
+          "custom_domain": { "type": "string" },
+          "sso_enabled": { "type": "boolean" },
+          "data_region": { "type": "string" },
+          "retention_days": { "type": "integer" }
         }
       },
       "admin_email": {
@@ -112,7 +118,7 @@ Define SLA metrics and thresholds for a tenant.
       },
       "alert_channels": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Notification channels for SLA breaches"
       }
     },
@@ -180,10 +186,10 @@ Update resource quotas and limits for a tenant.
       "quotas": {
         "type": "object",
         "properties": {
-          "max_users": {"type": "integer"},
-          "max_api_calls_per_month": {"type": "integer"},
-          "storage_gb": {"type": "number"},
-          "max_concurrent_jobs": {"type": "integer"}
+          "max_users": { "type": "integer" },
+          "max_api_calls_per_month": { "type": "integer" },
+          "storage_gb": { "type": "number" },
+          "max_concurrent_jobs": { "type": "integer" }
         }
       },
       "effective_date": {
@@ -222,22 +228,15 @@ BRIGHTFORESTX_ORG_ID=your-organization-id
 
 <Tabs>
   <Tab title="Tenant Setup">
-    ```
-    Create a new enterprise tenant named 'acme-corp' with SSO enabled,
-    data residency in EU, and 99.9% uptime SLA.
-    ```
+    ``` Create a new enterprise tenant named 'acme-corp' with SSO enabled, data residency in EU, and
+    99.9% uptime SLA. ```
   </Tab>
   <Tab title="SLA Monitoring">
-    ```
-    Check if any tenants have breached their SLA in the last 24 hours
-    and generate incident reports.
-    ```
+    ``` Check if any tenants have breached their SLA in the last 24 hours and generate incident
+    reports. ```
   </Tab>
   <Tab title="Compliance">
-    ```
-    Generate a SOC2 compliance report for tenant 'megacorp' covering
-    Q1 2026.
-    ```
+    ``` Generate a SOC2 compliance report for tenant 'megacorp' covering Q1 2026. ```
   </Tab>
 </Tabs>
 

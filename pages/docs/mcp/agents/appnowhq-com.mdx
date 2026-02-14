@@ -8,27 +8,32 @@ sidebar_icon: layer-group
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **AppNowHQ.com App Builder Agent** scaffolds full-stack applications, generates boilerplate code, and automates deployment pipelines for new projects with best practices built-in.
+The **AppNowHQ.com App Builder Agent** scaffolds full-stack applications, generates boilerplate
+code, and automates deployment pipelines for new projects with best practices built-in.
 
 ## Overview
 
-This agent specializes in rapid application development, helping developers bootstrap new projects quickly with production-ready architectures, configurations, and deployment pipelines.
+This agent specializes in rapid application development, helping developers bootstrap new projects
+quickly with production-ready architectures, configurations, and deployment pipelines.
 
 ## Key Capabilities
 
 ### Project Scaffolding
+
 - Generate full-stack app structures
 - Support multiple frameworks (Next.js, React, Vue, Angular, Express, FastAPI)
 - Include authentication, database, and API boilerplate
 - Configure TypeScript, linting, and testing
 
 ### Boilerplate Generation
+
 - CRUD API endpoints
 - Authentication flows (OAuth, JWT, session)
 - Database schemas and migrations
 - UI component libraries and layouts
 
 ### Deployment Automation
+
 - Configure CI/CD pipelines
 - Set up Docker containers
 - Deploy to cloud platforms (Vercel, AWS, GCP, Azure)
@@ -59,17 +64,20 @@ Generate a new full-stack application.
       "frontend": {
         "type": "object",
         "properties": {
-          "framework": {"type": "string", "enum": ["nextjs", "react", "vue", "angular", "svelte"]},
-          "ui_library": {"type": "string", "enum": ["tailwind", "mui", "chakra", "shadcn"]},
-          "typescript": {"type": "boolean", "default": true}
+          "framework": {
+            "type": "string",
+            "enum": ["nextjs", "react", "vue", "angular", "svelte"]
+          },
+          "ui_library": { "type": "string", "enum": ["tailwind", "mui", "chakra", "shadcn"] },
+          "typescript": { "type": "boolean", "default": true }
         }
       },
       "backend": {
         "type": "object",
         "properties": {
-          "framework": {"type": "string", "enum": ["express", "fastapi", "nestjs", "django"]},
-          "database": {"type": "string", "enum": ["postgresql", "mongodb", "mysql", "sqlite"]},
-          "auth": {"type": "boolean", "default": true}
+          "framework": { "type": "string", "enum": ["express", "fastapi", "nestjs", "django"] },
+          "database": { "type": "string", "enum": ["postgresql", "mongodb", "mysql", "sqlite"] },
+          "auth": { "type": "boolean", "default": true }
         }
       },
       "features": {
@@ -113,10 +121,10 @@ Generate CRUD endpoints for a resource.
         "items": {
           "type": "object",
           "properties": {
-            "name": {"type": "string"},
-            "type": {"type": "string"},
-            "required": {"type": "boolean"},
-            "unique": {"type": "boolean"}
+            "name": { "type": "string" },
+            "type": { "type": "string" },
+            "required": { "type": "boolean" },
+            "unique": { "type": "boolean" }
           }
         }
       },
@@ -168,7 +176,7 @@ Configure deployment pipeline for an application.
       },
       "environments": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "default": ["development", "staging", "production"]
       },
       "features": {
@@ -206,7 +214,14 @@ Add a feature module to an existing application.
       },
       "feature": {
         "type": "string",
-        "enum": ["authentication", "file_upload", "payments", "email", "notifications", "analytics"],
+        "enum": [
+          "authentication",
+          "file_upload",
+          "payments",
+          "email",
+          "notifications",
+          "analytics"
+        ],
         "description": "Feature to add"
       },
       "provider": {
@@ -252,22 +267,16 @@ APPNOWHQ_API_KEY=your-api-key
 
 <Tabs>
   <Tab title="Scaffold App">
-    ```
-    Create a Next.js 14 app with TypeScript, Tailwind, PostgreSQL,
-    and authentication. Include user management CRUD.
-    ```
+    ``` Create a Next.js 14 app with TypeScript, Tailwind, PostgreSQL, and authentication. Include
+    user management CRUD. ```
   </Tab>
   <Tab title="Generate CRUD">
-    ```
-    Generate CRUD for a 'Product' resource with fields: name (string),
-    price (decimal), category (string), and inStock (boolean).
-    ```
+    ``` Generate CRUD for a 'Product' resource with fields: name (string), price (decimal), category
+    (string), and inStock (boolean). ```
   </Tab>
   <Tab title="Setup Deployment">
-    ```
-    Set up Vercel deployment with preview deploys for PRs,
-    use GitHub Actions for CI, include staging environment.
-    ```
+    ``` Set up Vercel deployment with preview deploys for PRs, use GitHub Actions for CI, include
+    staging environment. ```
   </Tab>
 </Tabs>
 

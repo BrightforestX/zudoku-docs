@@ -10,7 +10,9 @@
 
 **Status:** ❌ **BDD Setup Not Complete**
 
-The BDD feature file infrastructure has **not been implemented** in this repository. This verification was conducted to assess the current state of Behavior-Driven Development (BDD) test organization.
+The BDD feature file infrastructure has **not been implemented** in this repository. This
+verification was conducted to assess the current state of Behavior-Driven Development (BDD) test
+organization.
 
 ---
 
@@ -21,7 +23,8 @@ The BDD feature file infrastructure has **not been implemented** in this reposit
 **File:** `docs/FEATURE_ROADMAP.md`  
 **Status:** ❌ **Does Not Exist**
 
-The feature roadmap document that should list all planned `.feature` files was not found in the repository.
+The feature roadmap document that should list all planned `.feature` files was not found in the
+repository.
 
 ### 2. Feature Files Inventory
 
@@ -41,12 +44,14 @@ Results: 0 files
 #### Test Framework Analysis
 
 **Playwright Configuration:** ✅ **Present**
+
 - File: `playwright.config.ts`
 - Test Directory: `./tests`
 - Base URL: `http://localhost:3000`
 - Projects: chromium
 
 **Existing Tests:**
+
 - `tests/smoke.spec.ts` - Basic Playwright smoke tests
 - `tests/visual.spec.ts` - Visual regression tests
 
@@ -67,15 +72,18 @@ Missing packages:
 #### Gherkin Support
 
 **Syntax Highlighting:** ✅ **Available**
+
 - File: `packages/zudoku/src/shiki/langs/gherkin.js`
 - Purpose: Code syntax highlighting for Gherkin in documentation
 - Note: This is for displaying Gherkin syntax in docs, not for running tests
 
 ### 4. Per-Site Feature Count
 
-**Analysis:** Unable to determine per-site feature organization as no feature files or roadmap exists.
+**Analysis:** Unable to determine per-site feature organization as no feature files or roadmap
+exists.
 
 Expected structure (not found):
+
 ```
 features/
 ├── site-a/
@@ -96,7 +104,8 @@ The current Playwright configuration does not include any BDD/Cucumber test runn
   testDir: './tests',
 ```
 
-Current test directory contains only standard Playwright `.spec.ts` files, not `.feature` files or step definitions.
+Current test directory contains only standard Playwright `.spec.ts` files, not `.feature` files or
+step definitions.
 
 ---
 
@@ -105,13 +114,16 @@ Current test directory contains only standard Playwright `.spec.ts` files, not `
 To implement a complete BDD setup, the following steps are recommended:
 
 ### Phase 1: Planning
+
 1. Create `docs/FEATURE_ROADMAP.md` with:
    - List of all planned features to test
    - Organization by site/module
    - Priority and ownership
 
 ### Phase 2: Infrastructure
+
 2. Install BDD packages:
+
    ```bash
    pnpm add -D @cucumber/cucumber @cucumber/playwright playwright-bdd
    ```
@@ -122,7 +134,9 @@ To implement a complete BDD setup, the following steps are recommended:
    - Configure test reporter for BDD
 
 ### Phase 3: Implementation
+
 4. Create feature files with proper Gherkin syntax:
+
    ```gherkin
    Feature: Feature Name
      Scenario: Scenario Name
@@ -135,6 +149,7 @@ To implement a complete BDD setup, the following steps are recommended:
 6. Set up page objects and test utilities
 
 ### Phase 4: Validation
+
 7. Ensure all features can be discovered by test runner
 8. Run tests to verify setup
 9. Configure CI/CD integration
@@ -143,14 +158,14 @@ To implement a complete BDD setup, the following steps are recommended:
 
 ## Summary Statistics
 
-| Metric | Count | Status |
-|--------|-------|--------|
-| Feature Files | 0 | ❌ |
-| Total Scenarios | 0 | ❌ |
-| Roadmap Document | 0 | ❌ |
-| BDD Packages Installed | 0 | ❌ |
-| Test Runner Integration | No | ❌ |
-| Sites Configured | N/A | ⚠️ |
+| Metric                  | Count | Status |
+| ----------------------- | ----- | ------ |
+| Feature Files           | 0     | ❌     |
+| Total Scenarios         | 0     | ❌     |
+| Roadmap Document        | 0     | ❌     |
+| BDD Packages Installed  | 0     | ❌     |
+| Test Runner Integration | No    | ❌     |
+| Sites Configured        | N/A   | ⚠️     |
 
 ---
 
@@ -158,15 +173,18 @@ To implement a complete BDD setup, the following steps are recommended:
 
 **Status:** Cannot determine - Roadmap file does not exist
 
-Without a `docs/FEATURE_ROADMAP.md` file, it's impossible to verify which planned feature files are missing.
+Without a `docs/FEATURE_ROADMAP.md` file, it's impossible to verify which planned feature files are
+missing.
 
 ---
 
 ## Conclusion
 
-The BDD feature file setup requires complete implementation. Currently, the repository uses standard Playwright tests (`*.spec.ts` files) without any Gherkin/BDD organization.
+The BDD feature file setup requires complete implementation. Currently, the repository uses standard
+Playwright tests (`*.spec.ts` files) without any Gherkin/BDD organization.
 
 To proceed with BDD implementation:
+
 1. First create the roadmap document
 2. Install necessary dependencies
 3. Configure the test infrastructure

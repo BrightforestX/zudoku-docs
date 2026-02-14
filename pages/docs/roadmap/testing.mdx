@@ -1,11 +1,15 @@
 ---
 title: Testing Strategy
-description: Comprehensive testing strategy using Playwright and Cucumber BDD, visual regression, and accessibility testing across the BrightForest ecosystem
+description:
+  Comprehensive testing strategy using Playwright and Cucumber BDD, visual regression, and
+  accessibility testing across the BrightForest ecosystem
 ---
 
 # Testing Strategy
 
-The BrightForest ecosystem employs a comprehensive, multi-layered testing strategy to ensure quality, reliability, and accessibility across all 13 domains. Our approach combines behavior-driven development (BDD), visual regression testing, accessibility validation, and performance monitoring.
+The BrightForest ecosystem employs a comprehensive, multi-layered testing strategy to ensure
+quality, reliability, and accessibility across all 13 domains. Our approach combines behavior-driven
+development (BDD), visual regression testing, accessibility validation, and performance monitoring.
 
 ## Testing Philosophy
 
@@ -25,14 +29,15 @@ The BrightForest ecosystem employs a comprehensive, multi-layered testing strate
       /----\        Integration Tests
      /------\       Component Tests (Vitest)
     /--------\      Unit Tests (Vitest)
-   /----------\     
+   /----------\
 ```
 
 ## BDD Testing with Cucumber & Playwright
 
 ### Overview
 
-We use **Cucumber** for defining behavior in Gherkin syntax and **Playwright** for executing tests across browsers. This combination provides:
+We use **Cucumber** for defining behavior in Gherkin syntax and **Playwright** for executing tests
+across browsers. This combination provides:
 
 - Human-readable test scenarios
 - Strong cross-browser support (Chromium, Firefox, WebKit)
@@ -66,19 +71,19 @@ Feature: Homepage Navigation
 ### Step Definition Pattern
 
 ```typescript
-import { Given, When, Then } from '@cucumber/cucumber';
-import { expect } from '@playwright/test';
+import { Given, When, Then } from "@cucumber/cucumber";
+import { expect } from "@playwright/test";
 
-Given('I am on the homepage', async function () {
-  await this.page.goto('/');
-  await this.page.waitForLoadState('networkidle');
+Given("I am on the homepage", async function () {
+  await this.page.goto("/");
+  await this.page.waitForLoadState("networkidle");
 });
 
-When('I click on {string} in the navigation menu', async function (linkText: string) {
-  await this.page.getByRole('link', { name: linkText }).click();
+When("I click on {string} in the navigation menu", async function (linkText: string) {
+  await this.page.getByRole("link", { name: linkText }).click();
 });
 
-Then('I should be on the documentation page', async function () {
+Then("I should be on the documentation page", async function () {
   await expect(this.page).toHaveURL(/\/docs/);
 });
 ```
@@ -92,15 +97,15 @@ export class NavigationPage {
   constructor(private page: Page) {}
 
   async navigateTo(section: string) {
-    await this.page.getByRole('link', { name: section }).click();
+    await this.page.getByRole("link", { name: section }).click();
   }
 
   async openMobileMenu() {
-    await this.page.getByRole('button', { name: 'Menu' }).click();
+    await this.page.getByRole("button", { name: "Menu" }).click();
   }
 
   async isMenuVisible() {
-    return await this.page.getByRole('navigation').isVisible();
+    return await this.page.getByRole("navigation").isVisible();
   }
 }
 ```
@@ -148,7 +153,8 @@ tests/
 
 ### Overview
 
-Visual regression testing ensures UI consistency and prevents unintended visual changes across deployments.
+Visual regression testing ensures UI consistency and prevents unintended visual changes across
+deployments.
 
 ### Implementation
 
@@ -156,10 +162,10 @@ We use Playwright's built-in screenshot comparison:
 
 ```typescript
 // Capture and compare screenshots
-await expect(page).toHaveScreenshot('homepage.png', {
+await expect(page).toHaveScreenshot("homepage.png", {
   fullPage: true,
   threshold: 0.2,
-  maxDiffPixels: 100
+  maxDiffPixels: 100,
 });
 ```
 
@@ -173,12 +179,12 @@ await expect(page).toHaveScreenshot('homepage.png', {
 
 ### Viewport Matrix
 
-| Device Type | Width | Height | Browser |
-|------------|-------|---------|---------|
-| Mobile | 375px | 667px | Chrome, Safari |
-| Tablet | 768px | 1024px | Chrome, Safari |
-| Desktop | 1920px | 1080px | Chrome, Firefox, Safari |
-| Wide | 2560px | 1440px | Chrome |
+| Device Type | Width  | Height | Browser                 |
+| ----------- | ------ | ------ | ----------------------- |
+| Mobile      | 375px  | 667px  | Chrome, Safari          |
+| Tablet      | 768px  | 1024px | Chrome, Safari          |
+| Desktop     | 1920px | 1080px | Chrome, Firefox, Safari |
+| Wide        | 2560px | 1440px | Chrome                  |
 
 ### Baseline Management
 
@@ -198,16 +204,16 @@ We target **WCAG 2.1 Level AA** compliance across all domains.
 Using **axe-core** integrated with Playwright:
 
 ```typescript
-import { injectAxe, checkA11y } from 'axe-playwright';
+import { injectAxe, checkA11y } from "axe-playwright";
 
-test('Homepage accessibility', async ({ page }) => {
-  await page.goto('/');
+test("Homepage accessibility", async ({ page }) => {
+  await page.goto("/");
   await injectAxe(page);
   await checkA11y(page, undefined, {
     detailedReport: true,
     detailedReportOptions: {
-      html: true
-    }
+      html: true,
+    },
   });
 });
 ```
@@ -245,29 +251,29 @@ test('Homepage accessibility', async ({ page }) => {
 
 We monitor and test against Core Web Vitals thresholds:
 
-| Metric | Good | Needs Improvement | Poor |
-|--------|------|-------------------|------|
-| LCP (Largest Contentful Paint) | ≤ 2.5s | 2.5s - 4.0s | > 4.0s |
-| FID (First Input Delay) | ≤ 100ms | 100ms - 300ms | > 300ms |
-| CLS (Cumulative Layout Shift) | ≤ 0.1 | 0.1 - 0.25 | > 0.25 |
+| Metric                         | Good    | Needs Improvement | Poor    |
+| ------------------------------ | ------- | ----------------- | ------- |
+| LCP (Largest Contentful Paint) | ≤ 2.5s  | 2.5s - 4.0s       | > 4.0s  |
+| FID (First Input Delay)        | ≤ 100ms | 100ms - 300ms     | > 300ms |
+| CLS (Cumulative Layout Shift)  | ≤ 0.1   | 0.1 - 0.25        | > 0.25  |
 
 ### Lighthouse Integration
 
 Automated Lighthouse audits in CI/CD:
 
 ```typescript
-import { playAudit } from 'playwright-lighthouse';
+import { playAudit } from "playwright-lighthouse";
 
-test('Performance audit', async ({ page }) => {
-  await page.goto('/');
+test("Performance audit", async ({ page }) => {
+  await page.goto("/");
   await playAudit({
     page,
     thresholds: {
       performance: 90,
       accessibility: 95,
-      'best-practices': 90,
-      seo: 90
-    }
+      "best-practices": 90,
+      seo: 90,
+    },
   });
 });
 ```
@@ -283,12 +289,12 @@ test('Performance audit', async ({ page }) => {
 
 ### Browser Matrix
 
-| Browser | Versions | Platform |
-|---------|----------|----------|
-| Chrome | Latest, Latest-1 | Desktop, Mobile |
-| Firefox | Latest, Latest-1 | Desktop |
-| Safari | Latest, Latest-1 | Desktop, Mobile |
-| Edge | Latest | Desktop |
+| Browser | Versions         | Platform        |
+| ------- | ---------------- | --------------- |
+| Chrome  | Latest, Latest-1 | Desktop, Mobile |
+| Firefox | Latest, Latest-1 | Desktop         |
+| Safari  | Latest, Latest-1 | Desktop, Mobile |
+| Edge    | Latest           | Desktop         |
 
 ### Testing Approach
 
@@ -301,24 +307,24 @@ test('Performance audit', async ({ page }) => {
 export default defineConfig({
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
     },
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
     },
     {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 5'] },
+      name: "mobile-chrome",
+      use: { ...devices["Pixel 5"] },
     },
     {
-      name: 'mobile-safari',
-      use: { ...devices['iPhone 13'] },
+      name: "mobile-safari",
+      use: { ...devices["iPhone 13"] },
     },
   ],
 });
@@ -362,13 +368,13 @@ Reusable test data for consistent testing:
 ```typescript
 export const testUsers = {
   standard: {
-    email: 'test@brightforest.io',
-    password: 'Test123!'
+    email: "test@brightforest.io",
+    password: "Test123!",
   },
   admin: {
-    email: 'admin@brightforest.io',
-    password: 'Admin123!'
-  }
+    email: "admin@brightforest.io",
+    password: "Admin123!",
+  },
 };
 ```
 
@@ -497,4 +503,5 @@ pnpm test:report
 
 ---
 
-**Testing is not just about finding bugs—it's about building confidence in our platform and delivering exceptional user experiences across the entire BrightForest ecosystem.**
+**Testing is not just about finding bugs—it's about building confidence in our platform and
+delivering exceptional user experiences across the entire BrightForest ecosystem.**
