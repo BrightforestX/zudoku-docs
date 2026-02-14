@@ -1,12 +1,12 @@
 ---
 title: GetDIYAI.com - DIY AI Builder Agent
-description: Template selection and model configuration agent for no-code AI
+description: No-code AI workflow builder with drag-and-drop components, template marketplace, and one-click deployment for building custom AI solutions
 sidebar_icon: cube
 ---
 
-# GetDIYAI.com DIY AI Builder Agent
+# GetDIYAI.com - DIY AI Builder Agent
 
-<Badge variant="warning">Coming Soon</Badge>
+<Badge variant="info">In Development</Badge>
 
 The **GetDIYAI.com DIY AI Builder Agent** helps users select AI templates, configure models, and
 deploy custom AI solutions without requiring deep machine learning expertise.
@@ -86,14 +86,14 @@ Browse available AI application templates.
 }
 ```
 
-### `create_ai_app`
+### `create_ai_workflow`
 
-Create a new AI application from a template.
+Create a new AI workflow from a template.
 
 ```json
 {
-  "name": "create_ai_app",
-  "description": "Create a new AI application using a template",
+  "name": "create_ai_workflow",
+  "description": "Create a new AI workflow using a template",
   "inputSchema": {
     "type": "object",
     "properties": {
@@ -101,9 +101,9 @@ Create a new AI application from a template.
         "type": "string",
         "description": "Template to use"
       },
-      "app_name": {
+      "workflow_name": {
         "type": "string",
-        "description": "Name for the AI application"
+        "description": "Name for the AI workflow"
       },
       "configuration": {
         "type": "object",
@@ -127,11 +127,11 @@ Create a new AI application from a template.
         "properties": {
           "logo": { "type": "string" },
           "primary_color": { "type": "string" },
-          "app_description": { "type": "string" }
+          "workflow_description": { "type": "string" }
         }
       }
     },
-    "required": ["template_id", "app_name"]
+    "required": ["template_id", "workflow_name"]
   }
 }
 ```
@@ -147,9 +147,9 @@ Configure an AI model with guided wizard.
   "inputSchema": {
     "type": "object",
     "properties": {
-      "app_id": {
+      "workflow_id": {
         "type": "string",
-        "description": "AI app to configure"
+        "description": "AI workflow to configure"
       },
       "task_type": {
         "type": "string",
@@ -178,25 +178,25 @@ Configure an AI model with guided wizard.
         }
       }
     },
-    "required": ["app_id", "task_type"]
+    "required": ["workflow_id", "task_type"]
   }
 }
 ```
 
-### `deploy_ai_app`
+### `deploy_ai_workflow`
 
-Deploy an AI application with one click.
+Deploy an AI workflow with one click.
 
 ```json
 {
-  "name": "deploy_ai_app",
-  "description": "Deploy AI application with automatic API and widget generation",
+  "name": "deploy_ai_workflow",
+  "description": "Deploy AI workflow as an application with automatic API and widget generation",
   "inputSchema": {
     "type": "object",
     "properties": {
-      "app_id": {
+      "workflow_id": {
         "type": "string",
-        "description": "AI app to deploy"
+        "description": "AI workflow to deploy"
       },
       "deployment_target": {
         "type": "string",
@@ -226,17 +226,19 @@ Deploy an AI application with one click.
         "description": "Optional custom domain"
       }
     },
-    "required": ["app_id"]
+    "required": ["workflow_id"]
   }
 }
 ```
 
 ## Available Resources
 
-- **Template Library**: Hundreds of pre-built AI app templates
-- **Model Catalog**: Curated models for different tasks
+- **Template Library**: Hundreds of pre-built AI workflow templates
+- **Model Catalog**: Curated models for different tasks (text, image, data processing)
+- **Component Library**: Pre-built AI components for drag-and-drop workflows
 - **Training Datasets**: Sample datasets for fine-tuning
 - **Deployment Guides**: Step-by-step deployment instructions
+- **Learning Hub**: Interactive tutorials and video courses
 
 ## Connection Details
 
@@ -258,22 +260,25 @@ GETDIYAI_API_KEY=your-api-key
     ``` Show me chatbot templates for customer support, beginner-friendly, suitable for e-commerce
     businesses. ```
   </Tab>
-  <Tab title="Create App">
-    ``` Create a customer support chatbot named "HelpBot" using GPT-4, fine-tune on my support
-    ticket data, and add my company branding. ```
+  <Tab title="Create Workflow">
+    ``` Create a customer support chatbot workflow named "HelpBot" using GPT-4, fine-tune on my
+    support ticket data, and add my company branding. ```
   </Tab>
-  <Tab title="Deploy">
-    ``` Deploy my sentiment analysis app to the cloud with auto-scaling, generate a REST API and
-    embeddable widget. ```
+  <Tab title="Deploy Solution">
+    ``` Deploy my sentiment analysis workflow to the cloud with auto-scaling, generate a REST API
+    and embeddable widget. ```
   </Tab>
 </Tabs>
 
 ## Use Cases
 
-- **Chatbot Creation**: "Build a customer support chatbot without coding"
-- **Image Generation**: "Create an AI logo generator for my design business"
-- **Text Analysis**: "Build a sentiment analyzer for social media monitoring"
-- **Recommendations**: "Create a product recommendation system for my store"
+- **Chatbot Creation**: Build customer support chatbots without coding
+- **Image Analysis**: Create image classification and object detection solutions
+- **Text Analysis**: Build sentiment analyzers for social media monitoring
+- **Document Processing**: Extract data from invoices, receipts, and forms
+- **Recommendations**: Create product recommendation systems
+- **Email Automation**: Build intelligent email responders and classifiers
+- **Lead Scoring**: Automate sales lead qualification and routing
 
 ## Next Steps
 
