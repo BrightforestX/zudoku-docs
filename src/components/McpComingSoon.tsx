@@ -70,12 +70,12 @@ const domainInfoMap: Record<string, DomainInfo> = {
   },
   "pathx.ai": {
     name: "PathX",
-    agentType: "Career Navigation Assistant",
+    agentType: "Algorithm Optimization Agent",
     capabilities: [
-      "Career path recommendations",
-      "Skill gap analysis",
-      "Job market insights",
-      "Interview preparation",
+      "Benchmark automation and performance profiling",
+      "Hyperparameter tuning with multiple strategies",
+      "Algorithm comparison and analysis",
+      "Performance optimization recommendations",
     ],
   },
   "iheartai.ai": {
