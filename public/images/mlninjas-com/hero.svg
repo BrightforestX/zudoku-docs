@@ -1,0 +1,205 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E293B;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="red-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#DC2626;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF3333;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="silver-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E5E7EB;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#9CA3AF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6B7280;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="red-radial" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#EF4444;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:0" />
+    </radialGradient>
+    
+    <!-- Filters -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="soft-shadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bg-gradient)"/>
+  
+  <!-- Grid pattern -->
+  <g opacity="0.1">
+    <line x1="0" y1="256" x2="1024" y2="256" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="0" y1="512" x2="1024" y2="512" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="0" y1="768" x2="1024" y2="768" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="256" y1="0" x2="256" y2="1024" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="512" y1="0" x2="512" y2="1024" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="768" y1="0" x2="768" y2="1024" stroke="#9CA3AF" stroke-width="1"/>
+  </g>
+  
+  <!-- Background glow effects -->
+  <circle cx="512" cy="400" r="200" fill="url(#red-radial)" opacity="0.3"/>
+  <circle cx="300" cy="600" r="120" fill="url(#red-radial)" opacity="0.2"/>
+  <circle cx="700" cy="650" r="150" fill="url(#red-radial)" opacity="0.2"/>
+  
+  <!-- Neural network nodes background -->
+  <g opacity="0.2" stroke="#9CA3AF" stroke-width="1" fill="none">
+    <circle cx="200" cy="200" r="8" fill="#9CA3AF"/>
+    <circle cx="350" cy="150" r="6" fill="#9CA3AF"/>
+    <circle cx="480" cy="180" r="7" fill="#9CA3AF"/>
+    <circle cx="650" cy="220" r="6" fill="#9CA3AF"/>
+    <circle cx="800" cy="180" r="8" fill="#9CA3AF"/>
+    <line x1="200" y1="200" x2="350" y2="150"/>
+    <line x1="350" y1="150" x2="480" y2="180"/>
+    <line x1="480" y1="180" x2="650" y2="220"/>
+    <line x1="650" y1="220" x2="800" y2="180"/>
+  </g>
+  
+  <!-- Floating data streams -->
+  <g opacity="0.15" stroke="#DC2626" stroke-width="2" fill="none">
+    <path d="M 100 400 Q 200 350, 300 400 T 500 400" stroke-dasharray="5,5">
+      <animate attributeName="stroke-dashoffset" from="0" to="20" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 150 600 Q 300 550, 450 600 T 750 600" stroke-dasharray="5,5">
+      <animate attributeName="stroke-dashoffset" from="0" to="20" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 600 300 Q 700 250, 800 300 T 950 300" stroke-dasharray="5,5">
+      <animate attributeName="stroke-dashoffset" from="0" to="20" dur="3s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Ninja silhouette (centered, dynamic pose) -->
+  <g transform="translate(512, 500)" filter="url(#soft-shadow)">
+    <!-- Body -->
+    <path d="M 0,-80 L -20,-40 L -25,0 L -30,40 L -20,80 L 0,100 L 20,80 L 30,40 L 25,0 L 20,-40 Z" 
+          fill="url(#silver-gradient)" opacity="0.9"/>
+    
+    <!-- Head -->
+    <circle cx="0" cy="-100" r="25" fill="url(#silver-gradient)" opacity="0.9"/>
+    
+    <!-- Extended arm with katana -->
+    <path d="M 20,-40 L 80,-20 L 120,-30" stroke="url(#silver-gradient)" stroke-width="12" 
+          stroke-linecap="round" fill="none" opacity="0.9"/>
+    
+    <!-- Katana (glowing red energy sword) -->
+    <g filter="url(#glow)">
+      <line x1="120" y1="-30" x2="220" y2="-50" stroke="url(#red-glow)" stroke-width="6" 
+            stroke-linecap="round" opacity="0.9">
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="1.5s" repeatCount="indefinite"/>
+      </line>
+      <line x1="120" y1="-30" x2="220" y2="-50" stroke="#FF6666" stroke-width="3" 
+            stroke-linecap="round" opacity="0.6"/>
+    </g>
+    
+    <!-- Katana handle -->
+    <rect x="110" y="-35" width="20" height="10" rx="2" fill="#4B5563"/>
+    
+    <!-- Other arm -->
+    <path d="M -20,-40 L -60,-10 L -70,20" stroke="url(#silver-gradient)" stroke-width="12" 
+          stroke-linecap="round" fill="none" opacity="0.9"/>
+    
+    <!-- Legs in dynamic stance -->
+    <path d="M -20,80 L -40,140 L -50,180" stroke="url(#silver-gradient)" stroke-width="14" 
+          stroke-linecap="round" fill="none" opacity="0.9"/>
+    <path d="M 20,80 L 50,130 L 70,170" stroke="url(#silver-gradient)" stroke-width="14" 
+          stroke-linecap="round" fill="none" opacity="0.9"/>
+  </g>
+  
+  <!-- Data particles being sliced -->
+  <g opacity="0.6">
+    <circle cx="680" cy="420" r="4" fill="#DC2626">
+      <animate attributeName="cx" from="680" to="750" dur="0.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0" dur="0.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="690" cy="440" r="3" fill="#EF4444">
+      <animate attributeName="cx" from="690" to="760" dur="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="700" cy="430" r="4" fill="#DC2626">
+      <animate attributeName="cx" from="700" to="770" dur="0.9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0" dur="0.9s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Code snippets floating around -->
+  <g font-family="monospace" font-size="14" fill="#9CA3AF" opacity="0.3">
+    <text x="150" y="450">import numpy</text>
+    <text x="180" y="720">model.fit()</text>
+    <text x="750" y="350">def train():</text>
+    <text x="820" y="720">accuracy=0.95</text>
+    <text x="100" y="280">torch.nn</text>
+  </g>
+  
+  <!-- Neural network diagram (small) -->
+  <g transform="translate(250, 750)" opacity="0.25">
+    <circle cx="0" cy="0" r="6" fill="#DC2626"/>
+    <circle cx="0" cy="30" r="6" fill="#DC2626"/>
+    <circle cx="40" cy="10" r="6" fill="#EF4444"/>
+    <circle cx="40" cy="20" r="6" fill="#EF4444"/>
+    <circle cx="80" cy="15" r="6" fill="#9CA3AF"/>
+    <line x1="0" y1="0" x2="40" y2="10" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="0" y1="30" x2="40" y2="20" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="40" y1="10" x2="80" y2="15" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="40" y1="20" x2="80" y2="15" stroke="#9CA3AF" stroke-width="1"/>
+  </g>
+  
+  <!-- Training graph (simple) -->
+  <g transform="translate(700, 750)" opacity="0.25">
+    <line x1="0" y1="40" x2="0" y2="0" stroke="#9CA3AF" stroke-width="1"/>
+    <line x1="0" y1="40" x2="60" y2="40" stroke="#9CA3AF" stroke-width="1"/>
+    <path d="M 5 35 L 15 28 L 25 22 L 35 18 L 45 12 L 55 8" stroke="#DC2626" 
+          stroke-width="2" fill="none"/>
+    <text x="0" y="55" font-size="10" fill="#9CA3AF">epoch</text>
+  </g>
+  
+  <!-- Python logo (simplified) -->
+  <g transform="translate(850, 250)" opacity="0.2">
+    <path d="M 0,0 L 20,0 L 20,20 L 10,30 L 0,20 Z" fill="#4B8BBE"/>
+    <path d="M 10,10 L 20,20 L 20,40 L 0,40 L 0,20 L 10,10 Z" fill="#FFD43B"/>
+  </g>
+  
+  <!-- ML badge/icon -->
+  <g transform="translate(120, 680)" opacity="0.3">
+    <rect width="40" height="40" rx="8" fill="#DC2626"/>
+    <text x="20" y="28" font-size="18" font-weight="bold" fill="white" text-anchor="middle">ML</text>
+  </g>
+  
+  <!-- Accent lines -->
+  <g opacity="0.2" stroke="#DC2626" stroke-width="2" fill="none">
+    <line x1="50" y1="350" x2="200" y2="350" stroke-dasharray="3,6"/>
+    <line x1="50" y1="550" x2="200" y2="550" stroke-dasharray="3,6"/>
+    <line x1="824" y1="450" x2="974" y2="450" stroke-dasharray="3,6"/>
+    <line x1="824" y1="580" x2="974" y2="580" stroke-dasharray="3,6"/>
+  </g>
+  
+  <!-- Central energy pulse -->
+  <circle cx="512" cy="420" r="15" fill="none" stroke="#DC2626" stroke-width="2" opacity="0.4">
+    <animate attributeName="r" values="15;30;15" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="512" cy="420" r="15" fill="none" stroke="#EF4444" stroke-width="2" opacity="0.4">
+    <animate attributeName="r" values="15;30;15" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>

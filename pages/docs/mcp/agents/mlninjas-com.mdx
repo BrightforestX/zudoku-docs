@@ -1,43 +1,52 @@
 ---
-title: MLNinjas.com - ML Training Agent
-description: Experiment tracking and hyperparameter search agent
-sidebar_icon: flask
+title: ML Ninjas - Educational ML Platform Agent
+description: Access ML courses, interactive playground, and model zoo through MCP
+sidebar_icon: graduation-cap
 ---
 
-# MLNinjas.com ML Training Agent
+# ML Ninjas Platform Agent
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **MLNinjas.com ML Training Agent** coordinates distributed training jobs, tracks experiments,
-searches hyperparameter spaces, and manages training artifacts for machine learning projects.
+The **ML Ninjas Platform Agent** provides programmatic access to the comprehensive ML education and
+community platform. Connect to courses, interactive code playground, model zoo, and training
+infrastructure through the Model Context Protocol.
 
 ## Overview
 
-This agent specializes in ML training workflows, helping data scientists manage the complexity of
-training, experimenting, and optimizing machine learning models.
+This agent enables seamless integration with the ML Ninjas platform, supporting educational
+workflows, experiment tracking, and model management. Whether you're learning ML fundamentals or
+deploying production models, this agent provides tools for the entire ML journey.
 
 ## Key Capabilities
 
+### Course Access & Management
+
+- Browse and enroll in ML courses
+- Track learning progress across curriculum
+- Access course materials and notebooks
+- Manage certifications and achievements
+
+### Interactive Code Playground
+
+- Execute Python ML code in browser
+- Access pre-loaded libraries (NumPy, Pandas, PyTorch, TensorFlow)
+- Save and share playground sessions
+- Visualize results with Matplotlib and Plotly
+
+### Model Zoo Integration
+
+- Browse and search pre-trained models
+- Download models across frameworks (PyTorch, TensorFlow, ONNX)
+- Access model cards and performance metrics
+- Track model versions and updates
+
 ### Experiment Tracking
 
-- Log metrics, parameters, and artifacts
+- Log training metrics and parameters
 - Compare experiments across runs
 - Visualize training curves and performance
 - Version datasets and model checkpoints
-
-### Hyperparameter Search
-
-- Automated hyperparameter optimization
-- Support for Optuna, Ray Tune, Weights & Biases
-- Parallel trial execution
-- Early stopping for inefficient trials
-
-### Distributed Training
-
-- Coordinate multi-GPU and multi-node training
-- Manage training job scheduling
-- Handle fault tolerance and checkpointing
-- Optimize resource allocation
 
 ## Example Tools
 
@@ -224,39 +233,44 @@ Resume a paused or failed training job.
 
 ```bash
 # MCP Server URL (Placeholder)
-mcp://training.mlninjas.com
+mcp://platform.mlninjas.com
 
 # Server Name
-mlninjas-training
+mlninjas-platform
 
 # Required Environment Variables
 MLNINJAS_API_KEY=your-api-key
-MLNINJAS_WORKSPACE=your-workspace-id
+MLNINJAS_USER_ID=your-user-id
 ```
 
 ## Example Prompts
 
 <Tabs>
-  <Tab title="Start Training">
-    ``` Start training a ResNet50 on ImageNet with 4 GPUs, log metrics every 100 steps, and save
-    checkpoints every epoch. ```
+  <Tab title="Course Access">
+    ``` Show me available courses on Natural Language Processing, my current progress, and
+    recommended next steps. ```
   </Tab>
-  <Tab title="Hyperparameter Search">
-    ``` Search learning rate (1e-5 to 1e-2) and dropout (0.1 to 0.5) using Bayesian optimization,
-    maximize val_accuracy, run 50 trials. ```
+  <Tab title="Playground">
+    ``` Execute this PyTorch code in the playground with GPU support and visualize the training
+    curves. ```
   </Tab>
-  <Tab title="Compare">
-    ``` Compare experiments 'baseline-v1', 'augmentation-v2', and 'larger-model-v3' on validation
-    accuracy and training time. ```
+  <Tab title="Model Zoo">
+    ``` Find pre-trained object detection models compatible with PyTorch, sorted by accuracy on COCO
+    dataset. ```
+  </Tab>
+  <Tab title="Experiments">
+    ``` Compare my last 3 experiments on validation accuracy and training time, show me which
+    hyperparameters performed best. ```
   </Tab>
 </Tabs>
 
 ## Use Cases
 
-- **Training Management**: "Train BERT on our custom dataset with 8 GPUs"
-- **Optimization**: "Find optimal hyperparameters for my image classifier"
-- **Experiment Comparison**: "Which experiment achieved the best F1 score?"
-- **Resume Training**: "Resume the training job that failed yesterday"
+- **Learning**: "Enroll me in the Deep Learning Fundamentals course"
+- **Code Execution**: "Run this PyTorch model in the playground and show results"
+- **Model Discovery**: "Find pre-trained BERT models for sentiment analysis"
+- **Training Management**: "Track my model training experiments and compare metrics"
+- **Progress Tracking**: "Show my course completion status and certificates"
 
 ## Next Steps
 
@@ -271,6 +285,6 @@ MLNINJAS_WORKSPACE=your-workspace-id
 
 ## Related Agents
 
+- [BrightPath.ai](/docs/mcp/agents/brightpath-ai) - ML learning paths and recommendations
 - [PathX.ai](/docs/mcp/agents/pathx-ai) - Algorithm benchmarking and profiling
 - [BrightForest.ai](/docs/mcp/agents/brightforest-ai) - MLOps and model deployment
-- [BrightPath.ai](/docs/mcp/agents/brightpath-ai) - Model selection and orchestration
