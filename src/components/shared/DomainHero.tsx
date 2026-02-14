@@ -1,59 +1,66 @@
-import type { ReactNode } from "react";
 import { cn } from "zudoku";
 
-type DomainHeroProps = {
+export type DomainHeroProps = {
   title: string;
   description: string;
-  badge?: string;
-  icon?: ReactNode;
-  className?: string;
+  image?: string;
+  domain: string;
+};
+
+const domainGradients: Record<string, string> = {
+  security: "from-red-500 to-pink-600",
+  compliance: "from-blue-500 to-indigo-600",
+  privacy: "from-purple-500 to-violet-600",
+  infrastructure: "from-gray-500 to-slate-600",
+  data: "from-cyan-500 to-teal-600",
+  ai: "from-orange-500 to-amber-600",
+  platform: "from-green-500 to-emerald-600",
+  integration: "from-yellow-500 to-lime-600",
+  monitoring: "from-fuchsia-500 to-pink-600",
+  automation: "from-indigo-500 to-purple-600",
+  analytics: "from-teal-500 to-cyan-600",
+  communication: "from-rose-500 to-red-600",
+  workflow: "from-violet-500 to-purple-600",
 };
 
 export const DomainHero = ({
   title,
   description,
-  badge,
-  icon,
-  className,
+  image,
+  domain,
 }: DomainHeroProps) => {
+  const gradient =
+    domainGradients[domain.toLowerCase()] || "from-gray-500 to-slate-600";
+
   return (
     <div
       className={cn(
-        "relative overflow-hidden bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-lg shadow-lg mb-8",
-        className,
+        "relative w-full overflow-hidden rounded-lg bg-gradient-to-r p-8 md:p-12 lg:p-16",
+        gradient,
       )}
     >
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-
-      <div className="relative z-10">
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex items-start gap-4">
-            {icon && (
-              <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
-                {icon}
-              </div>
-            )}
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                {title}
-              </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                {description}
-              </p>
-            </div>
+      <div className="relative z-10 mx-auto max-w-5xl">
+        <div className="flex flex-col gap-4 md:gap-6">
+          <div className="flex-1">
+            <h1 className="mb-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+              {title}
+            </h1>
+            <p className="text-lg text-white/90 md:text-xl lg:text-2xl">
+              {description}
+            </p>
           </div>
-          {badge && (
-            <div className="relative">
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-primary text-primaryForeground">
-                {badge}
-              </span>
-              <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-30" />
+          {image && (
+            <div className="flex-1">
+              <img
+                src={image}
+                alt={title}
+                className="h-auto w-full max-w-md rounded-lg shadow-xl"
+              />
             </div>
           )}
         </div>
       </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
     </div>
   );
 };

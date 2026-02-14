@@ -1,19 +1,13 @@
-import type { ReactNode } from "react";
 import { cn } from "zudoku";
 
-type ComparisonRow = {
-  feature: string;
-  [key: string]: ReactNode;
-};
-
-type ComparisonTableProps = {
-  columns: string[];
-  rows: ComparisonRow[];
+export type ComparisonTableProps = {
+  headers: string[];
+  rows: string[][];
   className?: string;
 };
 
 export const ComparisonTable = ({
-  columns,
+  headers,
   rows,
   className,
 }: ComparisonTableProps) => {
@@ -21,35 +15,32 @@ export const ComparisonTable = ({
     <div className={cn("overflow-x-auto", className)}>
       <table className="w-full border-collapse">
         <thead>
-          <tr className="border-b border-gray-200 dark:border-gray-700">
-            <th className="text-left p-4 font-semibold text-gray-900 dark:text-white">
-              Feature
-            </th>
-            {columns.map((column) => (
+          <tr className="border-b border-border bg-muted/50">
+            {headers.map((header) => (
               <th
-                key={column}
-                className="text-center p-4 font-semibold text-gray-900 dark:text-white"
+                key={header}
+                className="px-4 py-3 text-left text-sm font-semibold"
               >
-                {column}
+                {header}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
+          {rows.map((row) => (
             <tr
-              key={`${row.feature}-${index}`}
-              className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+              key={row[0]}
+              className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors"
             >
-              <td className="p-4 text-gray-700 dark:text-gray-300">
-                {row.feature}
-              </td>
-              {columns.map((column) => (
+              {row.map((cell, cellIndex) => (
                 <td
-                  key={column}
-                  className="p-4 text-center text-gray-600 dark:text-gray-400"
+                  key={`${row[0]}-${cell}`}
+                  className={cn(
+                    "px-4 py-3 text-sm",
+                    cellIndex === 0 ? "font-medium" : "text-muted-foreground",
+                  )}
                 >
-                  {row[column]}
+                  {cell}
                 </td>
               ))}
             </tr>

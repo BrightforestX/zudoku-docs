@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { cn } from "zudoku";
 
-type CliCommandProps = {
+export type CliCommandProps = {
   command: string;
   description?: string;
   className?: string;
@@ -11,43 +12,36 @@ export const CliCommand = ({
   description,
   className,
 }: CliCommandProps) => {
-  const handleCopy = () => {
-    navigator.clipboard.writeText(command);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(command);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (_err) {
+      // Failed to copy - silently fail
+    }
   };
 
   return (
     <div className={cn("space-y-2", className)}>
       {description && (
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          {description}
-        </p>
+        <p className="text-sm text-muted-foreground">{description}</p>
       )}
-      <div className="flex items-center gap-2">
-        <code
-          className={cn(
-            "flex-1 px-4 py-3 rounded-lg font-mono text-sm",
-            "bg-gray-100 dark:bg-gray-800",
-            "border border-gray-200 dark:border-gray-700",
-            "text-gray-800 dark:text-gray-200",
-          )}
-        >
-          {command}
-        </code>
-        <button
-          type="button"
-          className={cn(
-            "px-4 py-3 rounded-lg font-medium text-sm",
-            "bg-gray-200 dark:bg-gray-700",
-            "hover:bg-gray-300 dark:hover:bg-gray-600",
-            "text-gray-700 dark:text-gray-300",
-            "transition-colors duration-200",
-            "border border-gray-300 dark:border-gray-600",
-          )}
-          onClick={handleCopy}
-          title="Copy to clipboard"
-        >
-          Copy
-        </button>
+      <div className="relative group">
+        <div className="flex items-center gap-2 rounded-lg bg-slate-900 dark:bg-slate-800 p-4 font-mono text-sm">
+          <span className="text-slate-400 select-none">$</span>
+          <code className="flex-1 text-slate-100">{command}</code>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="opacity-0 group-hover:opacity-100 transition-opacity rounded px-2 py-1 text-xs bg-slate-700 hover:bg-slate-600 text-slate-100"
+            aria-label="Copy command"
+          >
+            {copied ? "Copied!" : "Copy"}
+          </button>
+        </div>
       </div>
     </div>
   );

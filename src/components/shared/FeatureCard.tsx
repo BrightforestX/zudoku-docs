@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
 import { cn } from "zudoku";
+import { type Status, StatusBadge } from "./StatusBadge.js";
 
-type FeatureCardProps = {
+export type FeatureCardProps = {
   title: string;
   description: string;
-  icon?: ReactNode;
-  href?: string;
+  icon: string;
+  status: Status;
   className?: string;
 };
 
@@ -13,34 +13,28 @@ export const FeatureCard = ({
   title,
   description,
   icon,
-  href,
+  status,
   className,
 }: FeatureCardProps) => {
-  const Component = href ? "a" : "div";
-  const linkProps = href ? { href } : {};
-
   return (
-    <Component
-      {...linkProps}
+    <div
       className={cn(
-        "flex flex-col gap-3 p-6 rounded-lg",
-        "bg-white dark:bg-gray-800",
-        "border border-gray-200 dark:border-gray-700",
-        "transition-all duration-200",
-        href &&
-          "hover:border-primary/50 hover:shadow-lg hover:scale-105 cursor-pointer",
+        "group relative overflow-hidden rounded-lg border border-border bg-card p-6 transition-all duration-300 hover:shadow-lg",
         className,
       )}
     >
-      {icon && (
-        <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
-          {icon}
+      <div className="flex flex-col gap-4">
+        <div className="flex items-start justify-between">
+          <span className="text-4xl" role="img" aria-label={title}>
+            {icon}
+          </span>
+          <StatusBadge status={status} />
         </div>
-      )}
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-        {title}
-      </h3>
-      <p className="text-gray-600 dark:text-gray-300">{description}</p>
-    </Component>
+        <div className="flex flex-col gap-2">
+          <h3 className="text-xl font-semibold">{title}</h3>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -1,101 +1,110 @@
-import type { ReactNode } from "react";
 import { cn } from "zudoku";
+import { type Status, StatusBadge } from "./StatusBadge.js";
 
-type DomainItem = {
+export type Domain = {
   name: string;
-  domain: string;
-  description: string;
-  icon?: ReactNode;
-  status?: "preview" | "coming-soon" | "stable" | "beta";
+  tagline: string;
+  status: Status;
   href?: string;
 };
 
-type DomainGridProps = {
-  domains: DomainItem[];
-  columns?: 1 | 2 | 3 | 4;
+export type DomainGridProps = {
   className?: string;
 };
 
-const statusStyles = {
-  preview: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
-  "coming-soon":
-    "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300",
-  stable:
-    "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
-  beta: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
-};
+const brightForestDomains: Domain[] = [
+  {
+    name: "Security",
+    tagline: "Protect your infrastructure and data",
+    status: "available",
+  },
+  {
+    name: "Compliance",
+    tagline: "Meet regulatory requirements effortlessly",
+    status: "available",
+  },
+  {
+    name: "Privacy",
+    tagline: "Safeguard user data and privacy",
+    status: "beta",
+  },
+  {
+    name: "Infrastructure",
+    tagline: "Manage and scale your infrastructure",
+    status: "available",
+  },
+  {
+    name: "Data",
+    tagline: "Handle data pipelines and storage",
+    status: "available",
+  },
+  {
+    name: "AI",
+    tagline: "Integrate AI capabilities seamlessly",
+    status: "beta",
+  },
+  {
+    name: "Platform",
+    tagline: "Build and deploy applications faster",
+    status: "available",
+  },
+  {
+    name: "Integration",
+    tagline: "Connect your tools and services",
+    status: "available",
+  },
+  {
+    name: "Monitoring",
+    tagline: "Track system health and performance",
+    status: "available",
+  },
+  {
+    name: "Automation",
+    tagline: "Automate workflows and processes",
+    status: "available",
+  },
+  {
+    name: "Analytics",
+    tagline: "Gain insights from your data",
+    status: "beta",
+  },
+  {
+    name: "Communication",
+    tagline: "Enable team collaboration",
+    status: "coming-soon",
+  },
+  {
+    name: "Workflow",
+    tagline: "Orchestrate complex workflows",
+    status: "coming-soon",
+  },
+];
 
-const statusLabels = {
-  preview: "Preview",
-  "coming-soon": "Coming Soon",
-  stable: "Stable",
-  beta: "Beta",
-};
-
-const columnClasses = {
-  1: "grid-cols-1",
-  2: "grid-cols-1 md:grid-cols-2",
-  3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-  4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
-};
-
-export const DomainGrid = ({
-  domains,
-  columns = 3,
-  className,
-}: DomainGridProps) => {
+export const DomainGrid = ({ className }: DomainGridProps) => {
   return (
-    <div className={cn("grid gap-6", columnClasses[columns], className)}>
-      {domains.map((domain) => {
-        const Component = domain.href ? "a" : "div";
-        const linkProps = domain.href ? { href: domain.href } : {};
-
-        return (
-          <Component
-            key={domain.domain}
-            {...linkProps}
-            className={cn(
-              "flex flex-col gap-3 p-6 rounded-lg",
-              "bg-white dark:bg-gray-800",
-              "border border-gray-200 dark:border-gray-700",
-              "transition-all duration-200",
-              domain.href &&
-                "hover:border-primary/50 hover:shadow-lg hover:scale-105 cursor-pointer",
-            )}
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-start gap-3 flex-1">
-                {domain.icon && (
-                  <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    {domain.icon}
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                    {domain.name}
-                  </h3>
-                  <code className="text-xs text-gray-500 dark:text-gray-400 break-all">
-                    {domain.domain}
-                  </code>
-                </div>
-              </div>
-              {domain.status && (
-                <span
-                  className={cn(
-                    "inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold flex-shrink-0",
-                    statusStyles[domain.status],
-                  )}
-                >
-                  {statusLabels[domain.status]}
-                </span>
-              )}
+    <div
+      className={cn(
+        "grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+        className,
+      )}
+    >
+      {brightForestDomains.map((domain) => (
+        <a
+          key={domain.name}
+          href={domain.href || `#${domain.name.toLowerCase()}`}
+          className="group block rounded-lg border border-border bg-card p-4 transition-all duration-300 hover:shadow-md hover:border-primary"
+        >
+          <div className="flex flex-col gap-2">
+            <div className="flex items-start justify-between">
+              <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
+                {domain.name}
+              </h3>
+              <StatusBadge status={domain.status} />
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              {domain.description}
-            </p>
-          </Component>
-        );
-      })}
+            <p className="text-sm text-muted-foreground">{domain.tagline}</p>
+          </div>
+        </a>
+      ))}
     </div>
   );
 };

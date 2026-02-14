@@ -1,37 +1,34 @@
-import type { ReactNode } from "react";
 import { cn } from "zudoku";
 
-type Step = {
+export type Step = {
   title: string;
   description: string;
-  icon?: ReactNode;
 };
 
-type StepByStepProps = {
+export type StepByStepProps = {
   steps: Step[];
   className?: string;
 };
 
 export const StepByStep = ({ steps, className }: StepByStepProps) => {
   return (
-    <div className={cn("space-y-6", className)}>
+    <div className={cn("relative space-y-8", className)}>
       {steps.map((step, index) => (
-        <div key={`${step.title}-${index}`} className="flex gap-4">
+        <div key={step.title} className="relative flex gap-4">
+          {/* Number circle with connecting line */}
           <div className="flex flex-col items-center">
-            <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-primary text-primaryForeground font-semibold">
-              {step.icon || index + 1}
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-semibold">
+              {index + 1}
             </div>
             {index < steps.length - 1 && (
-              <div className="w-0.5 flex-1 mt-2 bg-gray-200 dark:bg-gray-700 min-h-[2rem]" />
+              <div className="w-0.5 flex-1 bg-border mt-2 min-h-[40px]" />
             )}
           </div>
-          <div className="flex-1 pb-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              {step.title}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              {step.description}
-            </p>
+
+          {/* Content */}
+          <div className="flex-1 pb-8">
+            <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+            <p className="text-muted-foreground">{step.description}</p>
           </div>
         </div>
       ))}

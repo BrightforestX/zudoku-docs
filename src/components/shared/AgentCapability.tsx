@@ -1,83 +1,84 @@
-import type { ReactNode } from "react";
 import { cn } from "zudoku";
 
-type AgentCapabilityProps = {
-  name: string;
-  agentType: string;
+export type ConnectionStatus = "connected" | "disconnected" | "pending";
+
+export type AgentCapabilityProps = {
+  agentName: string;
+  domain: string;
   capabilities: string[];
-  domain?: string;
-  icon?: ReactNode;
+  connectionStatus: ConnectionStatus;
   className?: string;
 };
 
+const statusConfig: Record<
+  ConnectionStatus,
+  { label: string; className: string; dotClassName: string }
+> = {
+  connected: {
+    label: "Connected",
+    className: "text-green-600 dark:text-green-400",
+    dotClassName: "bg-green-600 dark:bg-green-400",
+  },
+  disconnected: {
+    label: "Disconnected",
+    className: "text-red-600 dark:text-red-400",
+    dotClassName: "bg-red-600 dark:bg-red-400",
+  },
+  pending: {
+    label: "Pending",
+    className: "text-yellow-600 dark:text-yellow-400",
+    dotClassName: "bg-yellow-600 dark:bg-yellow-400",
+  },
+};
+
 export const AgentCapability = ({
-  name,
-  agentType,
-  capabilities,
+  agentName,
   domain,
-  icon,
+  capabilities,
+  connectionStatus,
   className,
 }: AgentCapabilityProps) => {
+  const status = statusConfig[connectionStatus];
+
   return (
     <div
       className={cn(
-        "p-6 rounded-lg",
-        "bg-white dark:bg-gray-800",
-        "border border-gray-200 dark:border-gray-700",
-        "transition-all duration-200",
-        "hover:border-primary/50 hover:shadow-lg",
+        "rounded-lg border border-border bg-card p-6 space-y-4",
         className,
       )}
     >
-      <div className="flex items-start gap-4 mb-4">
-        {icon && (
-          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
-            {icon}
-          </div>
-        )}
-        <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
-            {name}
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            {agentType}
-          </p>
-          {domain && (
-            <code className="text-xs text-gray-500 dark:text-gray-500 break-all">
-              {domain}
-            </code>
-          )}
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <h3 className="text-xl font-semibold mb-1">{agentName}</h3>
+          <p className="text-sm text-muted-foreground">{domain}</p>
+        </div>
+        <div
+          className={cn("flex items-center gap-2 text-sm", status.className)}
+        >
+          <span
+            className={cn(
+              "h-2 w-2 rounded-full animate-pulse",
+              status.dotClassName,
+            )}
+          />
+          {status.label}
         </div>
       </div>
 
+      {/* Capabilities */}
       <div className="space-y-2">
-        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+        <h4 className="text-sm font-medium text-muted-foreground">
           Capabilities
         </h4>
-        <div className="grid gap-2">
+        <ul className="space-y-1">
           {capabilities.map((capability) => (
-            <div
-              key={capability}
-              className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300"
-            >
-              <svg
-                className="w-5 h-5 text-primary flex-shrink-0 mt-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+            <li key={capability} className="flex items-start gap-2 text-sm">
+              <span className="text-primary mt-1">•</span>
               <span>{capability}</span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );
