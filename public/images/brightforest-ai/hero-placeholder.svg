@@ -1,0 +1,47 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-brightforest-ai" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#001F3F;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#003B5C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00838F;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grad-brightforest-ai)"/>
+  
+  <!-- Neural network pattern -->
+  <g opacity="0.3">
+    <circle cx="200" cy="150" r="40" fill="#26C6DA" filter="url(#glow)"/>
+    <circle cx="400" cy="200" r="30" fill="#26C6DA" filter="url(#glow)"/>
+    <circle cx="600" cy="180" r="35" fill="#26C6DA" filter="url(#glow)"/>
+    <circle cx="800" cy="220" r="28" fill="#26C6DA" filter="url(#glow)"/>
+    <circle cx="1000" cy="170" r="32" fill="#26C6DA" filter="url(#glow)"/>
+    
+    <line x1="200" y1="150" x2="400" y2="200" stroke="#26C6DA" stroke-width="2" opacity="0.5"/>
+    <line x1="400" y1="200" x2="600" y2="180" stroke="#26C6DA" stroke-width="2" opacity="0.5"/>
+    <line x1="600" y1="180" x2="800" y2="220" stroke="#26C6DA" stroke-width="2" opacity="0.5"/>
+    <line x1="800" y1="220" x2="1000" y2="170" stroke="#26C6DA" stroke-width="2" opacity="0.5"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="600" y="350" font-family="Arial, sans-serif" font-size="64" font-weight="bold" 
+        fill="white" text-anchor="middle" filter="url(#glow)">
+    BrightForest.ai
+  </text>
+  
+  <!-- Description -->
+  <text x="600" y="400" font-family="Arial, sans-serif" font-size="24" 
+        fill="#26C6DA" text-anchor="middle" opacity="0.9">
+    AI-powered development platform with model marketplace
+  </text>
+  
+  <!-- Decorative elements -->
+  <rect x="50" y="500" width="200" height="4" fill="#26C6DA" opacity="0.6" rx="2"/>
+  <rect x="950" y="500" width="200" height="4" fill="#26C6DA" opacity="0.6" rx="2"/>
+</svg>
