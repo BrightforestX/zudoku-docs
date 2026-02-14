@@ -8,27 +8,32 @@ sidebar_icon: cube
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **GetDIYAI.com DIY AI Builder Agent** helps users select AI templates, configure models, and deploy custom AI solutions without requiring deep machine learning expertise.
+The **GetDIYAI.com DIY AI Builder Agent** helps users select AI templates, configure models, and
+deploy custom AI solutions without requiring deep machine learning expertise.
 
 ## Overview
 
-This agent specializes in democratizing AI development, enabling non-experts to build and deploy AI applications through guided workflows and pre-built templates.
+This agent specializes in democratizing AI development, enabling non-experts to build and deploy AI
+applications through guided workflows and pre-built templates.
 
 ## Key Capabilities
 
 ### Template Selection
+
 - Browse curated AI application templates
 - Match templates to use cases and requirements
 - Customize templates with no-code configuration
 - Preview template capabilities and examples
 
 ### Model Configuration
+
 - Select pre-trained models for specific tasks
 - Configure model parameters with guided wizards
 - Fine-tune models on custom data (no-code)
 - Test and validate model performance
 
 ### No-Code Deployment
+
 - Deploy AI apps with one-click deployment
 - Generate API endpoints automatically
 - Create embeddable widgets and components
@@ -49,7 +54,14 @@ Browse available AI application templates.
     "properties": {
       "category": {
         "type": "string",
-        "enum": ["chatbot", "image_generation", "text_analysis", "recommendation", "prediction", "automation"],
+        "enum": [
+          "chatbot",
+          "image_generation",
+          "text_analysis",
+          "recommendation",
+          "prediction",
+          "automation"
+        ],
         "description": "Template category"
       },
       "use_case": {
@@ -64,9 +76,9 @@ Browse available AI application templates.
       "filters": {
         "type": "object",
         "properties": {
-          "industry": {"type": "string"},
-          "deployment_target": {"type": "string"},
-          "pricing_tier": {"type": "string"}
+          "industry": { "type": "string" },
+          "deployment_target": { "type": "string" },
+          "pricing_tier": { "type": "string" }
         }
       }
     }
@@ -113,9 +125,9 @@ Create a new AI application from a template.
       "branding": {
         "type": "object",
         "properties": {
-          "logo": {"type": "string"},
-          "primary_color": {"type": "string"},
-          "app_description": {"type": "string"}
+          "logo": { "type": "string" },
+          "primary_color": { "type": "string" },
+          "app_description": { "type": "string" }
         }
       }
     },
@@ -152,17 +164,17 @@ Configure an AI model with guided wizard.
       "fine_tune": {
         "type": "object",
         "properties": {
-          "enabled": {"type": "boolean"},
-          "training_data": {"type": "string"},
-          "epochs": {"type": "integer"}
+          "enabled": { "type": "boolean" },
+          "training_data": { "type": "string" },
+          "epochs": { "type": "integer" }
         }
       },
       "behavior": {
         "type": "object",
         "properties": {
-          "temperature": {"type": "number"},
-          "max_length": {"type": "integer"},
-          "system_prompt": {"type": "string"}
+          "temperature": { "type": "number" },
+          "max_length": { "type": "integer" },
+          "system_prompt": { "type": "string" }
         }
       }
     },
@@ -204,9 +216,9 @@ Deploy an AI application with one click.
       "scaling": {
         "type": "object",
         "properties": {
-          "auto_scale": {"type": "boolean"},
-          "min_instances": {"type": "integer"},
-          "max_instances": {"type": "integer"}
+          "auto_scale": { "type": "boolean" },
+          "min_instances": { "type": "integer" },
+          "max_instances": { "type": "integer" }
         }
       },
       "custom_domain": {
@@ -243,22 +255,16 @@ GETDIYAI_API_KEY=your-api-key
 
 <Tabs>
   <Tab title="Browse Templates">
-    ```
-    Show me chatbot templates for customer support, beginner-friendly,
-    suitable for e-commerce businesses.
-    ```
+    ``` Show me chatbot templates for customer support, beginner-friendly, suitable for e-commerce
+    businesses. ```
   </Tab>
   <Tab title="Create App">
-    ```
-    Create a customer support chatbot named "HelpBot" using GPT-4,
-    fine-tune on my support ticket data, and add my company branding.
-    ```
+    ``` Create a customer support chatbot named "HelpBot" using GPT-4, fine-tune on my support
+    ticket data, and add my company branding. ```
   </Tab>
   <Tab title="Deploy">
-    ```
-    Deploy my sentiment analysis app to the cloud with auto-scaling,
-    generate a REST API and embeddable widget.
-    ```
+    ``` Deploy my sentiment analysis app to the cloud with auto-scaling, generate a REST API and
+    embeddable widget. ```
   </Tab>
 </Tabs>
 

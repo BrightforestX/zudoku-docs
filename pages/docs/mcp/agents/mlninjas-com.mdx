@@ -8,27 +8,32 @@ sidebar_icon: flask
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **MLNinjas.com ML Training Agent** coordinates distributed training jobs, tracks experiments, searches hyperparameter spaces, and manages training artifacts for machine learning projects.
+The **MLNinjas.com ML Training Agent** coordinates distributed training jobs, tracks experiments,
+searches hyperparameter spaces, and manages training artifacts for machine learning projects.
 
 ## Overview
 
-This agent specializes in ML training workflows, helping data scientists manage the complexity of training, experimenting, and optimizing machine learning models.
+This agent specializes in ML training workflows, helping data scientists manage the complexity of
+training, experimenting, and optimizing machine learning models.
 
 ## Key Capabilities
 
 ### Experiment Tracking
+
 - Log metrics, parameters, and artifacts
 - Compare experiments across runs
 - Visualize training curves and performance
 - Version datasets and model checkpoints
 
 ### Hyperparameter Search
+
 - Automated hyperparameter optimization
 - Support for Optuna, Ray Tune, Weights & Biases
 - Parallel trial execution
 - Early stopping for inefficient trials
 
 ### Distributed Training
+
 - Coordinate multi-GPU and multi-node training
 - Manage training job scheduling
 - Handle fault tolerance and checkpointing
@@ -62,17 +67,17 @@ Start a new training job with experiment tracking.
       "hardware": {
         "type": "object",
         "properties": {
-          "gpu_count": {"type": "integer"},
-          "gpu_type": {"type": "string"},
-          "distributed": {"type": "boolean"}
+          "gpu_count": { "type": "integer" },
+          "gpu_type": { "type": "string" },
+          "distributed": { "type": "boolean" }
         }
       },
       "tracking": {
         "type": "object",
         "properties": {
-          "log_interval": {"type": "integer"},
-          "save_checkpoints": {"type": "boolean"},
-          "tags": {"type": "array", "items": {"type": "string"}}
+          "log_interval": { "type": "integer" },
+          "save_checkpoints": { "type": "boolean" },
+          "tags": { "type": "array", "items": { "type": "string" } }
         }
       }
     },
@@ -102,9 +107,9 @@ Run automated hyperparameter search.
         "additionalProperties": {
           "type": "object",
           "properties": {
-            "min": {"type": "number"},
-            "max": {"type": "number"},
-            "distribution": {"type": "string", "enum": ["uniform", "log-uniform", "categorical"]}
+            "min": { "type": "number" },
+            "max": { "type": "number" },
+            "distribution": { "type": "string", "enum": ["uniform", "log-uniform", "categorical"] }
           }
         }
       },
@@ -150,12 +155,12 @@ Compare metrics across multiple experiments.
     "properties": {
       "experiment_ids": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Experiments to compare"
       },
       "metrics": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Metrics to compare (e.g., 'accuracy', 'loss')"
       },
       "visualization_type": {
@@ -233,22 +238,16 @@ MLNINJAS_WORKSPACE=your-workspace-id
 
 <Tabs>
   <Tab title="Start Training">
-    ```
-    Start training a ResNet50 on ImageNet with 4 GPUs, log metrics
-    every 100 steps, and save checkpoints every epoch.
-    ```
+    ``` Start training a ResNet50 on ImageNet with 4 GPUs, log metrics every 100 steps, and save
+    checkpoints every epoch. ```
   </Tab>
   <Tab title="Hyperparameter Search">
-    ```
-    Search learning rate (1e-5 to 1e-2) and dropout (0.1 to 0.5)
-    using Bayesian optimization, maximize val_accuracy, run 50 trials.
-    ```
+    ``` Search learning rate (1e-5 to 1e-2) and dropout (0.1 to 0.5) using Bayesian optimization,
+    maximize val_accuracy, run 50 trials. ```
   </Tab>
   <Tab title="Compare">
-    ```
-    Compare experiments 'baseline-v1', 'augmentation-v2', and
-    'larger-model-v3' on validation accuracy and training time.
-    ```
+    ``` Compare experiments 'baseline-v1', 'augmentation-v2', and 'larger-model-v3' on validation
+    accuracy and training time. ```
   </Tab>
 </Tabs>
 

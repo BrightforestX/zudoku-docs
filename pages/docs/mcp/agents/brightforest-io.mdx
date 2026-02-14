@@ -8,27 +8,33 @@ sidebar_icon: rocket
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **BrightForest.io Platform Integration Agent** orchestrates CI/CD pipelines, manages deployment workflows, and automates infrastructure provisioning across the BrightForest platform ecosystem.
+The **BrightForest.io Platform Integration Agent** orchestrates CI/CD pipelines, manages deployment
+workflows, and automates infrastructure provisioning across the BrightForest platform ecosystem.
 
 ## Overview
 
-This agent specializes in platform-level operations, handling everything from continuous integration to production deployments. It understands BrightForest's infrastructure patterns and can automate complex multi-service deployments.
+This agent specializes in platform-level operations, handling everything from continuous integration
+to production deployments. It understands BrightForest's infrastructure patterns and can automate
+complex multi-service deployments.
 
 ## Key Capabilities
 
 ### CI/CD Orchestration
+
 - Trigger and monitor CI/CD pipeline runs
 - Configure build steps and test suites
 - Manage deployment gates and approvals
 - Rollback failed deployments automatically
 
 ### Deployment Automation
+
 - Deploy applications to multiple environments
 - Coordinate blue-green and canary deployments
 - Manage environment-specific configurations
 - Handle database migrations and secrets
 
 ### Infrastructure Management
+
 - Provision cloud resources (AWS, GCP, Azure)
 - Configure load balancers and networking
 - Manage container orchestration (Kubernetes)
@@ -196,22 +202,16 @@ BRIGHTFOREST_WORKSPACE_ID=your-workspace-id
 
 <Tabs>
   <Tab title="Deploy Application">
-    ```
-    Deploy my-api-service version 2.3.1 to staging environment using
-    a canary deployment strategy with 20% traffic initially.
-    ```
+    ``` Deploy my-api-service version 2.3.1 to staging environment using a canary deployment
+    strategy with 20% traffic initially. ```
   </Tab>
   <Tab title="Rollback">
-    ```
-    Rollback the production deployment of auth-service due to high
-    error rates in the last 5 minutes.
-    ```
+    ``` Rollback the production deployment of auth-service due to high error rates in the last 5
+    minutes. ```
   </Tab>
   <Tab title="Infrastructure">
-    ```
-    Provision a new Kubernetes cluster in AWS us-east-1 with 3 nodes,
-    configure load balancer, and set up monitoring.
-    ```
+    ``` Provision a new Kubernetes cluster in AWS us-east-1 with 3 nodes, configure load balancer,
+    and set up monitoring. ```
   </Tab>
 </Tabs>
 

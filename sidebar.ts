@@ -96,10 +96,7 @@ export const docs: Navigation = [
     label: "MCP Agents",
     icon: "cpu",
     link: "docs/mcp",
-    items: [
-      "docs/mcp/getting-started",
-      "docs/mcp/agents",
-    ],
+    items: ["docs/mcp/getting-started", "docs/mcp/agents"],
   },
   {
     type: "category",
@@ -121,10 +118,7 @@ export const docs: Navigation = [
     label: "Roadmap",
     icon: "map",
     link: "docs/roadmap",
-    items: [
-      "docs/roadmap/features",
-      "docs/roadmap/testing",
-    ],
+    items: ["docs/roadmap/features", "docs/roadmap/testing"],
   },
   {
     type: "category",

@@ -8,27 +8,32 @@ sidebar_icon: diagram-project
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **BrightForest.ai MLOps Agent** manages end-to-end MLOps workflows including model deployment, monitoring, data pipeline orchestration, and experiment management.
+The **BrightForest.ai MLOps Agent** manages end-to-end MLOps workflows including model deployment,
+monitoring, data pipeline orchestration, and experiment management.
 
 ## Overview
 
-This agent specializes in production machine learning operations, bridging the gap between ML development and production deployment with automated pipelines and monitoring.
+This agent specializes in production machine learning operations, bridging the gap between ML
+development and production deployment with automated pipelines and monitoring.
 
 ## Key Capabilities
 
 ### Model Deployment
+
 - Deploy models to production environments
 - Manage model versioning and rollbacks
 - Configure A/B testing and canary deployments
 - Monitor model performance in production
 
 ### Data Pipeline Orchestration
+
 - Design and schedule data pipelines
 - Orchestrate ETL/ELT workflows
 - Manage feature stores
 - Handle data quality and validation
 
 ### Experiment Management
+
 - Track ML experiments and metadata
 - Compare model performance across versions
 - Manage model registry
@@ -69,17 +74,17 @@ Deploy a trained model to production.
       "infrastructure": {
         "type": "object",
         "properties": {
-          "hardware": {"type": "string", "enum": ["cpu", "gpu"]},
-          "replicas": {"type": "integer"},
-          "auto_scaling": {"type": "boolean"}
+          "hardware": { "type": "string", "enum": ["cpu", "gpu"] },
+          "replicas": { "type": "integer" },
+          "auto_scaling": { "type": "boolean" }
         }
       },
       "monitoring": {
         "type": "object",
         "properties": {
-          "enable_drift_detection": {"type": "boolean"},
-          "enable_performance_monitoring": {"type": "boolean"},
-          "alert_threshold": {"type": "number"}
+          "enable_drift_detection": { "type": "boolean" },
+          "enable_performance_monitoring": { "type": "boolean" },
+          "alert_threshold": { "type": "number" }
         }
       }
     },
@@ -113,28 +118,28 @@ Create a data processing pipeline.
         "items": {
           "type": "object",
           "properties": {
-            "name": {"type": "string"},
-            "task": {"type": "string"},
-            "config": {"type": "object"}
+            "name": { "type": "string" },
+            "task": { "type": "string" },
+            "config": { "type": "object" }
           }
         }
       },
       "schedule": {
         "type": "object",
         "properties": {
-          "type": {"type": "string", "enum": ["cron", "event", "manual"]},
-          "cron": {"type": "string"},
-          "event_trigger": {"type": "string"}
+          "type": { "type": "string", "enum": ["cron", "event", "manual"] },
+          "cron": { "type": "string" },
+          "event_trigger": { "type": "string" }
         }
       },
       "data_sources": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Input data sources"
       },
       "data_sinks": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Output destinations"
       }
     },
@@ -168,16 +173,16 @@ Monitor deployed model performance and drift.
       "time_range": {
         "type": "object",
         "properties": {
-          "start": {"type": "string", "format": "date-time"},
-          "end": {"type": "string", "format": "date-time"}
+          "start": { "type": "string", "format": "date-time" },
+          "end": { "type": "string", "format": "date-time" }
         }
       },
       "drift_detection": {
         "type": "object",
         "properties": {
-          "enabled": {"type": "boolean"},
-          "reference_data": {"type": "string"},
-          "threshold": {"type": "number"}
+          "enabled": { "type": "boolean" },
+          "reference_data": { "type": "string" },
+          "threshold": { "type": "number" }
         }
       },
       "generate_report": {
@@ -210,25 +215,25 @@ Configure a feature store for ML features.
         "items": {
           "type": "object",
           "properties": {
-            "name": {"type": "string"},
-            "type": {"type": "string"},
-            "source": {"type": "string"},
-            "transformation": {"type": "string"}
+            "name": { "type": "string" },
+            "type": { "type": "string" },
+            "source": { "type": "string" },
+            "transformation": { "type": "string" }
           }
         }
       },
       "online_store": {
         "type": "object",
         "properties": {
-          "enabled": {"type": "boolean"},
-          "provider": {"type": "string", "enum": ["redis", "dynamodb", "bigtable"]}
+          "enabled": { "type": "boolean" },
+          "provider": { "type": "string", "enum": ["redis", "dynamodb", "bigtable"] }
         }
       },
       "offline_store": {
         "type": "object",
         "properties": {
-          "enabled": {"type": "boolean"},
-          "provider": {"type": "string", "enum": ["s3", "bigquery", "snowflake"]}
+          "enabled": { "type": "boolean" },
+          "provider": { "type": "string", "enum": ["s3", "bigquery", "snowflake"] }
         }
       },
       "versioning": {
@@ -266,22 +271,16 @@ BRIGHTFOREST_WORKSPACE=your-workspace-id
 
 <Tabs>
   <Tab title="Deploy Model">
-    ```
-    Deploy my fraud detection model (version 2.1.0) to production
-    using canary strategy, enable drift detection, scale to 3 replicas.
-    ```
+    ``` Deploy my fraud detection model (version 2.1.0) to production using canary strategy, enable
+    drift detection, scale to 3 replicas. ```
   </Tab>
   <Tab title="Data Pipeline">
-    ```
-    Create a daily ETL pipeline that loads raw transactions from S3,
-    applies feature engineering, and writes to feature store.
-    ```
+    ``` Create a daily ETL pipeline that loads raw transactions from S3, applies feature
+    engineering, and writes to feature store. ```
   </Tab>
   <Tab title="Monitoring">
-    ```
-    Monitor my recommendation model's accuracy, latency, and drift
-    over the past week, alert if accuracy drops below 85%.
-    ```
+    ``` Monitor my recommendation model's accuracy, latency, and drift over the past week, alert if
+    accuracy drops below 85%. ```
   </Tab>
 </Tabs>
 

@@ -6,7 +6,8 @@ sidebar_icon: rocket
 
 # Getting Started
 
-This guide will help you connect your AI client to BrightForest's MCP servers and start using domain-specific agent capabilities.
+This guide will help you connect your AI client to BrightForest's MCP servers and start using
+domain-specific agent capabilities.
 
 ## Prerequisites
 
@@ -18,7 +19,8 @@ This guide will help you connect your AI client to BrightForest's MCP servers an
 
 ### Option 1: Claude Desktop
 
-Claude Desktop has built-in MCP support. Add BrightForest agents to your `claude_desktop_config.json`:
+Claude Desktop has built-in MCP support. Add BrightForest agents to your
+`claude_desktop_config.json`:
 
 ```json
 {
@@ -35,9 +37,9 @@ Claude Desktop has built-in MCP support. Add BrightForest agents to your `claude
 ```
 
 <Info>
-  Configuration file locations:
-  - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-  - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+  Configuration file locations: - **macOS**: `~/Library/Application
+  Support/Claude/claude_desktop_config.json` - **Windows**:
+  `%APPDATA%\Claude\claude_desktop_config.json`
 </Info>
 
 ### Option 2: Direct Connection
@@ -74,7 +76,7 @@ const client = new Client(
   },
   {
     capabilities: {},
-  }
+  },
 );
 
 await client.connect(transport);
@@ -86,34 +88,37 @@ console.log("Available tools:", tools);
 
 ## Authentication
 
-All BrightForest MCP servers require authentication via API key. You can generate API keys from your [BrightForest Dashboard](https://app.brightforest.io/settings/api-keys).
+All BrightForest MCP servers require authentication via API key. You can generate API keys from your
+[BrightForest Dashboard](https://app.brightforest.io/settings/api-keys).
 
 <Warning>
-  Keep your API keys secure! Never commit them to version control or share them publicly. Use environment variables or secure credential storage.
+  Keep your API keys secure! Never commit them to version control or share them publicly. Use
+  environment variables or secure credential storage.
 </Warning>
 
 ## Available MCP Servers
 
 BrightForest provides MCP servers for each domain. Choose the ones relevant to your workflow:
 
-| Domain | Server Name | Connection URL |
-|--------|-------------|----------------|
-| Platform Integration | `brightforest-platform` | `mcp://platform.brightforest.io` |
-| Enterprise Config | `brightforestx-enterprise` | `mcp://enterprise.brightforestx.com` |
-| AI Orchestration | `brightpath-orchestration` | `mcp://orchestration.brightpath.ai` |
-| Algorithm Optimization | `pathx-optimization` | `mcp://optimization.pathx.ai` |
-| Design-to-Code | `figmatofullstack-design` | `mcp://design.figmatofullstack.com` |
-| AI Design Assistant | `figmatofullstack-ai` | `mcp://ai.figmatofullstack.ai` |
-| ML Training | `mlninjas-training` | `mcp://training.mlninjas.com` |
-| Portfolio Management | `clifforddalsoniii-portfolio` | `mcp://portfolio.clifforddalsoniii.com` |
-| DIY AI Builder | `getdiyai-builder` | `mcp://builder.getdiyai.com` |
-| RPA Workflows | `getdiyrpa-workflows` | `mcp://workflows.getdiyrpa.com` |
-| App Builder | `appnowhq-builder` | `mcp://builder.appnowhq.com` |
-| MLOps | `brightforest-mlops` | `mcp://mlops.brightforest.ai` |
-| AI Learning | `iheartai-learning` | `mcp://learning.iheartai.ai` |
+| Domain                 | Server Name                   | Connection URL                          |
+| ---------------------- | ----------------------------- | --------------------------------------- |
+| Platform Integration   | `brightforest-platform`       | `mcp://platform.brightforest.io`        |
+| Enterprise Config      | `brightforestx-enterprise`    | `mcp://enterprise.brightforestx.com`    |
+| AI Orchestration       | `brightpath-orchestration`    | `mcp://orchestration.brightpath.ai`     |
+| Algorithm Optimization | `pathx-optimization`          | `mcp://optimization.pathx.ai`           |
+| Design-to-Code         | `figmatofullstack-design`     | `mcp://design.figmatofullstack.com`     |
+| AI Design Assistant    | `figmatofullstack-ai`         | `mcp://ai.figmatofullstack.ai`          |
+| ML Training            | `mlninjas-training`           | `mcp://training.mlninjas.com`           |
+| Portfolio Management   | `clifforddalsoniii-portfolio` | `mcp://portfolio.clifforddalsoniii.com` |
+| DIY AI Builder         | `getdiyai-builder`            | `mcp://builder.getdiyai.com`            |
+| RPA Workflows          | `getdiyrpa-workflows`         | `mcp://workflows.getdiyrpa.com`         |
+| App Builder            | `appnowhq-builder`            | `mcp://builder.appnowhq.com`            |
+| MLOps                  | `brightforest-mlops`          | `mcp://mlops.brightforest.ai`           |
+| AI Learning            | `iheartai-learning`           | `mcp://learning.iheartai.ai`            |
 
 <Info>
-  **Coming Soon**: All MCP servers are currently in development. Connection URLs are placeholders and will be activated as servers are released.
+  **Coming Soon**: All MCP servers are currently in development. Connection URLs are placeholders
+  and will be activated as servers are released.
 </Info>
 
 ## Testing Your Connection

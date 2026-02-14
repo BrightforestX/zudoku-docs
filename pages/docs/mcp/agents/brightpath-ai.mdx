@@ -8,27 +8,33 @@ sidebar_icon: brain
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **BrightPath.ai AI Model Orchestration Agent** helps you select optimal AI models, design efficient inference pipelines, and manage the complete model lifecycle across different deployment targets.
+The **BrightPath.ai AI Model Orchestration Agent** helps you select optimal AI models, design
+efficient inference pipelines, and manage the complete model lifecycle across different deployment
+targets.
 
 ## Overview
 
-This agent specializes in AI model orchestration, helping teams navigate the complex landscape of available models, optimize inference pipelines, and deploy models effectively.
+This agent specializes in AI model orchestration, helping teams navigate the complex landscape of
+available models, optimize inference pipelines, and deploy models effectively.
 
 ## Key Capabilities
 
 ### Model Selection
+
 - Compare models across benchmarks and use cases
 - Recommend models based on requirements (latency, accuracy, cost)
 - Evaluate trade-offs between model size and performance
 - Access up-to-date model leaderboards and benchmarks
 
 ### Pipeline Design
+
 - Design efficient multi-model inference pipelines
 - Configure model ensembles and routing logic
 - Optimize batch processing and caching strategies
 - Handle model versioning and A/B testing
 
 ### Deployment Management
+
 - Deploy models to various targets (cloud, edge, on-premise)
 - Configure auto-scaling and load balancing
 - Monitor inference performance and costs
@@ -49,16 +55,22 @@ Get AI model recommendations based on requirements.
     "properties": {
       "task_type": {
         "type": "string",
-        "enum": ["text_generation", "image_generation", "embeddings", "classification", "object_detection"],
+        "enum": [
+          "text_generation",
+          "image_generation",
+          "embeddings",
+          "classification",
+          "object_detection"
+        ],
         "description": "Type of AI task"
       },
       "constraints": {
         "type": "object",
         "properties": {
-          "max_latency_ms": {"type": "integer"},
-          "max_cost_per_1k_requests": {"type": "number"},
-          "min_accuracy_score": {"type": "number"},
-          "deployment_target": {"type": "string", "enum": ["cloud", "edge", "mobile"]}
+          "max_latency_ms": { "type": "integer" },
+          "max_cost_per_1k_requests": { "type": "number" },
+          "min_accuracy_score": { "type": "number" },
+          "deployment_target": { "type": "string", "enum": ["cloud", "edge", "mobile"] }
         }
       },
       "quality_priority": {
@@ -92,10 +104,10 @@ Design an inference pipeline with multiple models.
         "items": {
           "type": "object",
           "properties": {
-            "model_id": {"type": "string"},
-            "routing_condition": {"type": "string"},
-            "fallback_model": {"type": "string"},
-            "cache_enabled": {"type": "boolean"}
+            "model_id": { "type": "string" },
+            "routing_condition": { "type": "string" },
+            "fallback_model": { "type": "string" },
+            "cache_enabled": { "type": "boolean" }
           }
         }
       },
@@ -125,12 +137,12 @@ Compare multiple models on specific benchmarks.
     "properties": {
       "model_ids": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "List of model identifiers to compare"
       },
       "benchmarks": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Benchmarks to evaluate (e.g., 'MMLU', 'HumanEval')"
       },
       "metrics": {
@@ -168,9 +180,9 @@ Deploy a model as an inference endpoint.
       "scaling_config": {
         "type": "object",
         "properties": {
-          "min_instances": {"type": "integer"},
-          "max_instances": {"type": "integer"},
-          "target_requests_per_second": {"type": "number"}
+          "min_instances": { "type": "integer" },
+          "max_instances": { "type": "integer" },
+          "target_requests_per_second": { "type": "number" }
         }
       },
       "hardware": {
@@ -208,22 +220,16 @@ BRIGHTPATH_API_KEY=your-api-key
 
 <Tabs>
   <Tab title="Model Selection">
-    ```
-    Recommend a text generation model with less than 100ms latency,
-    under $5 per 1M tokens, deployable to AWS Lambda.
-    ```
+    ``` Recommend a text generation model with less than 100ms latency, under $5 per 1M tokens,
+    deployable to AWS Lambda. ```
   </Tab>
   <Tab title="Pipeline Design">
-    ```
-    Design a two-stage pipeline: use a small model for simple queries,
-    fallback to GPT-4 for complex ones, with caching enabled.
-    ```
+    ``` Design a two-stage pipeline: use a small model for simple queries, fallback to GPT-4 for
+    complex ones, with caching enabled. ```
   </Tab>
   <Tab title="Comparison">
-    ```
-    Compare GPT-4, Claude 3.5, and Llama 3.1 on code generation benchmarks
-    focusing on accuracy and cost.
-    ```
+    ``` Compare GPT-4, Claude 3.5, and Llama 3.1 on code generation benchmarks focusing on accuracy
+    and cost. ```
   </Tab>
 </Tabs>
 

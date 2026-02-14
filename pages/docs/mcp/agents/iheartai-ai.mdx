@@ -8,27 +8,32 @@ sidebar_icon: graduation-cap
 
 <Badge variant="warning">Coming Soon</Badge>
 
-The **IHeartAI.ai AI Learning Agent** recommends tutorials, guides learners through AI projects, and provides personalized learning paths for AI and machine learning education.
+The **IHeartAI.ai AI Learning Agent** recommends tutorials, guides learners through AI projects, and
+provides personalized learning paths for AI and machine learning education.
 
 ## Overview
 
-This agent specializes in AI education, helping learners at all levels navigate the complex landscape of AI/ML concepts, tools, and best practices through personalized guidance.
+This agent specializes in AI education, helping learners at all levels navigate the complex
+landscape of AI/ML concepts, tools, and best practices through personalized guidance.
 
 ## Key Capabilities
 
 ### Tutorial Recommendations
+
 - Personalized learning paths based on skill level
 - Curated tutorials for specific topics and technologies
 - Interactive coding exercises and challenges
 - Progress tracking and skill assessment
 
 ### Project Guidance
+
 - Step-by-step project walkthroughs
 - Code review and debugging assistance
 - Best practice recommendations
 - Portfolio project suggestions
 
 ### Learning Path Curation
+
 - Custom learning roadmaps for career goals
 - Prerequisite tracking and recommendations
 - Resource aggregation (courses, books, papers)
@@ -67,7 +72,7 @@ Get personalized tutorial recommendations.
       },
       "goals": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Learning goals (e.g., ['build chatbot', 'get ML job'])"
       },
       "include_prerequisites": {
@@ -98,12 +103,12 @@ Generate a personalized learning path.
       },
       "current_skills": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Skills you already have"
       },
       "target_skills": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Skills you want to acquire"
       },
       "timeline": {
@@ -143,7 +148,14 @@ Get step-by-step guidance for an AI project.
       },
       "project_type": {
         "type": "string",
-        "enum": ["chatbot", "image_classifier", "recommender", "nlp_app", "computer_vision", "time_series"],
+        "enum": [
+          "chatbot",
+          "image_classifier",
+          "recommender",
+          "nlp_app",
+          "computer_vision",
+          "time_series"
+        ],
         "description": "Type of project"
       },
       "current_progress": {
@@ -153,14 +165,21 @@ Get step-by-step guidance for an AI project.
       },
       "tech_stack": {
         "type": "array",
-        "items": {"type": "string"},
+        "items": { "type": "string" },
         "description": "Technologies you're using or want to use"
       },
       "help_needed": {
         "type": "array",
         "items": {
           "type": "string",
-          "enum": ["architecture", "data_prep", "model_selection", "training", "debugging", "deployment"]
+          "enum": [
+            "architecture",
+            "data_prep",
+            "model_selection",
+            "training",
+            "debugging",
+            "deployment"
+          ]
         }
       }
     },
@@ -182,7 +201,14 @@ Assess current AI/ML skills and identify gaps.
     "properties": {
       "domain": {
         "type": "string",
-        "enum": ["machine_learning", "deep_learning", "nlp", "computer_vision", "mlops", "data_science"],
+        "enum": [
+          "machine_learning",
+          "deep_learning",
+          "nlp",
+          "computer_vision",
+          "mlops",
+          "data_science"
+        ],
         "description": "Domain to assess"
       },
       "self_assessment": {
@@ -238,22 +264,16 @@ IHEARTAI_API_KEY=your-api-key
 
 <Tabs>
   <Tab title="Tutorials">
-    ```
-    Recommend tutorials for learning transformer models, I'm intermediate
-    in deep learning, prefer video content, have 10 hours per week.
-    ```
+    ``` Recommend tutorials for learning transformer models, I'm intermediate in deep learning,
+    prefer video content, have 10 hours per week. ```
   </Tab>
   <Tab title="Learning Path">
-    ```
-    Create a 6-month learning path to become an NLP engineer.
-    I know Python and basic ML, want to master transformers and LLMs.
-    ```
+    ``` Create a 6-month learning path to become an NLP engineer. I know Python and basic ML, want
+    to master transformers and LLMs. ```
   </Tab>
   <Tab title="Project Guidance">
-    ```
-    Guide me through building a sentiment analysis API. I'm at the
-    data collection stage, using PyTorch and FastAPI.
-    ```
+    ``` Guide me through building a sentiment analysis API. I'm at the data collection stage, using
+    PyTorch and FastAPI. ```
   </Tab>
 </Tabs>
 
