@@ -1,0 +1,166 @@
+---
+title: Getting Started with BrightForest MCP
+description: Connect your AI client to BrightForest's Model Context Protocol servers
+sidebar_icon: rocket
+---
+
+# Getting Started
+
+This guide will help you connect your AI client to BrightForest's MCP servers and start using domain-specific agent capabilities.
+
+## Prerequisites
+
+- An MCP-compatible AI client (Claude Desktop, Continue.dev, or custom MCP client)
+- A BrightForest account with API access
+- Node.js 18+ (if using the Node.js MCP SDK)
+
+## Connection Methods
+
+### Option 1: Claude Desktop
+
+Claude Desktop has built-in MCP support. Add BrightForest agents to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "brightforest-platform": {
+      "command": "node",
+      "args": ["/path/to/brightforest-mcp-server/dist/index.js"],
+      "env": {
+        "BRIGHTFOREST_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+<Info>
+  Configuration file locations:
+  - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+  - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+</Info>
+
+### Option 2: Direct Connection
+
+Connect directly to a BrightForest MCP server endpoint:
+
+```bash
+# Connect via stdio transport
+npx @brightforest/mcp-client \
+  --server brightforest-platform \
+  --api-key your-api-key-here
+```
+
+### Option 3: Custom Integration
+
+Use the MCP SDK to integrate BrightForest agents into your own application:
+
+```typescript
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+
+const transport = new StdioClientTransport({
+  command: "node",
+  args: ["/path/to/brightforest-mcp-server/dist/index.js"],
+  env: {
+    BRIGHTFOREST_API_KEY: process.env.BRIGHTFOREST_API_KEY,
+  },
+});
+
+const client = new Client(
+  {
+    name: "my-app",
+    version: "1.0.0",
+  },
+  {
+    capabilities: {},
+  }
+);
+
+await client.connect(transport);
+
+// List available tools
+const tools = await client.listTools();
+console.log("Available tools:", tools);
+```
+
+## Authentication
+
+All BrightForest MCP servers require authentication via API key. You can generate API keys from your [BrightForest Dashboard](https://app.brightforest.io/settings/api-keys).
+
+<Warning>
+  Keep your API keys secure! Never commit them to version control or share them publicly. Use environment variables or secure credential storage.
+</Warning>
+
+## Available MCP Servers
+
+BrightForest provides MCP servers for each domain. Choose the ones relevant to your workflow:
+
+| Domain | Server Name | Connection URL |
+|--------|-------------|----------------|
+| Platform Integration | `brightforest-platform` | `mcp://platform.brightforest.io` |
+| Enterprise Config | `brightforestx-enterprise` | `mcp://enterprise.brightforestx.com` |
+| AI Orchestration | `brightpath-orchestration` | `mcp://orchestration.brightpath.ai` |
+| Algorithm Optimization | `pathx-optimization` | `mcp://optimization.pathx.ai` |
+| Design-to-Code | `figmatofullstack-design` | `mcp://design.figmatofullstack.com` |
+| AI Design Assistant | `figmatofullstack-ai` | `mcp://ai.figmatofullstack.ai` |
+| ML Training | `mlninjas-training` | `mcp://training.mlninjas.com` |
+| Portfolio Management | `clifforddalsoniii-portfolio` | `mcp://portfolio.clifforddalsoniii.com` |
+| DIY AI Builder | `getdiyai-builder` | `mcp://builder.getdiyai.com` |
+| RPA Workflows | `getdiyrpa-workflows` | `mcp://workflows.getdiyrpa.com` |
+| App Builder | `appnowhq-builder` | `mcp://builder.appnowhq.com` |
+| MLOps | `brightforest-mlops` | `mcp://mlops.brightforest.ai` |
+| AI Learning | `iheartai-learning` | `mcp://learning.iheartai.ai` |
+
+<Info>
+  **Coming Soon**: All MCP servers are currently in development. Connection URLs are placeholders and will be activated as servers are released.
+</Info>
+
+## Testing Your Connection
+
+Once configured, test your connection by querying available capabilities:
+
+```bash
+# List available tools
+mcp-client list-tools --server brightforest-platform
+
+# List available resources
+mcp-client list-resources --server brightforest-platform
+
+# List available prompts
+mcp-client list-prompts --server brightforest-platform
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Explore Agents" icon="users" href="/docs/mcp/agents">
+    Learn about each specialized agent's capabilities
+  </Card>
+  <Card title="MCP Overview" icon="book" href="/docs/mcp">
+    Understand how BrightForest uses MCP
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+### Connection Issues
+
+- Verify your API key is valid and has the correct permissions
+- Check that the MCP server path is correct
+- Ensure Node.js version is 18 or higher
+- Review logs in your MCP client's debug output
+
+### Permission Errors
+
+- Confirm your API key has access to the requested agent domain
+- Check your BrightForest plan includes the agent you're trying to use
+- Contact support if you believe you should have access
+
+## Support
+
+Need help? Reach out to us:
+
+- [Discord Community](https://discord.brightforest.io)
+- [GitHub Discussions](https://github.com/brightforest/mcp-servers)
+- [Support Email](mailto:support@brightforest.io)

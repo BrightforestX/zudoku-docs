@@ -1,0 +1,240 @@
+---
+title: BrightForest.io - Platform Integration Agent
+description: CI/CD orchestration and deployment automation agent for the BrightForest platform
+sidebar_icon: rocket
+---
+
+# BrightForest.io Platform Integration Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **BrightForest.io Platform Integration Agent** orchestrates CI/CD pipelines, manages deployment workflows, and automates infrastructure provisioning across the BrightForest platform ecosystem.
+
+## Overview
+
+This agent specializes in platform-level operations, handling everything from continuous integration to production deployments. It understands BrightForest's infrastructure patterns and can automate complex multi-service deployments.
+
+## Key Capabilities
+
+### CI/CD Orchestration
+- Trigger and monitor CI/CD pipeline runs
+- Configure build steps and test suites
+- Manage deployment gates and approvals
+- Rollback failed deployments automatically
+
+### Deployment Automation
+- Deploy applications to multiple environments
+- Coordinate blue-green and canary deployments
+- Manage environment-specific configurations
+- Handle database migrations and secrets
+
+### Infrastructure Management
+- Provision cloud resources (AWS, GCP, Azure)
+- Configure load balancers and networking
+- Manage container orchestration (Kubernetes)
+- Set up monitoring and alerting
+
+## Example Tools
+
+### `deploy_application`
+
+Deploy an application to a target environment.
+
+```json
+{
+  "name": "deploy_application",
+  "description": "Deploy an application to specified environment with optional configuration overrides",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "app_name": {
+        "type": "string",
+        "description": "Name of the application to deploy"
+      },
+      "environment": {
+        "type": "string",
+        "enum": ["development", "staging", "production"],
+        "description": "Target deployment environment"
+      },
+      "version": {
+        "type": "string",
+        "description": "Application version or git commit SHA"
+      },
+      "strategy": {
+        "type": "string",
+        "enum": ["rolling", "blue-green", "canary"],
+        "default": "rolling",
+        "description": "Deployment strategy"
+      },
+      "config_overrides": {
+        "type": "object",
+        "description": "Environment-specific configuration overrides"
+      }
+    },
+    "required": ["app_name", "environment", "version"]
+  }
+}
+```
+
+### `trigger_pipeline`
+
+Trigger a CI/CD pipeline execution.
+
+```json
+{
+  "name": "trigger_pipeline",
+  "description": "Trigger a CI/CD pipeline with specified parameters",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "pipeline_id": {
+        "type": "string",
+        "description": "ID of the pipeline to trigger"
+      },
+      "branch": {
+        "type": "string",
+        "default": "main",
+        "description": "Git branch to build from"
+      },
+      "parameters": {
+        "type": "object",
+        "description": "Pipeline-specific parameters"
+      },
+      "wait_for_completion": {
+        "type": "boolean",
+        "default": false,
+        "description": "Wait for pipeline to complete before returning"
+      }
+    },
+    "required": ["pipeline_id"]
+  }
+}
+```
+
+### `rollback_deployment`
+
+Rollback a deployment to the previous version.
+
+```json
+{
+  "name": "rollback_deployment",
+  "description": "Rollback an application deployment to the previous stable version",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "deployment_id": {
+        "type": "string",
+        "description": "ID of the deployment to rollback"
+      },
+      "reason": {
+        "type": "string",
+        "description": "Reason for rollback"
+      }
+    },
+    "required": ["deployment_id"]
+  }
+}
+```
+
+### `provision_infrastructure`
+
+Provision cloud infrastructure using IaC templates.
+
+```json
+{
+  "name": "provision_infrastructure",
+  "description": "Provision cloud infrastructure from Terraform or CloudFormation templates",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "template_path": {
+        "type": "string",
+        "description": "Path to IaC template"
+      },
+      "provider": {
+        "type": "string",
+        "enum": ["aws", "gcp", "azure"],
+        "description": "Cloud provider"
+      },
+      "variables": {
+        "type": "object",
+        "description": "Template variables"
+      },
+      "dry_run": {
+        "type": "boolean",
+        "default": false,
+        "description": "Preview changes without applying"
+      }
+    },
+    "required": ["template_path", "provider"]
+  }
+}
+```
+
+## Available Resources
+
+- **Deployment Logs**: Access real-time and historical deployment logs
+- **Pipeline Configurations**: Browse and analyze CI/CD pipeline definitions
+- **Infrastructure State**: Query current state of provisioned resources
+- **Deployment History**: Review past deployments with success/failure metrics
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://platform.brightforest.io
+
+# Server Name
+brightforest-platform
+
+# Required Environment Variables
+BRIGHTFOREST_API_KEY=your-api-key
+BRIGHTFOREST_WORKSPACE_ID=your-workspace-id
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Deploy Application">
+    ```
+    Deploy my-api-service version 2.3.1 to staging environment using
+    a canary deployment strategy with 20% traffic initially.
+    ```
+  </Tab>
+  <Tab title="Rollback">
+    ```
+    Rollback the production deployment of auth-service due to high
+    error rates in the last 5 minutes.
+    ```
+  </Tab>
+  <Tab title="Infrastructure">
+    ```
+    Provision a new Kubernetes cluster in AWS us-east-1 with 3 nodes,
+    configure load balancer, and set up monitoring.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Automated Deployments**: "Deploy the latest main branch to staging after tests pass"
+- **Infrastructure Scaling**: "Scale the production cluster to handle 2x current traffic"
+- **Disaster Recovery**: "Rollback production to the last known good version"
+- **Environment Setup**: "Create a new preview environment for PR #123"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [BrightForestX.com](/docs/mcp/agents/brightforestx-com) - Enterprise configuration management
+- [AppNowHQ.com](/docs/mcp/agents/appnowhq-com) - Application scaffolding and generation
+- [BrightForest.ai](/docs/mcp/agents/brightforest-ai) - MLOps deployment workflows

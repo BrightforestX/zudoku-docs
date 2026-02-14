@@ -1,0 +1,302 @@
+---
+title: CliffordDalsonIII.com - Portfolio Management Agent
+description: Project showcase and blog CMS agent
+sidebar_icon: briefcase
+---
+
+# CliffordDalsonIII.com Portfolio Management Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **CliffordDalsonIII.com Portfolio Management Agent** manages project showcases, generates portfolio content, and operates CMS functionality for personal branding and portfolio websites.
+
+## Overview
+
+This agent specializes in portfolio management, helping professionals maintain an impressive online presence with minimal effort through intelligent content generation and project management.
+
+## Key Capabilities
+
+### Project Showcase Management
+- Add and update project entries with metadata
+- Generate project descriptions from code analysis
+- Create project thumbnails and media galleries
+- Categorize and tag projects automatically
+
+### Blog & Content CMS
+- Write and publish blog posts
+- Generate technical articles from code/projects
+- Manage content drafts and publishing schedules
+- SEO optimization and metadata management
+
+### Portfolio Generation
+- Generate "About Me" sections
+- Create skill matrices and technology lists
+- Build timeline visualizations
+- Design case studies from project data
+
+## Example Tools
+
+### `add_project`
+
+Add a new project to the portfolio.
+
+```json
+{
+  "name": "add_project",
+  "description": "Add a new project to the portfolio with metadata and media",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "Project title"
+      },
+      "description": {
+        "type": "string",
+        "description": "Project description (can be AI-generated)"
+      },
+      "technologies": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Technologies used in the project"
+      },
+      "repository_url": {
+        "type": "string",
+        "description": "GitHub or GitLab repository URL"
+      },
+      "live_url": {
+        "type": "string",
+        "description": "Live demo or production URL"
+      },
+      "media": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {"type": "string", "enum": ["image", "video"]},
+            "url": {"type": "string"}
+          }
+        }
+      },
+      "featured": {
+        "type": "boolean",
+        "default": false,
+        "description": "Feature on portfolio homepage"
+      },
+      "auto_generate_description": {
+        "type": "boolean",
+        "default": false,
+        "description": "Generate description from repo analysis"
+      }
+    },
+    "required": ["title"]
+  }
+}
+```
+
+### `create_blog_post`
+
+Create and publish a blog post.
+
+```json
+{
+  "name": "create_blog_post",
+  "description": "Create a new blog post with SEO optimization",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "Blog post title"
+      },
+      "content": {
+        "type": "string",
+        "description": "Markdown content"
+      },
+      "topic": {
+        "type": "string",
+        "description": "Main topic for AI content generation"
+      },
+      "tags": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Content tags"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "published", "scheduled"],
+        "default": "draft"
+      },
+      "publish_date": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Scheduled publish date"
+      },
+      "seo": {
+        "type": "object",
+        "properties": {
+          "meta_description": {"type": "string"},
+          "keywords": {"type": "array", "items": {"type": "string"}},
+          "og_image": {"type": "string"}
+        }
+      },
+      "auto_generate": {
+        "type": "boolean",
+        "default": false,
+        "description": "Generate content from topic using AI"
+      }
+    },
+    "required": ["title"]
+  }
+}
+```
+
+### `generate_case_study`
+
+Generate a detailed case study from a project.
+
+```json
+{
+  "name": "generate_case_study",
+  "description": "Generate a comprehensive case study from project data",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "project_id": {
+        "type": "string",
+        "description": "Project to create case study for"
+      },
+      "sections": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["overview", "challenge", "solution", "results", "technologies", "lessons"]
+        },
+        "default": ["overview", "challenge", "solution", "results"]
+      },
+      "tone": {
+        "type": "string",
+        "enum": ["professional", "casual", "technical"],
+        "default": "professional"
+      },
+      "length": {
+        "type": "string",
+        "enum": ["brief", "standard", "detailed"],
+        "default": "standard"
+      },
+      "include_metrics": {
+        "type": "boolean",
+        "default": true,
+        "description": "Include performance metrics and KPIs"
+      }
+    },
+    "required": ["project_id"]
+  }
+}
+```
+
+### `update_skills_matrix`
+
+Update the skills and technologies matrix.
+
+```json
+{
+  "name": "update_skills_matrix",
+  "description": "Update skills matrix with proficiency levels",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "skills": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string"},
+            "category": {"type": "string"},
+            "proficiency": {"type": "integer", "minimum": 1, "maximum": 5},
+            "years_experience": {"type": "number"}
+          }
+        }
+      },
+      "auto_detect_from_projects": {
+        "type": "boolean",
+        "default": false,
+        "description": "Automatically detect skills from portfolio projects"
+      },
+      "highlight_recent": {
+        "type": "boolean",
+        "default": true,
+        "description": "Highlight recently used technologies"
+      }
+    },
+    "required": ["skills"]
+  }
+}
+```
+
+## Available Resources
+
+- **Project Database**: All portfolio projects with metadata
+- **Blog Content**: Published and draft blog posts
+- **Media Assets**: Images, videos, and files used in portfolio
+- **Analytics Data**: Portfolio traffic and engagement metrics
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://portfolio.clifforddalsoniii.com
+
+# Server Name
+clifforddalsoniii-portfolio
+
+# Required Environment Variables
+PORTFOLIO_API_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Add Project">
+    ```
+    Add my new project 'AI Chat App' from GitHub repo
+    github.com/user/ai-chat, auto-generate description,
+    mark as featured.
+    ```
+  </Tab>
+  <Tab title="Blog Post">
+    ```
+    Create a blog post about "Building Scalable APIs with FastAPI",
+    generate content with code examples, schedule for next Monday.
+    ```
+  </Tab>
+  <Tab title="Case Study">
+    ```
+    Generate a detailed case study for my e-commerce project,
+    include challenge, solution, results, and tech stack sections.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Project Management**: "Add all my 2025 projects to my portfolio"
+- **Content Creation**: "Write a blog post about my experience with React 19"
+- **Portfolio Updates**: "Update my skills matrix based on recent projects"
+- **Case Studies**: "Generate professional case studies for my top 3 projects"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [AppNowHQ.com](/docs/mcp/agents/appnowhq-com) - Build portfolio site infrastructure
+- [FigmaToFullstack.com](/docs/mcp/agents/figmatofullstack-com) - Design portfolio layouts

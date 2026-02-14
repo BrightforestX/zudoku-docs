@@ -1,0 +1,264 @@
+---
+title: FigmaToFullstack.com - Design-to-Code Agent
+description: Figma export and component generation agent
+sidebar_icon: figma
+---
+
+# FigmaToFullstack.com Design-to-Code Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **FigmaToFullstack.com Design-to-Code Agent** exports Figma designs, generates production-ready React/Vue/Angular components, and maintains design system consistency between design and code.
+
+## Overview
+
+This agent specializes in bridging the gap between design and development, automating the conversion of Figma designs into clean, maintainable component code.
+
+## Key Capabilities
+
+### Figma Export
+- Export Figma frames as component definitions
+- Extract design tokens (colors, typography, spacing)
+- Convert auto-layout to flexbox/grid CSS
+- Handle responsive breakpoints and variants
+
+### Component Generation
+- Generate React, Vue, or Angular components
+- Create TypeScript types from component props
+- Include accessibility attributes (ARIA)
+- Support Tailwind CSS, CSS Modules, or styled-components
+
+### Design System Sync
+- Maintain component library in sync with Figma
+- Detect design changes and suggest code updates
+- Version control for design tokens
+- Generate Storybook stories automatically
+
+## Example Tools
+
+### `export_figma_component`
+
+Export a Figma component as code.
+
+```json
+{
+  "name": "export_figma_component",
+  "description": "Export Figma component or frame as production-ready code",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "figma_url": {
+        "type": "string",
+        "description": "Figma file or component URL"
+      },
+      "node_id": {
+        "type": "string",
+        "description": "Specific node/frame ID to export"
+      },
+      "framework": {
+        "type": "string",
+        "enum": ["react", "vue", "angular", "svelte"],
+        "default": "react",
+        "description": "Target framework"
+      },
+      "styling": {
+        "type": "string",
+        "enum": ["tailwind", "css-modules", "styled-components", "emotion"],
+        "default": "tailwind",
+        "description": "Styling approach"
+      },
+      "typescript": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate TypeScript"
+      },
+      "include_assets": {
+        "type": "boolean",
+        "default": true,
+        "description": "Export images and icons"
+      }
+    },
+    "required": ["figma_url"]
+  }
+}
+```
+
+### `sync_design_tokens`
+
+Sync design tokens from Figma to code.
+
+```json
+{
+  "name": "sync_design_tokens",
+  "description": "Extract and sync design tokens (colors, typography, spacing) from Figma",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "figma_file_id": {
+        "type": "string",
+        "description": "Figma file ID"
+      },
+      "token_format": {
+        "type": "string",
+        "enum": ["css-variables", "tailwind-config", "json", "scss-variables"],
+        "default": "tailwind-config",
+        "description": "Output format for design tokens"
+      },
+      "output_path": {
+        "type": "string",
+        "description": "Path to write token file"
+      },
+      "watch_changes": {
+        "type": "boolean",
+        "default": false,
+        "description": "Watch for Figma changes and auto-sync"
+      }
+    },
+    "required": ["figma_file_id", "output_path"]
+  }
+}
+```
+
+### `generate_component_library`
+
+Generate a complete component library from Figma.
+
+```json
+{
+  "name": "generate_component_library",
+  "description": "Generate a full component library with Storybook from Figma design system",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "figma_file_id": {
+        "type": "string",
+        "description": "Figma design system file ID"
+      },
+      "output_directory": {
+        "type": "string",
+        "description": "Directory to generate library in"
+      },
+      "framework": {
+        "type": "string",
+        "enum": ["react", "vue", "angular", "svelte"]
+      },
+      "include_storybook": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate Storybook stories"
+      },
+      "include_tests": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate component tests"
+      },
+      "package_name": {
+        "type": "string",
+        "description": "NPM package name for library"
+      }
+    },
+    "required": ["figma_file_id", "output_directory", "framework"]
+  }
+}
+```
+
+### `detect_design_changes`
+
+Detect changes in Figma and suggest code updates.
+
+```json
+{
+  "name": "detect_design_changes",
+  "description": "Detect changes in Figma file and suggest corresponding code updates",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "figma_file_id": {
+        "type": "string",
+        "description": "Figma file to monitor"
+      },
+      "component_directory": {
+        "type": "string",
+        "description": "Directory containing component code"
+      },
+      "since_version": {
+        "type": "string",
+        "description": "Figma version to compare from"
+      },
+      "auto_update": {
+        "type": "boolean",
+        "default": false,
+        "description": "Automatically update code for safe changes"
+      }
+    },
+    "required": ["figma_file_id", "component_directory"]
+  }
+}
+```
+
+## Available Resources
+
+- **Figma Files**: Access connected Figma files and their structure
+- **Component Mappings**: Figma component to code component relationships
+- **Design Tokens**: Current design token definitions
+- **Export Templates**: Customizable component templates
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://design.figmatofullstack.com
+
+# Server Name
+figmatofullstack-design
+
+# Required Environment Variables
+FIGMA_ACCESS_TOKEN=your-figma-token
+FIGMATOFULLSTACK_API_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Export Component">
+    ```
+    Export the Button component from our Figma design system as a
+    React component with Tailwind CSS and TypeScript.
+    ```
+  </Tab>
+  <Tab title="Sync Tokens">
+    ```
+    Sync all design tokens from Figma to our tailwind.config.js,
+    including colors, spacing, and typography.
+    ```
+  </Tab>
+  <Tab title="Generate Library">
+    ```
+    Generate a complete React component library from our Figma file
+    with Storybook stories and TypeScript types.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Initial Setup**: "Generate a component library from our Figma design system"
+- **Token Management**: "Keep our CSS variables in sync with Figma color palette"
+- **Component Updates**: "The Card component changed in Figma, update the code"
+- **New Components**: "Export the new Modal component from Figma as React + TypeScript"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [FigmaToFullstack.ai](/docs/mcp/agents/figmatofullstack-ai) - AI-powered design suggestions
+- [AppNowHQ.com](/docs/mcp/agents/appnowhq-com) - Application scaffolding

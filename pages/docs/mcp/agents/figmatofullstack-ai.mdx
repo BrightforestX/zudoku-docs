@@ -1,0 +1,256 @@
+---
+title: FigmaToFullstack.ai - AI Design Assistant
+description: Layout suggestion and accessibility audit agent
+sidebar_icon: wand-magic-sparkles
+---
+
+# FigmaToFullstack.ai AI Design Assistant
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **FigmaToFullstack.ai AI Design Assistant** provides intelligent layout suggestions, runs comprehensive accessibility audits, and recommends design improvements using AI.
+
+## Overview
+
+This agent specializes in AI-powered design analysis and enhancement, helping designers and developers create better, more accessible user interfaces.
+
+## Key Capabilities
+
+### Layout Optimization
+- Suggest improved layouts based on design principles
+- Detect spacing and alignment inconsistencies
+- Recommend responsive breakpoint strategies
+- Optimize visual hierarchy and information architecture
+
+### Accessibility Audits
+- Check WCAG 2.1/2.2 compliance (A, AA, AAA)
+- Detect color contrast issues
+- Validate keyboard navigation patterns
+- Suggest ARIA attributes and semantic HTML
+
+### Design Recommendations
+- Identify UI/UX anti-patterns
+- Suggest component alternatives from design system
+- Recommend performance optimizations
+- Generate design variations using AI
+
+## Example Tools
+
+### `analyze_layout`
+
+Analyze a design layout and provide improvement suggestions.
+
+```json
+{
+  "name": "analyze_layout",
+  "description": "Analyze design layout and suggest improvements based on UX principles",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "design_url": {
+        "type": "string",
+        "description": "Figma URL or uploaded design file"
+      },
+      "design_type": {
+        "type": "string",
+        "enum": ["landing_page", "dashboard", "form", "mobile_app", "web_app"],
+        "description": "Type of design for context-specific analysis"
+      },
+      "focus_areas": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["visual_hierarchy", "spacing", "typography", "color", "responsiveness"]
+        },
+        "description": "Specific areas to focus analysis on"
+      },
+      "target_audience": {
+        "type": "string",
+        "description": "Target user demographic for contextual recommendations"
+      }
+    },
+    "required": ["design_url"]
+  }
+}
+```
+
+### `audit_accessibility`
+
+Run comprehensive accessibility audit on a design.
+
+```json
+{
+  "name": "audit_accessibility",
+  "description": "Audit design for accessibility issues and WCAG compliance",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "design_url": {
+        "type": "string",
+        "description": "Design to audit (Figma URL or file)"
+      },
+      "wcag_level": {
+        "type": "string",
+        "enum": ["A", "AA", "AAA"],
+        "default": "AA",
+        "description": "WCAG conformance level to check"
+      },
+      "checks": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["color_contrast", "text_size", "touch_targets", "focus_indicators", "alt_text"]
+        },
+        "description": "Specific accessibility checks to run"
+      },
+      "generate_report": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate detailed PDF report"
+      }
+    },
+    "required": ["design_url"]
+  }
+}
+```
+
+### `suggest_improvements`
+
+Get AI-powered design improvement recommendations.
+
+```json
+{
+  "name": "suggest_improvements",
+  "description": "Get AI recommendations for improving design quality and user experience",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "design_url": {
+        "type": "string",
+        "description": "Design to analyze"
+      },
+      "improvement_areas": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["usability", "aesthetics", "performance", "accessibility", "branding"]
+        }
+      },
+      "design_system_url": {
+        "type": "string",
+        "description": "Reference design system for component suggestions"
+      },
+      "include_mockups": {
+        "type": "boolean",
+        "default": false,
+        "description": "Generate AI mockups of suggested improvements"
+      }
+    },
+    "required": ["design_url"]
+  }
+}
+```
+
+### `check_color_contrast`
+
+Check color contrast ratios for accessibility.
+
+```json
+{
+  "name": "check_color_contrast",
+  "description": "Analyze color combinations and identify contrast issues",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "design_url": {
+        "type": "string",
+        "description": "Design to check"
+      },
+      "standard": {
+        "type": "string",
+        "enum": ["WCAG_AA", "WCAG_AAA", "APCA"],
+        "default": "WCAG_AA",
+        "description": "Contrast standard to use"
+      },
+      "suggest_alternatives": {
+        "type": "boolean",
+        "default": true,
+        "description": "Suggest accessible color alternatives"
+      },
+      "preserve_brand": {
+        "type": "boolean",
+        "default": true,
+        "description": "Keep suggestions close to brand colors"
+      }
+    },
+    "required": ["design_url"]
+  }
+}
+```
+
+## Available Resources
+
+- **Accessibility Guidelines**: WCAG 2.1/2.2 criteria and best practices
+- **Design Patterns**: Library of proven UI/UX patterns
+- **Audit Reports**: Historical accessibility audit results
+- **Improvement Suggestions**: Curated design recommendations
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://ai.figmatofullstack.ai
+
+# Server Name
+figmatofullstack-ai
+
+# Required Environment Variables
+FIGMA_ACCESS_TOKEN=your-figma-token
+FIGMATOFULLSTACK_AI_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Layout Analysis">
+    ```
+    Analyze the visual hierarchy of our landing page design and
+    suggest improvements to guide users toward the CTA.
+    ```
+  </Tab>
+  <Tab title="Accessibility Audit">
+    ```
+    Run a full WCAG AA accessibility audit on our dashboard design,
+    focusing on color contrast and keyboard navigation.
+    ```
+  </Tab>
+  <Tab title="Improvements">
+    ```
+    Review our checkout form design and suggest improvements for
+    better conversion rates and mobile usability.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Pre-launch Audits**: "Audit our app for accessibility issues before launch"
+- **Design Reviews**: "Analyze this dashboard layout and suggest UX improvements"
+- **Color Fixes**: "Fix all color contrast issues in our design system"
+- **Mobile Optimization**: "Review this design for mobile usability issues"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [FigmaToFullstack.com](/docs/mcp/agents/figmatofullstack-com) - Design-to-code conversion
+- [AppNowHQ.com](/docs/mcp/agents/appnowhq-com) - Application scaffolding

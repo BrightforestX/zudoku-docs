@@ -1,0 +1,296 @@
+---
+title: AppNowHQ.com - App Builder Agent
+description: Scaffold generator and deployment automation agent
+sidebar_icon: layer-group
+---
+
+# AppNowHQ.com App Builder Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **AppNowHQ.com App Builder Agent** scaffolds full-stack applications, generates boilerplate code, and automates deployment pipelines for new projects with best practices built-in.
+
+## Overview
+
+This agent specializes in rapid application development, helping developers bootstrap new projects quickly with production-ready architectures, configurations, and deployment pipelines.
+
+## Key Capabilities
+
+### Project Scaffolding
+- Generate full-stack app structures
+- Support multiple frameworks (Next.js, React, Vue, Angular, Express, FastAPI)
+- Include authentication, database, and API boilerplate
+- Configure TypeScript, linting, and testing
+
+### Boilerplate Generation
+- CRUD API endpoints
+- Authentication flows (OAuth, JWT, session)
+- Database schemas and migrations
+- UI component libraries and layouts
+
+### Deployment Automation
+- Configure CI/CD pipelines
+- Set up Docker containers
+- Deploy to cloud platforms (Vercel, AWS, GCP, Azure)
+- Configure environment variables and secrets
+
+## Example Tools
+
+### `scaffold_app`
+
+Generate a new full-stack application.
+
+```json
+{
+  "name": "scaffold_app",
+  "description": "Scaffold a complete full-stack application with best practices",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "app_name": {
+        "type": "string",
+        "description": "Application name"
+      },
+      "app_type": {
+        "type": "string",
+        "enum": ["web_app", "mobile_app", "api", "fullstack", "microservices"],
+        "description": "Type of application to create"
+      },
+      "frontend": {
+        "type": "object",
+        "properties": {
+          "framework": {"type": "string", "enum": ["nextjs", "react", "vue", "angular", "svelte"]},
+          "ui_library": {"type": "string", "enum": ["tailwind", "mui", "chakra", "shadcn"]},
+          "typescript": {"type": "boolean", "default": true}
+        }
+      },
+      "backend": {
+        "type": "object",
+        "properties": {
+          "framework": {"type": "string", "enum": ["express", "fastapi", "nestjs", "django"]},
+          "database": {"type": "string", "enum": ["postgresql", "mongodb", "mysql", "sqlite"]},
+          "auth": {"type": "boolean", "default": true}
+        }
+      },
+      "features": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["auth", "crud", "file_upload", "email", "payments", "real_time", "search"]
+        }
+      },
+      "output_path": {
+        "type": "string",
+        "description": "Directory to create project in"
+      }
+    },
+    "required": ["app_name", "app_type"]
+  }
+}
+```
+
+### `generate_crud`
+
+Generate CRUD endpoints for a resource.
+
+```json
+{
+  "name": "generate_crud",
+  "description": "Generate complete CRUD endpoints with frontend and backend code",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "project_path": {
+        "type": "string",
+        "description": "Path to project"
+      },
+      "resource_name": {
+        "type": "string",
+        "description": "Resource name (e.g., 'user', 'product')"
+      },
+      "fields": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string"},
+            "type": {"type": "string"},
+            "required": {"type": "boolean"},
+            "unique": {"type": "boolean"}
+          }
+        }
+      },
+      "generate_frontend": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate frontend UI components"
+      },
+      "generate_tests": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate test files"
+      },
+      "add_validation": {
+        "type": "boolean",
+        "default": true,
+        "description": "Add input validation"
+      }
+    },
+    "required": ["project_path", "resource_name", "fields"]
+  }
+}
+```
+
+### `setup_deployment`
+
+Configure deployment pipeline for an application.
+
+```json
+{
+  "name": "setup_deployment",
+  "description": "Set up CI/CD pipeline and deployment configuration",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "project_path": {
+        "type": "string",
+        "description": "Path to project"
+      },
+      "platform": {
+        "type": "string",
+        "enum": ["vercel", "netlify", "aws", "gcp", "azure", "docker"],
+        "description": "Deployment platform"
+      },
+      "ci_provider": {
+        "type": "string",
+        "enum": ["github_actions", "gitlab_ci", "circleci", "jenkins"],
+        "default": "github_actions"
+      },
+      "environments": {
+        "type": "array",
+        "items": {"type": "string"},
+        "default": ["development", "staging", "production"]
+      },
+      "features": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["auto_deploy", "preview_deploys", "rollback", "monitoring"]
+        }
+      },
+      "docker": {
+        "type": "boolean",
+        "default": false,
+        "description": "Generate Dockerfile and docker-compose"
+      }
+    },
+    "required": ["project_path", "platform"]
+  }
+}
+```
+
+### `add_feature`
+
+Add a feature module to an existing application.
+
+```json
+{
+  "name": "add_feature",
+  "description": "Add a pre-built feature module to existing application",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "project_path": {
+        "type": "string",
+        "description": "Path to project"
+      },
+      "feature": {
+        "type": "string",
+        "enum": ["authentication", "file_upload", "payments", "email", "notifications", "analytics"],
+        "description": "Feature to add"
+      },
+      "provider": {
+        "type": "string",
+        "description": "Service provider (e.g., 'stripe' for payments, 'auth0' for auth)"
+      },
+      "configuration": {
+        "type": "object",
+        "description": "Feature-specific configuration"
+      },
+      "update_docs": {
+        "type": "boolean",
+        "default": true,
+        "description": "Update project documentation"
+      }
+    },
+    "required": ["project_path", "feature"]
+  }
+}
+```
+
+## Available Resources
+
+- **Project Templates**: Production-ready app templates
+- **Code Snippets**: Reusable code patterns and components
+- **Deployment Configs**: Platform-specific deployment configurations
+- **Best Practices**: Architecture and security guidelines
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://builder.appnowhq.com
+
+# Server Name
+appnowhq-builder
+
+# Required Environment Variables
+APPNOWHQ_API_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Scaffold App">
+    ```
+    Create a Next.js 14 app with TypeScript, Tailwind, PostgreSQL,
+    and authentication. Include user management CRUD.
+    ```
+  </Tab>
+  <Tab title="Generate CRUD">
+    ```
+    Generate CRUD for a 'Product' resource with fields: name (string),
+    price (decimal), category (string), and inStock (boolean).
+    ```
+  </Tab>
+  <Tab title="Setup Deployment">
+    ```
+    Set up Vercel deployment with preview deploys for PRs,
+    use GitHub Actions for CI, include staging environment.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Quick Start**: "Create a SaaS starter with Next.js, Stripe, and auth"
+- **API Generation**: "Generate REST API for my e-commerce data model"
+- **Feature Addition**: "Add file upload with S3 to my existing app"
+- **Deployment**: "Configure AWS deployment with auto-scaling"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [BrightForest.io](/docs/mcp/agents/brightforest-io) - Deploy and manage infrastructure
+- [FigmaToFullstack.com](/docs/mcp/agents/figmatofullstack-com) - Generate UI from designs
+- [GetDIYRPA.com](/docs/mcp/agents/getdiyrpa-com) - Add automation workflows
