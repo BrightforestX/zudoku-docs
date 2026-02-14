@@ -16,11 +16,13 @@
     "react-dom": "catalog:"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^11.1.0",
     "@types/mdast": "4.0.4",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@types/unist": "^3.0.3",
     "mdast-util-directive": "^3.1.0",
+    "playwright-bdd": "^8.5.3",
     "unified": "^11.0.5",
     "unist-util-visit": "5.0.0",
     "zudoku": "workspace:*"
