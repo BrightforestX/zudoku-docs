@@ -89,13 +89,13 @@ const domainInfoMap: Record<string, DomainInfo> = {
     ],
   },
   "appnowhq.com": {
-    name: "AppNow",
-    agentType: "Rapid Application Development",
+    name: "AppNow HQ",
+    agentType: "Rapid Application Development Platform",
     capabilities: [
-      "No-code/Low-code development",
-      "Template library",
-      "Deployment automation",
-      "API integration",
+      "Production-ready application templates",
+      "One-click deployment to cloud",
+      "Built-in application health monitoring",
+      "Automatic scaling from MVP to production",
     ],
   },
   "getdiyai.com": {

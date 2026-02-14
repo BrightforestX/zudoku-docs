@@ -13,8 +13,9 @@ export const DomainHero = ({
   description,
   className = "",
 }: DomainHeroProps) => {
-  // Try to load hero.png first, fallback to placeholder.svg
-  const heroImagePath = `/images/${domain}/hero.png`;
+  // Try to load hero images in order: hero.png, hero.svg, placeholder.svg
+  const heroPngPath = `/images/${domain}/hero.png`;
+  const heroSvgPath = `/images/${domain}/hero.svg`;
   const placeholderImagePath = `/images/${domain}/placeholder.svg`;
 
   return (
@@ -23,16 +24,19 @@ export const DomainHero = ({
     >
       <div className="relative h-64 w-full">
         <picture>
-          <source srcSet={heroImagePath} type="image/png" />
+          <source srcSet={heroPngPath} type="image/png" />
+          <source srcSet={heroSvgPath} type="image/svg+xml" />
           <img
             src={placeholderImagePath}
             alt={title ? `${title} hero image` : `${domain} hero image`}
             className="h-full w-full object-cover"
             loading="lazy"
             onError={(e) => {
-              // If hero.png fails, ensure we're using placeholder.svg
+              // Fallback chain: hero.png -> hero.svg -> placeholder.svg
               const target = e.target as HTMLImageElement;
-              if (target.src !== placeholderImagePath) {
+              if (target.src.includes("hero.png")) {
+                target.src = heroSvgPath;
+              } else if (target.src.includes("hero.svg")) {
                 target.src = placeholderImagePath;
               }
             }}

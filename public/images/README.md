@@ -139,7 +139,7 @@ All images (both placeholders and generated) should be:
 | clifforddalsoniii.com   | Deep Purple (#4A148C → #9C27B0) |
 | getdiyai.com            | Light Blue (#0277BD → #29B6F6) |
 | getdiyrpa.com           | Light Green (#558B2F → #9CCC65) |
-| appnowhq.com            | Red (#D32F2F → #F44336) |
+| appnowhq.com            | Coral & Teal (#FF6B6B → #FF8E53 → #26C6DA) |
 | brightforest.ai         | Cyan (#00838F → #26C6DA) |
 | iheartai.ai             | Rose (#D81B60 → #F06292) |
 

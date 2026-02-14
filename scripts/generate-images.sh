@@ -31,7 +31,7 @@ DOMAINS=(
     ["clifforddalsoniii-com"]="Professional developer portfolio with floating code blocks and project cards, dark background, emerald and white accents"
     ["getdiyai-com"]="DIY AI workshop with tools, gears, and neural network building blocks, dark background, yellow and orange warm tones"
     ["getdiyrpa-com"]="Robotic process automation with connected workflow nodes and automation bots, dark background, blue and green accents"
-    ["appnowhq-com"]="Rapid app development with building blocks assembling into mobile and web apps, dark background, coral and teal accents"
+    ["appnowhq-com"]="Professional app development platform illustration showing modular building blocks and app templates assembling into modern mobile and web applications, with deployment pipeline visualization, dark tech background, vibrant coral and teal accent colors, modern flat design style, clean composition"
     ["brightforest-ai"]="MLOps pipeline visualization with model training, deployment, and monitoring stages, dark background, green and blue data flows"
     ["iheartai-ai"]="Heart-shaped circuit board with AI learning pathways, warm educational theme, dark background, red and pink with white light"
 )

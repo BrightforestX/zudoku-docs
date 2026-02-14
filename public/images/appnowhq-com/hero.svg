@@ -1,0 +1,152 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0f1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1f2e;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Coral gradient -->
+    <linearGradient id="coral-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF8E53;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Teal gradient -->
+    <linearGradient id="teal-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#26C6DA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ACC1;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Accent glow -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#FF6B6B;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bg-gradient)"/>
+  
+  <!-- Glow effects -->
+  <ellipse cx="200" cy="200" rx="300" ry="300" fill="url(#glow)" opacity="0.5"/>
+  <ellipse cx="824" cy="824" rx="300" ry="300" fill="url(#glow)" opacity="0.5"/>
+  
+  <!-- Grid pattern -->
+  <g opacity="0.1">
+    <line x1="0" y1="256" x2="1024" y2="256" stroke="#26C6DA" stroke-width="1"/>
+    <line x1="0" y1="512" x2="1024" y2="512" stroke="#26C6DA" stroke-width="1"/>
+    <line x1="0" y1="768" x2="1024" y2="768" stroke="#26C6DA" stroke-width="1"/>
+    <line x1="256" y1="0" x2="256" y2="1024" stroke="#26C6DA" stroke-width="1"/>
+    <line x1="512" y1="0" x2="512" y2="1024" stroke="#26C6DA" stroke-width="1"/>
+    <line x1="768" y1="0" x2="768" y2="1024" stroke="#26C6DA" stroke-width="1"/>
+  </g>
+  
+  <!-- Building blocks - Mobile app -->
+  <g id="mobile-app" transform="translate(200, 350)">
+    <!-- Phone outline -->
+    <rect x="0" y="0" width="120" height="200" rx="15" fill="#1a1f2e" stroke="url(#coral-gradient)" stroke-width="3"/>
+    <!-- Screen -->
+    <rect x="10" y="20" width="100" height="160" rx="8" fill="url(#coral-gradient)" opacity="0.2"/>
+    <!-- App elements -->
+    <rect x="20" y="30" width="80" height="15" rx="4" fill="url(#coral-gradient)"/>
+    <rect x="20" y="55" width="50" height="10" rx="3" fill="#26C6DA" opacity="0.6"/>
+    <rect x="20" y="75" width="70" height="10" rx="3" fill="#26C6DA" opacity="0.6"/>
+    <circle cx="30" cy="110" r="8" fill="url(#coral-gradient)"/>
+    <circle cx="90" cy="110" r="8" fill="url(#teal-gradient)"/>
+    <rect x="20" y="135" width="80" height="8" rx="2" fill="#26C6DA" opacity="0.4"/>
+    <rect x="20" y="150" width="60" height="8" rx="2" fill="#26C6DA" opacity="0.4"/>
+  </g>
+  
+  <!-- Building blocks - Web app -->
+  <g id="web-app" transform="translate(650, 300)">
+    <!-- Browser window -->
+    <rect x="0" y="0" width="180" height="140" rx="8" fill="#1a1f2e" stroke="url(#teal-gradient)" stroke-width="3"/>
+    <!-- Browser header -->
+    <rect x="0" y="0" width="180" height="25" rx="8" fill="url(#teal-gradient)" opacity="0.3"/>
+    <circle cx="15" cy="12" r="4" fill="#FF6B6B"/>
+    <circle cx="28" cy="12" r="4" fill="#FFB74D"/>
+    <circle cx="41" cy="12" r="4" fill="#26C6DA"/>
+    <!-- Content -->
+    <rect x="15" y="40" width="150" height="12" rx="3" fill="url(#teal-gradient)"/>
+    <rect x="15" y="60" width="100" height="8" rx="2" fill="#26C6DA" opacity="0.6"/>
+    <rect x="15" y="75" width="120" height="8" rx="2" fill="#26C6DA" opacity="0.6"/>
+    <rect x="15" y="95" width="70" height="25" rx="4" fill="url(#coral-gradient)"/>
+    <rect x="95" y="95" width="70" height="25" rx="4" fill="url(#teal-gradient)"/>
+  </g>
+  
+  <!-- Central assembly point with animated elements -->
+  <g id="central-assembly">
+    <!-- Central node -->
+    <circle cx="512" cy="512" r="60" fill="#1a1f2e" stroke="url(#coral-gradient)" stroke-width="4"/>
+    <circle cx="512" cy="512" r="45" fill="url(#coral-gradient)" opacity="0.3"/>
+    
+    <!-- Connection lines -->
+    <line x1="260" y1="450" x2="452" y2="512" stroke="url(#coral-gradient)" stroke-width="3" stroke-dasharray="5,5" opacity="0.7"/>
+    <line x1="740" y1="370" x2="572" y2="512" stroke="url(#teal-gradient)" stroke-width="3" stroke-dasharray="5,5" opacity="0.7"/>
+    
+    <!-- Deploy icon in center -->
+    <path d="M 512 492 L 532 512 L 512 532 L 492 512 Z" fill="#26C6DA"/>
+    <path d="M 512 480 L 512 495" stroke="white" stroke-width="2"/>
+    <path d="M 512 529 L 512 544" stroke="white" stroke-width="2"/>
+    <path d="M 480 512 L 495 512" stroke="white" stroke-width="2"/>
+    <path d="M 529 512 L 544 512" stroke="white" stroke-width="2"/>
+  </g>
+  
+  <!-- Template blocks floating -->
+  <g id="template-blocks">
+    <!-- Block 1 -->
+    <rect x="100" y="150" width="80" height="80" rx="8" fill="url(#coral-gradient)" opacity="0.6"/>
+    <text x="140" y="195" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">SAAS</text>
+    
+    <!-- Block 2 -->
+    <rect x="350" y="100" width="80" height="80" rx="8" fill="url(#teal-gradient)" opacity="0.6"/>
+    <text x="390" y="145" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">API</text>
+    
+    <!-- Block 3 -->
+    <rect x="850" y="150" width="80" height="80" rx="8" fill="url(#coral-gradient)" opacity="0.6"/>
+    <text x="890" y="195" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">E-COMM</text>
+  </g>
+  
+  <!-- Deployment pipeline -->
+  <g id="deployment-pipeline" transform="translate(300, 700)">
+    <!-- Pipeline stages -->
+    <rect x="0" y="0" width="80" height="50" rx="6" fill="url(#teal-gradient)" opacity="0.4"/>
+    <text x="40" y="30" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">BUILD</text>
+    
+    <path d="M 80 25 L 110 25" stroke="#26C6DA" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="110" y="0" width="80" height="50" rx="6" fill="url(#coral-gradient)" opacity="0.4"/>
+    <text x="150" y="30" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">TEST</text>
+    
+    <path d="M 190 25 L 220 25" stroke="#FF6B6B" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="220" y="0" width="80" height="50" rx="6" fill="url(#teal-gradient)" opacity="0.4"/>
+    <text x="260" y="30" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">DEPLOY</text>
+    
+    <path d="M 300 25 L 330 25" stroke="#26C6DA" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="330" y="0" width="80" height="50" rx="6" fill="url(#coral-gradient)" opacity="0.4"/>
+    <text x="370" y="30" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white" text-anchor="middle">LIVE</text>
+    
+    <!-- Arrow marker definition -->
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <polygon points="0 0, 10 3, 0 6" fill="#26C6DA" />
+      </marker>
+    </defs>
+  </g>
+  
+  <!-- Floating particles/dots -->
+  <circle cx="150" cy="600" r="3" fill="#26C6DA" opacity="0.6"/>
+  <circle cx="880" cy="550" r="4" fill="#FF6B6B" opacity="0.6"/>
+  <circle cx="200" cy="800" r="3" fill="#26C6DA" opacity="0.6"/>
+  <circle cx="850" cy="700" r="3" fill="#FF8E53" opacity="0.6"/>
+  <circle cx="600" cy="150" r="4" fill="#26C6DA" opacity="0.6"/>
+  <circle cx="450" cy="250" r="3" fill="#FF6B6B" opacity="0.6"/>
+  
+  <!-- Title and tagline -->
+  <text x="512" y="900" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">AppNow HQ</text>
+  <text x="512" y="940" font-family="Arial, sans-serif" font-size="20" fill="#26C6DA" text-anchor="middle">Rapid Application Development Platform</text>
+  <text x="512" y="970" font-family="Arial, sans-serif" font-size="16" fill="#FF8E53" text-anchor="middle">Templates " Deploy " Monitor " Scale</text>
+</svg>
