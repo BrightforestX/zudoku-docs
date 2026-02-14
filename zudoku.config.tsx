@@ -7,6 +7,40 @@ import GithubIcon from "./src/GithubIcon";
 
 const ThemePlayground = lazy(() => import("./src/ThemeEditor.js"));
 const LandingPage = lazy(() => import("./src/LandingPage"));
+const McpComingSoon = lazy(() => import("./src/components/McpComingSoon.js"));
+
+// MCP domain mapping for schema files
+const mcpDomainSchemas: Record<string, string> = {
+  "figmatofullstack.ai": "./schema/mcp-figmatofullstack-ai.json",
+  "figmatofullstack.com": "./schema/mcp-figmatofullstack-com.json",
+  "brightforest.ai": "./schema/mcp-brightforest-ai.json",
+  "brightforest.io": "./schema/mcp-brightforest-io.json",
+  "brightforestx.com": "./schema/mcp-brightforestx-com.json",
+  "brightpath.ai": "./schema/mcp-brightpath-ai.json",
+  "pathx.ai": "./schema/mcp-pathx-ai.json",
+  "iheartai.ai": "./schema/mcp-iheartai-ai.json",
+  "appnowhq.com": "./schema/mcp-appnowhq-com.json",
+  "getdiyai.com": "./schema/mcp-getdiyai-com.json",
+  "getdiyrpa.com": "./schema/mcp-getdiyrpa-com.json",
+  "mlninjas.com": "./schema/mcp-mlninjas-com.json",
+  "clifforddalsoniii.com": "./schema/mcp-clifforddalsoniii-com.json",
+};
+
+// Get MCP schema based on domain
+const getMcpApiConfig = () => {
+  const domain = process.env.ZUDOKU_PUBLIC_DOMAIN;
+  if (!domain || !mcpDomainSchemas[domain]) {
+    return [];
+  }
+
+  return [
+    {
+      type: "file" as const,
+      input: mcpDomainSchemas[domain],
+      path: "/mcp/api-reference",
+    },
+  ];
+};
 
 const config: ZudokuConfig = {
   canonicalUrlOrigin: "https://zudoku.dev",
@@ -95,6 +129,12 @@ const config: ZudokuConfig = {
       label: "Themes",
       element: <ThemePlayground />,
     },
+    {
+      type: "custom-page",
+      path: "/mcp",
+      label: "MCP",
+      element: <McpComingSoon />,
+    },
   ],
   plugins: [
     {
@@ -114,6 +154,7 @@ const config: ZudokuConfig = {
       input: "./schema/placeholder.json",
       path: "/docs/api-placeholder",
     },
+    ...getMcpApiConfig(),
   ],
   slots: {
     "head-navigation-end": () => (
