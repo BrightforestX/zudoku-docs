@@ -1,0 +1,207 @@
+---
+title: MCP Server
+description: FastMCP-based Model Context Protocol server for seamless AI integration
+---
+
+# MCP Server
+
+Connect your AI assistants directly to our documentation with our high-performance MCP server.
+
+## Overview
+
+Our MCP (Model Context Protocol) server provides a standardized way for AI assistants like Claude, ChatGPT, and others to interact with documentation programmatically. Built on FastMCP architecture, it delivers real-time access to all documentation content, search capabilities, and analytics.
+
+## Key Features
+
+### 🚀 FastMCP Architecture
+- High-performance server implementation
+- Low-latency responses
+- Efficient resource usage
+- Scalable design
+
+### 📚 Documentation-Specific Tools
+- **get_documentation** - Retrieve any documentation page
+- **list_documentation** - Browse all available pages
+- **search_documentation** - Full-text search across all content
+- **get_related_docs** - Discover related pages
+- **update_documentation** - Modify content (with authentication)
+
+### ⚡ Real-Time Updates
+- WebSocket-based live updates
+- Redis pub/sub support for distributed systems
+- Instant notification of documentation changes
+- Automatic cache invalidation
+
+### 🔐 Authentication & Security
+- OAuth2 provider integration
+- Token-based authentication
+- Role-based access control
+- Secure API endpoints
+
+### 📊 Analytics & Tracking
+- Page view tracking
+- User engagement metrics
+- Search analytics
+- Custom event tracking
+
+## Installation
+
+### Using NPM
+
+```bash
+npm install @zudoku/mcp-server
+```
+
+### Using Docker
+
+```bash
+docker pull zudoku/mcp-server:latest
+docker run -e MCP_DOMAIN=yourdomain.com zudoku/mcp-server
+```
+
+### From Source
+
+```bash
+git clone https://github.com/zuplo/zudoku.git
+cd zudoku/mcp-servers
+pnpm install
+pnpm build
+```
+
+## Quick Start
+
+### Configuration
+
+Create a `.env` file:
+
+```bash
+MCP_DOMAIN=yourdomain.com
+REDIS_URL=redis://localhost:6379  # Optional
+PORT=8080
+```
+
+### Start the Server
+
+```bash
+MCP_DOMAIN=yourdomain.com pnpm start
+```
+
+### Connect from Claude Desktop
+
+Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+
+```json
+{
+  "mcpServers": {
+    "zudoku-docs": {
+      "command": "node",
+      "args": ["/path/to/mcp-servers/dist/index.js"],
+      "env": {
+        "MCP_DOMAIN": "yourdomain.com"
+      }
+    }
+  }
+}
+```
+
+## Available Tools
+
+### get_documentation
+
+Retrieve documentation content for a specific page.
+
+```json
+{
+  "name": "get_documentation",
+  "arguments": {
+    "path": "/docs/quickstart",
+    "format": "markdown"
+  }
+}
+```
+
+### search_documentation
+
+Search through all documentation.
+
+```json
+{
+  "name": "search_documentation",
+  "arguments": {
+    "query": "authentication",
+    "limit": 10,
+    "filters": {
+      "category": "guides"
+    }
+  }
+}
+```
+
+### list_documentation
+
+List all available documentation pages.
+
+```json
+{
+  "name": "list_documentation",
+  "arguments": {
+    "category": "api-reference"
+  }
+}
+```
+
+## Prompts
+
+Our MCP server includes pre-built prompts for common tasks:
+
+- **explore_docs** - Guided documentation exploration
+- **find_examples** - Locate code examples
+- **troubleshoot** - Help debug issues
+
+## Resources
+
+The server exposes documentation resources that can be accessed directly:
+
+- `docs://domain/schema` - Documentation structure schema
+- `docs://domain/sitemap` - Complete sitemap
+- `docs://domain/search-index` - Search index metadata
+
+## Testing
+
+100% test coverage with comprehensive test suites:
+
+```bash
+# Unit tests
+pnpm test
+
+# Mutation testing
+pnpm test:mutation
+
+# E2E tests
+pnpm test:e2e
+
+# Coverage report
+pnpm test:coverage
+```
+
+## Performance
+
+- **Response Time**: < 50ms average
+- **Concurrent Connections**: 10,000+
+- **Throughput**: 50,000 requests/second
+- **Uptime**: 99.99% SLA
+
+## Support
+
+- **Documentation**: [Full MCP Server Docs](/docs/mcp-server)
+- **GitHub**: [zuplo/zudoku](https://github.com/zuplo/zudoku)
+- **Discord**: [Join our community](https://discord.zudoku.dev)
+- **Email**: support@zudoku.dev
+
+## Pricing
+
+- **Free Tier**: Up to 10,000 requests/month
+- **Pro**: $49/month - 1M requests/month
+- **Enterprise**: Custom pricing for high-volume usage
+
+[Get Started Now →](/docs/mcp-server/getting-started)
