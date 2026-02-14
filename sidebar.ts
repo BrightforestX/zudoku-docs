@@ -93,6 +93,16 @@ export const docs: Navigation = [
   },
   {
     type: "category",
+    label: "MCP Agents",
+    icon: "cpu",
+    link: "docs/mcp",
+    items: [
+      "docs/mcp/getting-started",
+      "docs/mcp/agents",
+    ],
+  },
+  {
+    type: "category",
     label: "Guides",
     icon: "monitor-check",
     items: [
@@ -104,6 +114,16 @@ export const docs: Navigation = [
       "docs/guides/managing-api-keys-and-identities",
       "docs/guides/transforming-examples",
       "docs/guides/processors",
+    ],
+  },
+  {
+    type: "category",
+    label: "Roadmap",
+    icon: "map",
+    link: "docs/roadmap",
+    items: [
+      "docs/roadmap/features",
+      "docs/roadmap/testing",
     ],
   },
   {
