@@ -1,0 +1,500 @@
+---
+title: Testing Strategy
+description: Comprehensive testing strategy using Playwright and Cucumber BDD, visual regression, and accessibility testing across the BrightForest ecosystem
+---
+
+# Testing Strategy
+
+The BrightForest ecosystem employs a comprehensive, multi-layered testing strategy to ensure quality, reliability, and accessibility across all 13 domains. Our approach combines behavior-driven development (BDD), visual regression testing, accessibility validation, and performance monitoring.
+
+## Testing Philosophy
+
+### Core Principles
+
+1. **Quality First**: Testing is not an afterthought but integral to development
+2. **Automation-Centric**: Maximize automated test coverage to enable rapid iteration
+3. **User-Focused**: Test from the user's perspective using BDD scenarios
+4. **Cross-Browser**: Ensure consistent experience across all major browsers
+5. **Accessibility**: Universal design accessible to all users
+
+### Testing Pyramid
+
+```
+        /\
+       /  \         E2E Tests (BDD with Playwright)
+      /----\        Integration Tests
+     /------\       Component Tests (Vitest)
+    /--------\      Unit Tests (Vitest)
+   /----------\     
+```
+
+## BDD Testing with Cucumber & Playwright
+
+### Overview
+
+We use **Cucumber** for defining behavior in Gherkin syntax and **Playwright** for executing tests across browsers. This combination provides:
+
+- Human-readable test scenarios
+- Strong cross-browser support (Chromium, Firefox, WebKit)
+- Parallel test execution
+- Rich debugging capabilities
+- Screenshot and video capture
+
+### Feature File Structure
+
+```gherkin
+Feature: Homepage Navigation
+  As a user
+  I want to navigate the homepage
+  So that I can access all platform features
+
+  Background:
+    Given I am on the homepage
+
+  Scenario: Navigate to documentation
+    When I click on "Documentation" in the navigation menu
+    Then I should be on the documentation page
+    And the page title should contain "Documentation"
+
+  Scenario: Mobile menu interaction
+    Given I am viewing on a mobile device
+    When I click the mobile menu button
+    Then the navigation menu should be visible
+    And all menu items should be accessible
+```
+
+### Step Definition Pattern
+
+```typescript
+import { Given, When, Then } from '@cucumber/cucumber';
+import { expect } from '@playwright/test';
+
+Given('I am on the homepage', async function () {
+  await this.page.goto('/');
+  await this.page.waitForLoadState('networkidle');
+});
+
+When('I click on {string} in the navigation menu', async function (linkText: string) {
+  await this.page.getByRole('link', { name: linkText }).click();
+});
+
+Then('I should be on the documentation page', async function () {
+  await expect(this.page).toHaveURL(/\/docs/);
+});
+```
+
+### Page Object Model
+
+We implement the Page Object Model (POM) to maintain clean, reusable test code:
+
+```typescript
+export class NavigationPage {
+  constructor(private page: Page) {}
+
+  async navigateTo(section: string) {
+    await this.page.getByRole('link', { name: section }).click();
+  }
+
+  async openMobileMenu() {
+    await this.page.getByRole('button', { name: 'Menu' }).click();
+  }
+
+  async isMenuVisible() {
+    return await this.page.getByRole('navigation').isVisible();
+  }
+}
+```
+
+## Test Organization
+
+### Directory Structure
+
+```
+tests/
+├── features/              # Gherkin feature files
+│   ├── shared/           # Features for all domains
+│   ├── cross-site/       # Features for domain groups
+│   └── site-specific/    # Features for individual domains
+├── step-definitions/     # Step implementation
+│   ├── common/          # Shared step definitions
+│   └── domain/          # Domain-specific steps
+├── support/             # Test utilities and helpers
+│   ├── page-objects/   # Page Object Models
+│   ├── fixtures/       # Test data and fixtures
+│   └── hooks/          # Before/After hooks
+└── config/             # Test configuration
+    ├── playwright.config.ts
+    └── cucumber.config.ts
+```
+
+### Feature Categories
+
+1. **Shared Features** (25 features)
+   - Executed across all 13 domains
+   - Core functionality and UX patterns
+   - Highest automation priority
+
+2. **Cross-Site Features** (28 features)
+   - Executed for specific domain groups
+   - Shared specialized functionality
+   - Medium automation priority
+
+3. **Site-Specific Features** (32 features)
+   - Executed for individual domains
+   - Unique domain capabilities
+   - Targeted automation per domain
+
+## Visual Regression Testing
+
+### Overview
+
+Visual regression testing ensures UI consistency and prevents unintended visual changes across deployments.
+
+### Implementation
+
+We use Playwright's built-in screenshot comparison:
+
+```typescript
+// Capture and compare screenshots
+await expect(page).toHaveScreenshot('homepage.png', {
+  fullPage: true,
+  threshold: 0.2,
+  maxDiffPixels: 100
+});
+```
+
+### Testing Strategy
+
+- **Full Page Screenshots**: Capture entire page layouts
+- **Component Screenshots**: Test individual UI components
+- **Responsive Testing**: Validate across viewport sizes
+- **Theme Testing**: Test light and dark modes
+- **Cross-Browser**: Ensure visual consistency across browsers
+
+### Viewport Matrix
+
+| Device Type | Width | Height | Browser |
+|------------|-------|---------|---------|
+| Mobile | 375px | 667px | Chrome, Safari |
+| Tablet | 768px | 1024px | Chrome, Safari |
+| Desktop | 1920px | 1080px | Chrome, Firefox, Safari |
+| Wide | 2560px | 1440px | Chrome |
+
+### Baseline Management
+
+1. **Initial Baseline**: First screenshot becomes reference
+2. **Review Process**: Visual diff reviewed before accepting changes
+3. **Update Workflow**: Approved changes update baseline
+4. **Version Control**: Baselines tracked in git repository
+
+## Accessibility Testing
+
+### WCAG 2.1 Compliance
+
+We target **WCAG 2.1 Level AA** compliance across all domains.
+
+### Automated Testing
+
+Using **axe-core** integrated with Playwright:
+
+```typescript
+import { injectAxe, checkA11y } from 'axe-playwright';
+
+test('Homepage accessibility', async ({ page }) => {
+  await page.goto('/');
+  await injectAxe(page);
+  await checkA11y(page, undefined, {
+    detailedReport: true,
+    detailedReportOptions: {
+      html: true
+    }
+  });
+});
+```
+
+### Testing Categories
+
+1. **Keyboard Navigation**
+   - All interactive elements accessible via keyboard
+   - Logical tab order
+   - Visible focus indicators
+
+2. **Screen Reader Support**
+   - Proper semantic HTML
+   - ARIA labels and descriptions
+   - Meaningful heading hierarchy
+
+3. **Color Contrast**
+   - Minimum 4.5:1 for normal text
+   - Minimum 3:1 for large text
+   - Contrast testing in light and dark modes
+
+4. **Forms & Inputs**
+   - Proper label associations
+   - Error message accessibility
+   - Required field indicators
+
+5. **Media & Images**
+   - Alternative text for images
+   - Captions for video content
+   - Transcripts where applicable
+
+## Performance Testing
+
+### Core Web Vitals
+
+We monitor and test against Core Web Vitals thresholds:
+
+| Metric | Good | Needs Improvement | Poor |
+|--------|------|-------------------|------|
+| LCP (Largest Contentful Paint) | ≤ 2.5s | 2.5s - 4.0s | > 4.0s |
+| FID (First Input Delay) | ≤ 100ms | 100ms - 300ms | > 300ms |
+| CLS (Cumulative Layout Shift) | ≤ 0.1 | 0.1 - 0.25 | > 0.25 |
+
+### Lighthouse Integration
+
+Automated Lighthouse audits in CI/CD:
+
+```typescript
+import { playAudit } from 'playwright-lighthouse';
+
+test('Performance audit', async ({ page }) => {
+  await page.goto('/');
+  await playAudit({
+    page,
+    thresholds: {
+      performance: 90,
+      accessibility: 95,
+      'best-practices': 90,
+      seo: 90
+    }
+  });
+});
+```
+
+### Performance Budgets
+
+- **Page Load**: < 3 seconds on 3G
+- **Time to Interactive**: < 5 seconds
+- **Bundle Size**: < 300KB (gzipped)
+- **Image Optimization**: WebP with fallbacks
+
+## Cross-Browser Testing
+
+### Browser Matrix
+
+| Browser | Versions | Platform |
+|---------|----------|----------|
+| Chrome | Latest, Latest-1 | Desktop, Mobile |
+| Firefox | Latest, Latest-1 | Desktop |
+| Safari | Latest, Latest-1 | Desktop, Mobile |
+| Edge | Latest | Desktop |
+
+### Testing Approach
+
+- **Parallel Execution**: Run tests across browsers simultaneously
+- **Browser-Specific Tests**: Handle browser-specific behaviors
+- **Graceful Degradation**: Ensure fallbacks work correctly
+
+```typescript
+// playwright.config.ts
+export default defineConfig({
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'mobile-chrome',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'mobile-safari',
+      use: { ...devices['iPhone 13'] },
+    },
+  ],
+});
+```
+
+## CI/CD Integration
+
+### Continuous Integration
+
+Tests run automatically on:
+
+- **Pull Requests**: All shared and affected domain tests
+- **Commits to Main**: Full test suite across all domains
+- **Scheduled**: Nightly full regression tests
+- **Pre-Deployment**: Smoke tests before production deployment
+
+### Pipeline Stages
+
+1. **Build**: Compile and build all packages
+2. **Unit Tests**: Fast unit and component tests
+3. **Integration Tests**: API and integration tests
+4. **E2E Tests**: BDD scenarios with Playwright
+5. **Visual Regression**: Screenshot comparison
+6. **Accessibility**: A11y validation
+7. **Performance**: Lighthouse audits
+8. **Report**: Generate and publish test reports
+
+### Failure Handling
+
+- **Auto-Retry**: Flaky tests retried up to 3 times
+- **Detailed Reports**: Screenshots, videos, traces for failures
+- **Notifications**: Slack/email alerts for test failures
+- **Blocking**: Failed tests block deployment
+
+## Test Data Management
+
+### Fixtures
+
+Reusable test data for consistent testing:
+
+```typescript
+export const testUsers = {
+  standard: {
+    email: 'test@brightforest.io',
+    password: 'Test123!'
+  },
+  admin: {
+    email: 'admin@brightforest.io',
+    password: 'Admin123!'
+  }
+};
+```
+
+### Database State
+
+- **Isolation**: Each test runs with clean state
+- **Seeding**: Automated test data seeding
+- **Cleanup**: Post-test cleanup to prevent pollution
+
+## Reporting & Monitoring
+
+### Test Reports
+
+- **Cucumber HTML Reports**: Human-readable BDD results
+- **Playwright Reports**: Detailed execution reports with traces
+- **Coverage Reports**: Code coverage metrics
+- **Visual Diff Reports**: Screenshot comparison results
+
+### Metrics Tracking
+
+- **Test Execution Time**: Monitor and optimize slow tests
+- **Pass/Fail Rates**: Track test stability over time
+- **Coverage Trends**: Ensure coverage doesn't regress
+- **Flaky Test Detection**: Identify and fix unreliable tests
+
+### Dashboards
+
+Real-time test metrics displayed on dashboards:
+
+- Overall test pass rate
+- Test execution duration trends
+- Coverage by domain and feature
+- Flaky test identification
+- Browser-specific failure rates
+
+## Best Practices
+
+### Writing Tests
+
+1. **Descriptive Scenarios**: Clear, business-readable feature descriptions
+2. **Independent Tests**: Each test should run independently
+3. **Wait Strategies**: Use proper wait conditions, avoid hard waits
+4. **Selectors**: Prefer accessible selectors (role, label, text)
+5. **Assertions**: Clear, specific assertions with meaningful messages
+
+### Maintenance
+
+1. **Regular Reviews**: Weekly test suite health checks
+2. **Refactoring**: Continuously improve test code quality
+3. **Documentation**: Keep test documentation up-to-date
+4. **Performance**: Optimize slow tests for faster feedback
+
+### Anti-Patterns to Avoid
+
+- ❌ Hard-coded waits (`sleep`, `setTimeout`)
+- ❌ Brittle selectors (CSS classes, XPath)
+- ❌ Test interdependencies
+- ❌ Ignoring flaky tests
+- ❌ Testing implementation details
+
+## Testing Tools & Technologies
+
+### Core Stack
+
+- **Playwright**: Browser automation and E2E testing
+- **Cucumber**: BDD framework for Gherkin scenarios
+- **Vitest**: Unit and component testing
+- **axe-core**: Accessibility testing
+- **Lighthouse**: Performance and quality audits
+
+### Supporting Tools
+
+- **TypeScript**: Type-safe test code
+- **dotenv**: Environment configuration
+- **Winston**: Test logging
+- **Allure**: Advanced reporting
+- **Percy/Chromatic**: Visual regression services (optional)
+
+## Getting Started
+
+### Running Tests Locally
+
+```bash
+# Install dependencies
+pnpm install
+
+# Run all tests
+pnpm test
+
+# Run specific feature
+pnpm test:e2e --grep "Homepage"
+
+# Run tests for specific domain
+pnpm test:domain brightforest.io
+
+# Debug tests with UI
+pnpm test:debug
+
+# Generate reports
+pnpm test:report
+```
+
+### Writing Your First Test
+
+1. Create feature file in `tests/features/`
+2. Write scenarios in Gherkin syntax
+3. Implement step definitions
+4. Run test locally
+5. Review results and iterate
+6. Commit when passing
+
+## Future Enhancements
+
+- **AI-Powered Testing**: Intelligent test generation and maintenance
+- **Visual AI**: ML-based visual regression detection
+- **Performance Prediction**: Predict performance impacts before deployment
+- **Self-Healing Tests**: Auto-update selectors when UI changes
+- **Load Testing**: Comprehensive load and stress testing
+- **Security Testing**: Automated security vulnerability scanning
+
+## Related Documentation
+
+- [Feature Coverage](/docs/roadmap/features) - Complete BDD feature catalog
+- [Main Roadmap](/docs/roadmap) - Ecosystem overview
+- [Site Roadmaps](/docs/roadmap/sites/brightforest-io) - Domain-specific plans
+
+---
+
+**Testing is not just about finding bugs—it's about building confidence in our platform and delivering exceptional user experiences across the entire BrightForest ecosystem.**
