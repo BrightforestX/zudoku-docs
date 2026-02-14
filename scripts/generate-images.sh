@@ -33,7 +33,7 @@ DOMAINS=(
     ["getdiyrpa-com"]="Robotic process automation with connected workflow nodes and automation bots, dark background, blue and green accents"
     ["appnowhq-com"]="Rapid app development with building blocks assembling into mobile and web apps, dark background, coral and teal accents"
     ["brightforest-ai"]="MLOps pipeline visualization with model training, deployment, and monitoring stages, dark background, green and blue data flows"
-    ["iheartai-ai"]="Heart-shaped circuit board with AI learning pathways, warm educational theme, dark background, red and pink with white light"
+    ["iheartai-ai"]="Professional AI development platform visualization: heart-shaped circuit board with glowing neural network pathways, connected learning nodes, collaborative community symbols, modern tech aesthetic with floating AI icons and data streams, warm educational theme, dark gradient background, vibrant red and pink accents with white light trails, high-tech professional design"
 )
 
 # API configuration
