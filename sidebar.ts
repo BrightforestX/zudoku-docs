@@ -93,6 +93,16 @@ export const docs: Navigation = [
   },
   {
     type: "category",
+    label: "Products",
+    icon: "package",
+    items: [
+      "docs/products/mcp-server",
+      "docs/products/mobile-app",
+      "docs/products/cli-tool",
+    ],
+  },
+  {
+    type: "category",
     label: "MCP Agents",
     icon: "cpu",
     link: "docs/mcp",
