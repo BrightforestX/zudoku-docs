@@ -1,0 +1,24 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "brightforest.io MCP Server",
+    "version": "0.1.0"
+  },
+  "x-mcp-server": {
+    "status": "coming_soon"
+  },
+  "paths": {
+    "/mcp": {
+      "post": {
+        "operationId": "platform_integration",
+        "summary": "Platform integration agent for connecting and managing multiple service integrations",
+        "x-zuplo-mcp-tool": true,
+        "responses": {
+          "200": {
+            "description": "Coming soon"
+          }
+        }
+      }
+    }
+  }
+}

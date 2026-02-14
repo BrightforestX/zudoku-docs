@@ -1,0 +1,24 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "brightforestx.com MCP Server",
+    "version": "0.1.0"
+  },
+  "x-mcp-server": {
+    "status": "coming_soon"
+  },
+  "paths": {
+    "/mcp": {
+      "post": {
+        "operationId": "enterprise_configuration",
+        "summary": "Enterprise configuration agent for managing complex enterprise settings and deployments",
+        "x-zuplo-mcp-tool": true,
+        "responses": {
+          "200": {
+            "description": "Coming soon"
+          }
+        }
+      }
+    }
+  }
+}

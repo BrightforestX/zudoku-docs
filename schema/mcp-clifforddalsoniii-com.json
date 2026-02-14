@@ -1,0 +1,24 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "clifforddalsoniii.com MCP Server",
+    "version": "0.1.0"
+  },
+  "x-mcp-server": {
+    "status": "coming_soon"
+  },
+  "paths": {
+    "/mcp": {
+      "post": {
+        "operationId": "portfolio_management",
+        "summary": "Portfolio management agent for organizing and managing project portfolios",
+        "x-zuplo-mcp-tool": true,
+        "responses": {
+          "200": {
+            "description": "Coming soon"
+          }
+        }
+      }
+    }
+  }
+}
