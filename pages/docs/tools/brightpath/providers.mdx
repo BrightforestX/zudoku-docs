@@ -1,0 +1,827 @@
+---
+title: Providers
+description: Configure and use different AI providers with Brightpath CLI
+---
+
+# Providers
+
+Brightpath supports multiple AI providers and platforms, each offering unique capabilities for different workflows. This guide covers setup and usage for all supported providers.
+
+## Overview
+
+Brightpath currently supports five providers:
+
+| Provider | Use Case | Key Features |
+|----------|----------|--------------|
+| **Cursor** | AI-powered code editing | Code generation, refactoring, documentation |
+| **Linear** | Issue tracking automation | Issue triage, project management, automation |
+| **Copilot** | Code suggestions | Code completion, explanation, generation |
+| **PostForMe** | Content distribution | Automated posting, content scheduling |
+| **Upload-Post** | File deployment | File uploads, deployment automation |
+
+## Cursor Provider {#cursor}
+
+The Cursor provider integrates with Cursor's AI-powered code editing capabilities for code generation, refactoring, and documentation tasks.
+
+### Setup
+
+#### 1. Get API Key
+
+Obtain your Cursor API key from the [Cursor Dashboard](https://cursor.sh/settings/api-keys).
+
+#### 2. Set Environment Variable
+
+```bash
+export CURSOR_API_KEY="your-cursor-api-key"
+export CURSOR_API_URL="https://api.cursor.sh"  # Optional
+```
+
+#### 3. Configure in .brightpath.yaml
+
+```yaml
+providers:
+  cursor:
+    api_url: https://api.cursor.sh
+    timeout: 300s
+    retry_attempts: 3
+    model: gpt-4  # Default model
+    max_tokens: 4096
+```
+
+### Available Models
+
+Cursor supports multiple AI models:
+
+- `gpt-4`: Best for complex reasoning and code generation
+- `gpt-3.5-turbo`: Faster and more cost-effective
+- `claude-3-opus`: Anthropic's most capable model
+- `claude-3-sonnet`: Balanced performance and cost
+
+### Usage Examples
+
+#### Basic Code Generation
+
+```bash
+brightpath run \
+  --provider cursor \
+  --task "Create a REST API endpoint for user authentication"
+```
+
+#### Code Refactoring
+
+```bash
+brightpath run \
+  --provider cursor \
+  --model gpt-4 \
+  --task "Refactor the authentication module to use JWT tokens"
+```
+
+#### Documentation Generation
+
+```bash
+brightpath run \
+  --provider cursor \
+  --task "Generate comprehensive documentation for all exported functions"
+```
+
+#### Batch Code Updates
+
+```bash
+# Create batch file
+cat > code-updates.txt << EOF
+repo: frontend-app
+task: Update all components to use TypeScript strict mode
+budget: 5.00
+
+repo: backend-api
+task: Add input validation to all API endpoints
+budget: 7.00
+EOF
+
+# Execute batch
+brightpath batch launch code-updates.txt --provider cursor
+```
+
+### Advanced Configuration
+
+```yaml
+providers:
+  cursor:
+    api_url: https://api.cursor.sh
+    api_key_env: CURSOR_API_KEY
+    timeout: 300s
+    retry_attempts: 3
+    retry_delay: 5s
+    
+    # Model preferences
+    model: gpt-4
+    fallback_models: [claude-3-sonnet, gpt-3.5-turbo]
+    max_tokens: 4096
+    temperature: 0.7
+    
+    # Rate limiting
+    rate_limit: 100  # requests per minute
+    concurrent_requests: 5
+    
+    # Context settings
+    include_git_history: true
+    include_dependencies: true
+    max_context_files: 10
+```
+
+### Cursor-Specific Features
+
+#### Context-Aware Editing
+
+Cursor automatically includes relevant context from your codebase:
+
+```bash
+brightpath run \
+  --provider cursor \
+  --task "Fix the bug in user authentication" \
+  --context ./src/auth/*.ts
+```
+
+#### Git Integration
+
+Cursor can analyze git history for better suggestions:
+
+```bash
+brightpath run \
+  --provider cursor \
+  --task "Suggest improvements based on recent commits" \
+  --include-git-history
+```
+
+## Linear Provider {#linear}
+
+The Linear provider enables automation of issue tracking, project management, and workflow automation.
+
+### Setup
+
+#### 1. Get API Key
+
+Generate an API key in [Linear Settings](https://linear.app/settings/api).
+
+#### 2. Set Environment Variables
+
+```bash
+export LINEAR_API_KEY="your-linear-api-key"
+export LINEAR_TEAM_ID="your-team-id"  # Optional
+```
+
+#### 3. Configure in .brightpath.yaml
+
+```yaml
+providers:
+  linear:
+    api_url: https://api.linear.app
+    timeout: 60s
+    default_team: YOUR_TEAM_ID
+    default_project: YOUR_PROJECT_ID
+```
+
+### Usage Examples
+
+#### Issue Triage
+
+```bash
+brightpath actions triage \
+  --provider linear \
+  --project "Backend" \
+  --labels "bug,needs-triage"
+```
+
+#### Create Issues from Template
+
+```bash
+brightpath linear create \
+  --title "Implement OAuth authentication" \
+  --description "Add OAuth support for Google and GitHub" \
+  --project backend \
+  --priority high \
+  --labels "feature,authentication"
+```
+
+#### Batch Issue Updates
+
+```bash
+# Update multiple issues
+brightpath batch launch linear-updates.txt --provider linear
+```
+
+#### Sync Issues
+
+```bash
+# Sync recent issues
+brightpath linear sync \
+  --team backend-team \
+  --since 2024-01-01 \
+  --status in_progress
+```
+
+### Advanced Configuration
+
+```yaml
+providers:
+  linear:
+    api_url: https://api.linear.app
+    api_key_env: LINEAR_API_KEY
+    timeout: 60s
+    
+    # Default settings
+    default_team: YOUR_TEAM_ID
+    default_project: YOUR_PROJECT_ID
+    default_assignee: YOUR_USER_ID
+    
+    # Automation rules
+    auto_label: true
+    auto_assign: true
+    auto_priority: true
+    
+    # Webhooks
+    webhook_url: https://your-app.com/webhooks/linear
+    webhook_events: [issue.create, issue.update]
+```
+
+### Linear-Specific Features
+
+#### Automatic Issue Labeling
+
+Let AI automatically label issues based on content:
+
+```bash
+brightpath linear auto-label \
+  --project backend \
+  --filter status:backlog
+```
+
+#### Issue Priority Scoring
+
+Automatically assign priority based on issue content:
+
+```bash
+brightpath linear prioritize \
+  --project backend \
+  --criteria "user_impact:0.5,technical_debt:0.3,urgency:0.2"
+```
+
+#### Project Insights
+
+Generate project insights and reports:
+
+```bash
+brightpath linear insights \
+  --project backend \
+  --period last-month \
+  --output report.md
+```
+
+## Copilot Provider {#copilot}
+
+The Copilot provider integrates GitHub Copilot for code suggestions, completions, and explanations.
+
+### Setup
+
+#### 1. Get GitHub Token
+
+Create a personal access token in [GitHub Settings](https://github.com/settings/tokens) with `copilot` scope.
+
+#### 2. Set Environment Variables
+
+```bash
+export GITHUB_TOKEN="your-github-token"
+export COPILOT_API_URL="https://api.github.com"  # Optional
+```
+
+#### 3. Configure in .brightpath.yaml
+
+```yaml
+providers:
+  copilot:
+    api_url: https://api.github.com
+    timeout: 120s
+    use_workspace_context: true
+```
+
+### Usage Examples
+
+#### Get Code Suggestions
+
+```bash
+brightpath copilot suggest \
+  --file ./src/api.ts \
+  --prompt "Add error handling for database operations"
+```
+
+#### Explain Code
+
+```bash
+brightpath copilot explain ./src/auth.ts \
+  --lines "45-60" \
+  --detail normal
+```
+
+#### Generate Tests
+
+```bash
+brightpath run \
+  --provider copilot \
+  --task "Generate unit tests for all functions in ./src/utils.ts"
+```
+
+#### Code Review
+
+```bash
+brightpath actions review \
+  --provider copilot \
+  --repository myorg/myrepo \
+  --pr 123 \
+  --focus security
+```
+
+### Advanced Configuration
+
+```yaml
+providers:
+  copilot:
+    api_url: https://api.github.com
+    api_key_env: GITHUB_TOKEN
+    timeout: 120s
+    
+    # Context settings
+    use_workspace_context: true
+    max_context_lines: 1000
+    include_imports: true
+    
+    # Suggestions
+    suggestion_count: 3
+    temperature: 0.8
+    
+    # Code review
+    review_focus: [security, performance, maintainability]
+    auto_comment: false
+```
+
+### Copilot-Specific Features
+
+#### Multi-File Context
+
+Copilot can use context from multiple files:
+
+```bash
+brightpath copilot suggest \
+  --file ./src/api.ts \
+  --context "./src/types.ts,./src/utils.ts" \
+  --prompt "Refactor to use new type definitions"
+```
+
+#### Language-Specific Suggestions
+
+Optimize suggestions for specific languages:
+
+```bash
+brightpath copilot suggest \
+  --file ./src/component.tsx \
+  --language typescript-react \
+  --prompt "Convert to functional component with hooks"
+```
+
+## PostForMe Provider {#postforme}
+
+The PostForMe provider automates content distribution and posting across multiple platforms.
+
+### Setup
+
+#### 1. Get API Key
+
+Sign up for PostForMe at [postforme.io](https://postforme.io) and get your API key.
+
+#### 2. Set Environment Variables
+
+```bash
+export POSTFORME_API_KEY="your-postforme-api-key"
+export POSTFORME_API_URL="https://api.postforme.io"  # Optional
+```
+
+#### 3. Configure in .brightpath.yaml
+
+```yaml
+providers:
+  postforme:
+    api_url: https://api.postforme.io
+    timeout: 60s
+    default_platforms: [twitter, linkedin, mastodon]
+```
+
+### Usage Examples
+
+#### Post Content
+
+```bash
+brightpath run \
+  --provider postforme \
+  --task "Post announcement about new feature release" \
+  --platforms "twitter,linkedin"
+```
+
+#### Schedule Posts
+
+```bash
+brightpath run \
+  --provider postforme \
+  --task "Schedule weekly blog post promotion" \
+  --schedule "2024-01-20T09:00:00Z"
+```
+
+#### Batch Content Distribution
+
+```bash
+# Create batch file for multiple posts
+cat > posts-batch.txt << EOF
+task: Post about new API release
+platforms: twitter,linkedin
+budget: 0.50
+
+task: Share customer success story
+platforms: linkedin,mastodon
+budget: 0.50
+
+task: Announce upcoming webinar
+platforms: twitter,linkedin,mastodon
+budget: 0.50
+EOF
+
+brightpath batch launch posts-batch.txt --provider postforme
+```
+
+### Advanced Configuration
+
+```yaml
+providers:
+  postforme:
+    api_url: https://api.postforme.io
+    api_key_env: POSTFORME_API_KEY
+    timeout: 60s
+    
+    # Default platforms
+    default_platforms: [twitter, linkedin, mastodon]
+    
+    # Content settings
+    auto_hashtags: true
+    auto_mentions: true
+    max_length:
+      twitter: 280
+      linkedin: 3000
+      mastodon: 500
+      
+    # Media handling
+    auto_optimize_images: true
+    max_image_size: 5MB
+    
+    # Scheduling
+    timezone: America/New_York
+    optimal_posting_times: true
+```
+
+### PostForMe-Specific Features
+
+#### Cross-Platform Optimization
+
+Automatically optimize content for each platform:
+
+```bash
+brightpath run \
+  --provider postforme \
+  --task "Post feature announcement" \
+  --optimize-per-platform
+```
+
+#### Analytics Integration
+
+Get posting analytics and insights:
+
+```bash
+brightpath postforme analytics \
+  --period last-week \
+  --platforms twitter,linkedin
+```
+
+## Upload-Post Provider {#upload-post}
+
+The Upload-Post provider handles file uploads and deployment automation.
+
+### Setup
+
+#### 1. Get API Key
+
+Configure Upload-Post credentials based on your deployment target (S3, GCS, Azure, etc.).
+
+#### 2. Set Environment Variables
+
+```bash
+# For S3
+export AWS_ACCESS_KEY_ID="your-access-key"
+export AWS_SECRET_ACCESS_KEY="your-secret-key"
+export AWS_REGION="us-east-1"
+
+# For GCS
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/credentials.json"
+
+# For Azure
+export AZURE_STORAGE_ACCOUNT="your-account"
+export AZURE_STORAGE_KEY="your-key"
+```
+
+#### 3. Configure in .brightpath.yaml
+
+```yaml
+providers:
+  upload_post:
+    default_target: s3
+    targets:
+      s3:
+        bucket: my-deployment-bucket
+        region: us-east-1
+        public: true
+      gcs:
+        bucket: my-gcs-bucket
+        project: my-project
+      azure:
+        container: my-container
+        account: my-account
+```
+
+### Usage Examples
+
+#### Upload Files
+
+```bash
+brightpath run \
+  --provider upload-post \
+  --task "Upload build artifacts to S3" \
+  --files "./dist/*" \
+  --target s3 \
+  --bucket deployment-bucket
+```
+
+#### Deploy Static Site
+
+```bash
+brightpath actions deploy \
+  --provider upload-post \
+  --files "./build/**/*" \
+  --target s3 \
+  --bucket my-site-bucket \
+  --invalidate-cdn
+```
+
+#### Batch File Uploads
+
+```bash
+# Upload multiple directories
+cat > upload-batch.txt << EOF
+task: Upload frontend build
+files: ./frontend/dist/*
+target: s3
+bucket: frontend-bucket
+budget: 1.00
+
+task: Upload backend assets
+files: ./backend/public/*
+target: s3
+bucket: backend-bucket
+budget: 1.00
+EOF
+
+brightpath batch launch upload-batch.txt --provider upload-post
+```
+
+### Advanced Configuration
+
+```yaml
+providers:
+  upload_post:
+    timeout: 300s
+    retry_attempts: 3
+    
+    # Default target
+    default_target: s3
+    
+    # S3 configuration
+    s3:
+      bucket: my-deployment-bucket
+      region: us-east-1
+      access_key_env: AWS_ACCESS_KEY_ID
+      secret_key_env: AWS_SECRET_ACCESS_KEY
+      public: true
+      encryption: AES256
+      storage_class: STANDARD
+      
+    # GCS configuration
+    gcs:
+      bucket: my-gcs-bucket
+      project: my-project
+      credentials_env: GOOGLE_APPLICATION_CREDENTIALS
+      public: true
+      storage_class: STANDARD
+      
+    # Azure configuration
+    azure:
+      container: my-container
+      account: my-account
+      key_env: AZURE_STORAGE_KEY
+      public: true
+      
+    # Upload settings
+    max_file_size: 100MB
+    concurrent_uploads: 5
+    chunk_size: 5MB
+    
+    # CDN integration
+    cdn:
+      provider: cloudflare
+      invalidate_on_upload: true
+      zone_id: your-zone-id
+```
+
+### Upload-Post-Specific Features
+
+#### Incremental Uploads
+
+Only upload changed files:
+
+```bash
+brightpath upload \
+  --files "./dist/**/*" \
+  --target s3 \
+  --bucket my-bucket \
+  --incremental
+```
+
+#### CDN Invalidation
+
+Automatically invalidate CDN cache:
+
+```bash
+brightpath upload \
+  --files "./dist/**/*" \
+  --target s3 \
+  --bucket my-bucket \
+  --invalidate-cdn \
+  --cdn-provider cloudflare
+```
+
+#### Backup and Versioning
+
+Create backups before uploading:
+
+```bash
+brightpath upload \
+  --files "./dist/**/*" \
+  --target s3 \
+  --bucket my-bucket \
+  --backup \
+  --versioning
+```
+
+## Provider Selection
+
+### Default Provider
+
+Set a default provider in configuration:
+
+```yaml
+default_provider: cursor
+```
+
+Or use environment variable:
+
+```bash
+export BRIGHTPATH_DEFAULT_PROVIDER=cursor
+```
+
+### Runtime Provider Selection
+
+Specify provider at runtime:
+
+```bash
+# Using --provider flag
+brightpath run --provider cursor --task "Update code"
+
+# Using provider prefix
+brightpath cursor suggest --file ./src/app.ts
+```
+
+### Multi-Provider Workflows
+
+Use different providers in the same pipeline:
+
+```yaml
+rounds:
+  - id: code-update
+    tasks:
+      - id: update-code
+        provider: cursor
+        task: "Update authentication logic"
+        
+  - id: create-issue
+    tasks:
+      - id: track-changes
+        provider: linear
+        task: "Create issue to track authentication changes"
+        
+  - id: review
+    tasks:
+      - id: review-changes
+        provider: copilot
+        task: "Review authentication changes for security"
+```
+
+## Testing Providers
+
+### Test Provider Connectivity
+
+```bash
+# Test specific provider
+brightpath provider test cursor
+
+# Test all providers
+brightpath provider test --all
+
+# Verbose output
+brightpath provider test cursor --verbose
+```
+
+### Validate Configuration
+
+```bash
+# Validate provider configuration
+brightpath config validate --section providers
+
+# Show provider settings
+brightpath config show --section providers.cursor
+```
+
+## Troubleshooting
+
+### Authentication Issues
+
+```bash
+# Verify API keys are set
+echo $CURSOR_API_KEY
+echo $LINEAR_API_KEY
+echo $GITHUB_TOKEN
+
+# Test provider authentication
+brightpath provider test cursor --verbose
+```
+
+### Connection Timeouts
+
+Increase timeout in configuration:
+
+```yaml
+providers:
+  cursor:
+    timeout: 600s  # 10 minutes
+```
+
+### Rate Limiting
+
+Handle rate limits with retry configuration:
+
+```yaml
+providers:
+  cursor:
+    rate_limit: 100
+    retry_attempts: 5
+    retry_delay: 10s
+    retry_backoff: exponential
+```
+
+### Provider Not Found
+
+```bash
+# List available providers
+brightpath provider list
+
+# Check configuration
+brightpath config show --section providers
+```
+
+## Best Practices
+
+1. **Use Environment Variables**: Store API keys in environment variables, not in configuration files
+2. **Set Appropriate Timeouts**: Configure timeouts based on task complexity
+3. **Enable Retries**: Use automatic retries for transient failures
+4. **Monitor Costs**: Track provider costs, especially for paid APIs
+5. **Test Thoroughly**: Test provider connectivity before running batch operations
+6. **Use Multiple Providers**: Leverage different providers for different tasks
+7. **Secure Credentials**: Never commit API keys to version control
+
+## Next Steps
+
+- [Explore command reference](/docs/tools/brightpath/commands) for provider-specific commands
+- [Learn about batch operations](/docs/tools/brightpath/batch-operations) to use providers at scale
+- [Build multi-round pipelines](/docs/tools/brightpath/multi-round) with multiple providers

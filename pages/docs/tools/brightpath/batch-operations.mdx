@@ -1,0 +1,598 @@
+---
+title: Batch Operations
+description: Execute multiple AI agent tasks in parallel with batch operations
+---
+
+# Batch Operations
+
+Batch operations allow you to execute multiple AI agent tasks in parallel or sequence, monitor their progress, and merge the results automatically. This is ideal for large-scale automation workflows like updating documentation across multiple repositories, triaging issues, or performing code reviews.
+
+## Overview
+
+A batch operation consists of:
+
+1. **Batch File**: A text file defining all tasks to execute
+2. **Launch**: Starting the batch operation
+3. **Monitor**: Tracking progress of individual tasks
+4. **Merge**: Combining results from completed tasks
+
+## Batch File Format
+
+Batch files use a simple text format where each task is separated by a blank line. Each task can specify:
+
+- `repo`: Repository identifier
+- `task`: Task description or prompt
+- `budget`: Budget allocation for this task
+- `provider`: Provider to use (optional, uses default if not specified)
+- `model`: Model to use (optional)
+- `timeout`: Timeout in seconds (optional)
+
+### Basic Format
+
+```text
+repo: project-name
+task: Task description here
+budget: 2.00
+
+repo: another-project
+task: Another task description
+budget: 1.50
+```
+
+### Full Format with All Options
+
+```text
+repo: zudoku-docs
+task: Update API reference documentation with latest changes
+budget: 3.00
+provider: cursor
+model: gpt-4
+timeout: 300
+
+repo: brightpath-cli
+task: Add installation instructions for Windows platform
+budget: 2.50
+provider: cursor
+model: gpt-4
+timeout: 200
+```
+
+## Creating Batch Files
+
+### Example 1: Documentation Updates
+
+Create a file named `docs-update-batch.txt`:
+
+```text
+repo: zudoku-docs
+task: Update the OpenAPI plugin documentation to include the new authentication options
+budget: 2.00
+
+repo: zudoku-docs
+task: Add examples for custom MDX components in the components documentation
+budget: 2.50
+
+repo: zudoku-docs
+task: Update the deployment guide to include Cloudflare Pages worker configuration
+budget: 1.50
+
+repo: zudoku-docs
+task: Fix broken links in the configuration reference documentation
+budget: 1.00
+
+repo: zudoku-docs
+task: Add troubleshooting section to the build configuration documentation
+budget: 2.00
+```
+
+### Example 2: Multi-Repository Code Review
+
+Create a file named `review-batch.txt`:
+
+```text
+repo: frontend-app
+task: Review PR #42 focusing on security vulnerabilities and authentication flows
+budget: 5.00
+provider: cursor
+
+repo: backend-api
+task: Review PR #103 for performance issues and database query optimization
+budget: 4.50
+provider: cursor
+
+repo: mobile-app
+task: Review PR #28 for memory leaks and React Native best practices
+budget: 4.00
+provider: cursor
+
+repo: infrastructure
+task: Review terraform changes in PR #15 for security and cost implications
+budget: 3.50
+provider: cursor
+```
+
+### Example 3: Issue Triage
+
+Create a file named `triage-batch.txt`:
+
+```text
+repo: backend-api
+task: Triage and label all open issues from the last week
+budget: 3.00
+provider: linear
+
+repo: frontend-app
+task: Triage bugs reported by customers and assign priority levels
+budget: 3.50
+provider: linear
+
+repo: mobile-app
+task: Review feature requests and categorize by implementation effort
+budget: 2.50
+provider: linear
+```
+
+### Example 4: Zudoku Documentation Batch (Real Example)
+
+Here's a comprehensive batch file for updating Zudoku documentation:
+
+```text
+repo: zudoku-docs
+task: Update the getting started guide to include the new CLI commands for project initialization
+budget: 2.50
+provider: cursor
+model: gpt-4
+
+repo: zudoku-docs
+task: Expand the OpenAPI plugin documentation with examples of schema customization and override options
+budget: 3.00
+provider: cursor
+
+repo: zudoku-docs
+task: Add a new guide for integrating Zudoku with Vercel, including environment variables and build configuration
+budget: 2.00
+provider: cursor
+
+repo: zudoku-docs
+task: Update the MDX components documentation with examples of using the new Stepper component
+budget: 1.50
+provider: cursor
+
+repo: zudoku-docs
+task: Create a troubleshooting section for common build errors and how to resolve them
+budget: 2.50
+provider: cursor
+
+repo: zudoku-docs
+task: Add authentication provider examples for Azure AD and PingFederate
+budget: 3.50
+provider: cursor
+
+repo: zudoku-docs
+task: Update the API reference to include the new search configuration options
+budget: 2.00
+provider: cursor
+
+repo: zudoku-docs
+task: Expand the custom plugins guide with real-world examples and best practices
+budget: 3.00
+provider: cursor
+
+repo: zudoku-docs
+task: Add performance optimization tips to the build configuration documentation
+budget: 2.50
+provider: cursor
+
+repo: zudoku-docs
+task: Create a migration guide for users upgrading from version 1.x to 2.x
+budget: 4.00
+provider: cursor
+```
+
+## Launching Batch Operations
+
+### Basic Launch
+
+```bash
+# Launch a batch with default settings
+brightpath batch launch docs-update-batch.txt
+```
+
+### Launch with Options
+
+```bash
+# Launch with custom settings
+brightpath batch launch docs-update-batch.txt \
+  --provider cursor \
+  --max-concurrent 5 \
+  --budget 50.00 \
+  --name "Q1 Documentation Update" \
+  --output-dir ./batch-results
+```
+
+### Launch Options
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--provider` | Default provider for all tasks | From config |
+| `--max-concurrent` | Maximum concurrent tasks | 5 |
+| `--budget` | Total budget limit | Sum of task budgets |
+| `--name` | Name for this batch operation | Auto-generated |
+| `--output-dir` | Directory for output files | `./batch-output` |
+| `--dry-run` | Validate without executing | `false` |
+| `--notify` | Notification webhook URL | None |
+
+### Dry Run
+
+Before launching a batch, validate it with a dry run:
+
+```bash
+# Validate batch file and show what would be executed
+brightpath batch launch docs-update-batch.txt --dry-run
+```
+
+Output:
+
+```
+✓ Batch file validated successfully
+✓ Found 5 tasks
+✓ Total budget: $9.50
+✓ Estimated completion time: 15-20 minutes
+
+Tasks to execute:
+  1. zudoku-docs: Update API reference documentation ($2.00)
+  2. zudoku-docs: Add MDX component examples ($2.50)
+  3. zudoku-docs: Update deployment guide ($1.50)
+  4. zudoku-docs: Fix broken links ($1.00)
+  5. zudoku-docs: Add troubleshooting section ($2.00)
+```
+
+## Monitoring Batch Progress
+
+### Check Status
+
+```bash
+# Check status of a specific batch
+brightpath batch status batch-abc123
+
+# Check all running batches
+brightpath batch status
+
+# Watch status with live updates
+brightpath batch status batch-abc123 --watch
+```
+
+### Status Output
+
+```
+Batch: batch-abc123
+Name: Q1 Documentation Update
+Status: Running
+Started: 2024-01-15 10:30:00
+Budget: $9.50 / $50.00 (19% used)
+
+Tasks: 5 total
+  ✓ Completed: 2 (40%)
+  ⟳ Running: 2 (40%)
+  ⋯ Pending: 1 (20%)
+  ✗ Failed: 0 (0%)
+
+Recent activity:
+  [10:32:15] Task 1 completed successfully ($2.00)
+  [10:33:42] Task 2 completed successfully ($2.50)
+  [10:34:01] Task 3 started
+  [10:34:05] Task 4 started
+```
+
+### Detailed Task Status
+
+```bash
+# View detailed status for a specific task
+brightpath batch status batch-abc123 --task 3 --verbose
+```
+
+### JSON Output
+
+```bash
+# Get status in JSON format for programmatic use
+brightpath batch status batch-abc123 --json
+```
+
+## Managing Running Batches
+
+### List All Batches
+
+```bash
+# List all batches
+brightpath batch list
+
+# List only running batches
+brightpath batch list --status running
+
+# List completed batches from last week
+brightpath batch list --status completed --since 2024-01-08
+```
+
+### Cancel a Batch
+
+```bash
+# Cancel a batch operation
+brightpath batch cancel batch-abc123
+
+# Force cancel without cleanup
+brightpath batch cancel batch-abc123 --force
+```
+
+### Pause and Resume
+
+```bash
+# Pause a running batch
+brightpath batch pause batch-abc123
+
+# Resume a paused batch
+brightpath batch resume batch-abc123
+```
+
+## Merging Results
+
+After tasks complete, merge the results into a cohesive output.
+
+### Automatic Merge
+
+```bash
+# Merge with automatic strategy
+brightpath batch merge batch-abc123 --strategy auto
+```
+
+### Merge Strategies
+
+#### Auto Strategy
+
+Automatically resolves conflicts based on:
+- Task completion time (latest wins)
+- Task success rate
+- Confidence scores from AI agents
+
+```bash
+brightpath batch merge batch-abc123 --strategy auto
+```
+
+#### Manual Strategy
+
+Prompts for manual resolution of conflicts:
+
+```bash
+brightpath batch merge batch-abc123 --strategy manual
+```
+
+#### Consensus Strategy
+
+Uses consensus from multiple task results:
+
+```bash
+brightpath batch merge batch-abc123 --strategy consensus --threshold 0.7
+```
+
+#### Latest Strategy
+
+Uses the most recent successful result:
+
+```bash
+brightpath batch merge batch-abc123 --strategy latest
+```
+
+### Merge Options
+
+```bash
+# Merge with custom options
+brightpath batch merge batch-abc123 \
+  --strategy consensus \
+  --conflicts prompt \
+  --output ./merged-results \
+  --create-pr \
+  --pr-title "Documentation Updates Q1"
+```
+
+### Handling Merge Conflicts
+
+When conflicts occur, Brightpath can:
+
+1. **Skip**: Skip conflicting changes
+2. **Prompt**: Ask for manual resolution
+3. **Override**: Use a specific strategy to resolve
+
+```bash
+# Handle conflicts with prompts
+brightpath batch merge batch-abc123 --conflicts prompt
+
+# Skip conflicts
+brightpath batch merge batch-abc123 --conflicts skip
+
+# Override with latest
+brightpath batch merge batch-abc123 --conflicts override --override-strategy latest
+```
+
+## Advanced Batch Operations
+
+### Conditional Execution
+
+Use conditions to control task execution:
+
+```text
+repo: backend-api
+task: Update API documentation
+budget: 2.00
+condition: tests-passing
+
+repo: backend-api
+task: Deploy to staging
+budget: 3.00
+condition: docs-updated
+depends_on: task-1
+```
+
+### Task Dependencies
+
+Define dependencies between tasks:
+
+```text
+repo: frontend-app
+task: Update dependencies
+budget: 1.00
+id: update-deps
+
+repo: frontend-app
+task: Run tests
+budget: 2.00
+depends_on: update-deps
+
+repo: frontend-app
+task: Build production
+budget: 1.50
+depends_on: update-deps,run-tests
+```
+
+### Retry Configuration
+
+Configure retry behavior for failed tasks:
+
+```text
+repo: api-service
+task: Deploy to production
+budget: 5.00
+retry_attempts: 3
+retry_delay: 60
+retry_backoff: exponential
+```
+
+## Best Practices
+
+### Budgeting
+
+- **Set per-task budgets**: Prevent runaway costs
+- **Use total budget limit**: Cap overall spending
+- **Monitor in real-time**: Watch costs as batch executes
+
+```bash
+brightpath batch launch batch.txt \
+  --budget 100.00 \
+  --warn-threshold 80.00 \
+  --stop-on-limit
+```
+
+### Task Granularity
+
+- **Break large tasks into smaller ones**: Easier to monitor and debug
+- **Use task dependencies**: Control execution order
+- **Group related tasks**: Organize by repository or feature
+
+### Error Handling
+
+- **Enable auto-retry**: Recover from transient failures
+- **Set timeouts**: Prevent hanging tasks
+- **Use notifications**: Get alerts on failures
+
+```bash
+brightpath batch launch batch.txt \
+  --retry-failed \
+  --timeout 300 \
+  --notify https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+```
+
+### Output Management
+
+- **Use output directories**: Organize results by batch
+- **Enable logging**: Debug issues more easily
+- **Save intermediate results**: Checkpoint progress
+
+```bash
+brightpath batch launch batch.txt \
+  --output-dir ./results/q1-docs \
+  --log-level debug \
+  --checkpoint-interval 5
+```
+
+## Troubleshooting
+
+### Batch Won't Start
+
+```bash
+# Validate batch file
+brightpath batch launch batch.txt --dry-run
+
+# Check configuration
+brightpath config validate
+
+# Test provider connectivity
+brightpath provider test cursor
+```
+
+### Tasks Failing
+
+```bash
+# View detailed task logs
+brightpath batch status batch-abc123 --task 3 --logs
+
+# Check task configuration
+brightpath batch inspect batch-abc123 --task 3
+
+# Retry failed tasks
+brightpath batch retry batch-abc123 --failed-only
+```
+
+### Merge Issues
+
+```bash
+# Preview merge without applying
+brightpath batch merge batch-abc123 --dry-run
+
+# Use different merge strategy
+brightpath batch merge batch-abc123 --strategy manual
+
+# Export results for manual merge
+brightpath batch export batch-abc123 --format json
+```
+
+## Examples from Production
+
+### Large-Scale Documentation Update
+
+```bash
+# Launch 50+ documentation tasks
+brightpath batch launch zudoku-docs-batch.txt \
+  --provider cursor \
+  --max-concurrent 10 \
+  --budget 150.00 \
+  --name "Zudoku V2 Docs Update" \
+  --output-dir ./docs-update-results \
+  --notify https://hooks.slack.com/YOUR/WEBHOOK
+
+# Monitor in separate terminal
+brightpath batch status --watch
+
+# Merge when 80% complete
+brightpath batch merge --strategy consensus --threshold 0.8
+```
+
+### Automated Weekly Code Review
+
+```bash
+# Create weekly review batch
+brightpath batch generate review \
+  --repos "frontend,backend,mobile" \
+  --since last-week \
+  --output weekly-review.txt
+
+# Launch review
+brightpath batch launch weekly-review.txt \
+  --provider cursor \
+  --budget 50.00 \
+  --name "Weekly Code Review" \
+  --schedule "0 9 * * MON"
+```
+
+## Next Steps
+
+- [Explore multi-round orchestration](/docs/tools/brightpath/multi-round) for complex DAG-based pipelines
+- [Learn about providers](/docs/tools/brightpath/providers) to configure different AI providers
+- [Review command reference](/docs/tools/brightpath/commands) for all available batch commands

@@ -1,0 +1,836 @@
+---
+title: Command Reference
+description: Complete reference for all Brightpath CLI commands
+---
+
+# Command Reference
+
+This page provides a complete reference for all Brightpath CLI commands, organized by functional groups.
+
+## Global Flags
+
+These flags are available for all commands:
+
+| Flag | Short | Description | Default |
+|------|-------|-------------|---------|
+| `--config` | `-c` | Path to configuration file | `.brightpath.yaml` |
+| `--verbose` | `-v` | Enable verbose logging | `false` |
+| `--quiet` | `-q` | Suppress non-error output | `false` |
+| `--output` | `-o` | Output format (json, yaml, text) | `text` |
+| `--help` | `-h` | Show help information | - |
+
+## Agent Commands
+
+Commands for managing and interacting with AI agents.
+
+### `agent list`
+
+List all available agents and their capabilities.
+
+```bash
+brightpath agent list [--provider <provider>]
+```
+
+**Flags:**
+- `--provider`: Filter agents by provider (cursor, linear, copilot)
+- `--capabilities`: Show detailed capability information
+
+**Example:**
+
+```bash
+# List all available agents
+brightpath agent list
+
+# List agents for a specific provider
+brightpath agent list --provider cursor
+
+# Show detailed capabilities
+brightpath agent list --capabilities
+```
+
+### `agent info`
+
+Display detailed information about a specific agent.
+
+```bash
+brightpath agent info <agent-id> [flags]
+```
+
+**Flags:**
+- `--provider`: Specify the provider
+- `--show-models`: List available models for the agent
+
+**Example:**
+
+```bash
+# Get info about the Cursor agent
+brightpath agent info cursor-code-assistant
+
+# Show available models
+brightpath agent info cursor-code-assistant --show-models
+```
+
+### `agent test`
+
+Test connectivity and functionality of an agent.
+
+```bash
+brightpath agent test <agent-id> [flags]
+```
+
+**Flags:**
+- `--provider`: Provider to test
+- `--task`: Test task to execute
+- `--timeout`: Timeout in seconds (default: 60)
+
+**Example:**
+
+```bash
+# Test Cursor agent
+brightpath agent test cursor-code-assistant
+
+# Test with a custom task
+brightpath agent test cursor-code-assistant --task "Hello world"
+```
+
+## Run Commands
+
+Execute tasks using AI agents.
+
+### `brightpath run`
+
+Execute a single task with an AI agent.
+
+```bash
+brightpath run [flags]
+```
+
+**Flags:**
+- `--provider`: Provider to use (cursor, linear, copilot)
+- `--task`: Task description or prompt
+- `--task-file`: Path to file containing task description
+- `--model`: Model to use (provider-specific)
+- `--budget`: Budget limit in USD
+- `--timeout`: Timeout in seconds
+- `--output-file`: Save output to file
+- `--mode`: Execution mode (direct, server, client)
+- `--server`: Server URL (for client mode)
+
+**Examples:**
+
+```bash
+# Run a simple task with Cursor
+brightpath run --provider cursor --task "Update README with installation instructions"
+
+# Run with budget limit
+brightpath run --provider cursor --task "Refactor authentication module" --budget 5.00
+
+# Run from task file
+brightpath run --provider cursor --task-file ./task.txt --output-file result.json
+
+# Run in client mode
+brightpath run --mode client --server http://localhost:8080 --task "Run tests"
+```
+
+### `brightpath run pipeline`
+
+Execute a multi-stage pipeline.
+
+```bash
+brightpath run pipeline <pipeline-file> [flags]
+```
+
+**Flags:**
+- `--budget`: Total budget for entire pipeline
+- `--checkpoint-dir`: Directory to save checkpoints
+- `--resume`: Resume from last checkpoint
+- `--dry-run`: Validate pipeline without executing
+
+**Examples:**
+
+```bash
+# Execute a pipeline
+brightpath run pipeline ./deploy-pipeline.yaml
+
+# Execute with budget limit
+brightpath run pipeline ./deploy-pipeline.yaml --budget 20.00
+
+# Resume interrupted pipeline
+brightpath run pipeline ./deploy-pipeline.yaml --resume
+
+# Dry run to validate
+brightpath run pipeline ./deploy-pipeline.yaml --dry-run
+```
+
+## Sandbox Commands
+
+Manage sandboxed execution environments.
+
+### `sandbox create`
+
+Create a new sandbox environment.
+
+```bash
+brightpath sandbox create [flags]
+```
+
+**Flags:**
+- `--name`: Sandbox name
+- `--image`: Docker image to use
+- `--workspace`: Mount workspace directory
+- `--env`: Environment variables (can be repeated)
+
+**Example:**
+
+```bash
+# Create a basic sandbox
+brightpath sandbox create --name my-sandbox
+
+# Create with custom image and environment
+brightpath sandbox create --name my-sandbox \
+  --image node:20-alpine \
+  --workspace ./project \
+  --env NODE_ENV=development
+```
+
+### `sandbox list`
+
+List all sandboxes.
+
+```bash
+brightpath sandbox list [--status <status>]
+```
+
+**Example:**
+
+```bash
+# List all sandboxes
+brightpath sandbox list
+
+# List only running sandboxes
+brightpath sandbox list --status running
+```
+
+### `sandbox exec`
+
+Execute a command in a sandbox.
+
+```bash
+brightpath sandbox exec <sandbox-name> <command> [args...]
+```
+
+**Example:**
+
+```bash
+# Run tests in sandbox
+brightpath sandbox exec my-sandbox npm test
+
+# Execute shell command
+brightpath sandbox exec my-sandbox sh -c "ls -la"
+```
+
+### `sandbox destroy`
+
+Destroy a sandbox environment.
+
+```bash
+brightpath sandbox destroy <sandbox-name> [--force]
+```
+
+**Example:**
+
+```bash
+# Destroy a sandbox
+brightpath sandbox destroy my-sandbox
+
+# Force destroy without confirmation
+brightpath sandbox destroy my-sandbox --force
+```
+
+## Actions Commands
+
+Pre-built automation actions for common workflows.
+
+### `actions triage`
+
+Automatically triage and label issues.
+
+```bash
+brightpath actions triage [flags]
+```
+
+**Flags:**
+- `--provider`: Provider to use (linear, github)
+- `--project`: Project identifier
+- `--labels`: Comma-separated list of labels to apply
+- `--assign`: Auto-assign to team members
+- `--dry-run`: Show actions without executing
+
+**Example:**
+
+```bash
+# Triage Linear issues
+brightpath actions triage --provider linear --project "Backend"
+
+# Triage with auto-assignment
+brightpath actions triage --provider linear --project "Backend" --assign
+
+# Dry run
+brightpath actions triage --provider linear --project "Backend" --dry-run
+```
+
+### `actions review`
+
+Perform automated code reviews.
+
+```bash
+brightpath actions review [flags]
+```
+
+**Flags:**
+- `--provider`: Provider to use (cursor, copilot)
+- `--repository`: Repository name
+- `--pr`: Pull request number
+- `--focus`: Review focus (security, performance, style)
+- `--auto-comment`: Automatically post review comments
+
+**Example:**
+
+```bash
+# Review a pull request
+brightpath actions review --provider cursor --repository myorg/myrepo --pr 123
+
+# Security-focused review
+brightpath actions review --provider cursor --repository myorg/myrepo --pr 123 \
+  --focus security --auto-comment
+```
+
+### `actions deploy`
+
+Execute deployment workflows.
+
+```bash
+brightpath actions deploy [flags]
+```
+
+**Flags:**
+- `--environment`: Target environment (dev, staging, production)
+- `--version`: Version to deploy
+- `--rollback`: Rollback to previous version if deployment fails
+- `--health-check`: Health check URL to verify deployment
+
+**Example:**
+
+```bash
+# Deploy to staging
+brightpath actions deploy --environment staging --version v1.2.3
+
+# Deploy with automatic rollback
+brightpath actions deploy --environment production \
+  --version v1.2.3 \
+  --rollback \
+  --health-check https://api.example.com/health
+```
+
+## Merge Commands
+
+Merge results from batch operations and multi-round pipelines.
+
+### `merge batch`
+
+Merge results from batch operations.
+
+```bash
+brightpath merge batch [batch-id] [flags]
+```
+
+**Flags:**
+- `--strategy`: Merge strategy (auto, manual, consensus, latest)
+- `--output`: Output file path
+- `--conflicts`: How to handle conflicts (skip, prompt, override)
+- `--dry-run`: Preview merge without applying
+
+**Examples:**
+
+```bash
+# Merge batch results with auto strategy
+brightpath merge batch batch-123 --strategy auto
+
+# Merge with conflict resolution
+brightpath merge batch batch-123 --strategy consensus --conflicts prompt
+
+# Dry run to preview
+brightpath merge batch batch-123 --dry-run
+```
+
+### `merge pipeline`
+
+Merge results from pipeline stages.
+
+```bash
+brightpath merge pipeline <pipeline-id> [flags]
+```
+
+**Flags:**
+- `--stage`: Specific stage to merge
+- `--strategy`: Merge strategy
+- `--checkpoint`: Create checkpoint after merge
+
+**Example:**
+
+```bash
+# Merge all pipeline stages
+brightpath merge pipeline pipeline-456
+
+# Merge specific stage
+brightpath merge pipeline pipeline-456 --stage build --checkpoint
+```
+
+## Linear Commands
+
+Linear-specific workflow automation.
+
+### `linear sync`
+
+Synchronize Linear issues with local state.
+
+```bash
+brightpath linear sync [flags]
+```
+
+**Flags:**
+- `--project`: Project identifier
+- `--team`: Team identifier
+- `--since`: Sync issues since date (YYYY-MM-DD)
+- `--status`: Filter by status (backlog, in_progress, done)
+
+**Example:**
+
+```bash
+# Sync all issues
+brightpath linear sync --team backend-team
+
+# Sync recent issues
+brightpath linear sync --team backend-team --since 2024-01-01
+```
+
+### `linear create`
+
+Create a new Linear issue.
+
+```bash
+brightpath linear create [flags]
+```
+
+**Flags:**
+- `--title`: Issue title
+- `--description`: Issue description
+- `--project`: Project identifier
+- `--priority`: Priority (urgent, high, medium, low)
+- `--assignee`: Assignee user ID
+- `--labels`: Comma-separated labels
+
+**Example:**
+
+```bash
+# Create an issue
+brightpath linear create \
+  --title "Fix authentication bug" \
+  --description "Users cannot log in with OAuth" \
+  --project backend \
+  --priority high \
+  --labels "bug,authentication"
+```
+
+### `linear update`
+
+Update an existing Linear issue.
+
+```bash
+brightpath linear update <issue-id> [flags]
+```
+
+**Flags:**
+- `--status`: New status
+- `--assignee`: New assignee
+- `--priority`: New priority
+- `--add-label`: Add label (can be repeated)
+- `--remove-label`: Remove label (can be repeated)
+
+**Example:**
+
+```bash
+# Update issue status
+brightpath linear update ISSUE-123 --status in_progress
+
+# Reassign and change priority
+brightpath linear update ISSUE-123 --assignee user-456 --priority urgent
+```
+
+## Copilot Commands
+
+GitHub Copilot integration commands.
+
+### `copilot suggest`
+
+Get code suggestions from Copilot.
+
+```bash
+brightpath copilot suggest [flags]
+```
+
+**Flags:**
+- `--file`: File path for context
+- `--prompt`: Prompt or instruction
+- `--language`: Programming language
+- `--count`: Number of suggestions to generate
+
+**Example:**
+
+```bash
+# Get suggestions for a file
+brightpath copilot suggest \
+  --file ./src/auth.ts \
+  --prompt "Add error handling for OAuth flow"
+
+# Generate multiple suggestions
+brightpath copilot suggest \
+  --file ./src/api.ts \
+  --prompt "Optimize database queries" \
+  --count 3
+```
+
+### `copilot explain`
+
+Explain code using Copilot.
+
+```bash
+brightpath copilot explain <file> [flags]
+```
+
+**Flags:**
+- `--lines`: Specific lines to explain (e.g., "10-20")
+- `--function`: Function name to explain
+- `--detail`: Detail level (brief, normal, detailed)
+
+**Example:**
+
+```bash
+# Explain entire file
+brightpath copilot explain ./src/auth.ts
+
+# Explain specific lines
+brightpath copilot explain ./src/auth.ts --lines "45-60"
+
+# Explain a specific function
+brightpath copilot explain ./src/auth.ts --function validateToken
+```
+
+## Serve Commands
+
+Run Brightpath as a server.
+
+### `serve`
+
+Start Brightpath server.
+
+```bash
+brightpath serve [flags]
+```
+
+**Flags:**
+- `--host`: Host to bind to (default: 0.0.0.0)
+- `--port`: Port to listen on (default: 8080)
+- `--websocket`: Enable WebSocket support
+- `--auth`: Enable authentication
+- `--tls-cert`: Path to TLS certificate
+- `--tls-key`: Path to TLS private key
+- `--workers`: Number of worker threads
+
+**Examples:**
+
+```bash
+# Start server on default port
+brightpath serve
+
+# Start with custom port and WebSocket
+brightpath serve --port 9000 --websocket
+
+# Start with TLS
+brightpath serve --port 443 \
+  --tls-cert /path/to/cert.pem \
+  --tls-key /path/to/key.pem \
+  --auth
+
+# Start with multiple workers
+brightpath serve --port 8080 --workers 4
+```
+
+## MCP Commands
+
+Model Context Protocol integration.
+
+### `mcp server`
+
+Start an MCP server.
+
+```bash
+brightpath mcp server [flags]
+```
+
+**Flags:**
+- `--transport`: Transport type (stdio, http, ws)
+- `--port`: Port for HTTP/WS transport
+- `--capabilities`: Exposed capabilities
+
+**Example:**
+
+```bash
+# Start MCP server with stdio transport
+brightpath mcp server --transport stdio
+
+# Start with HTTP transport
+brightpath mcp server --transport http --port 9000
+```
+
+### `mcp client`
+
+Connect to an MCP server.
+
+```bash
+brightpath mcp client <server-url> [flags]
+```
+
+**Flags:**
+- `--list-tools`: List available tools
+- `--list-resources`: List available resources
+- `--call-tool`: Call a specific tool
+
+**Example:**
+
+```bash
+# Connect and list tools
+brightpath mcp client http://localhost:9000 --list-tools
+
+# Call a tool
+brightpath mcp client http://localhost:9000 \
+  --call-tool "create-issue" \
+  --args '{"title":"Bug fix","priority":"high"}'
+```
+
+## Batch Commands
+
+Batch operation management.
+
+### `batch launch`
+
+Launch a new batch operation from a batch file.
+
+```bash
+brightpath batch launch <batch-file> [flags]
+```
+
+**Flags:**
+- `--provider`: Default provider for all tasks
+- `--max-concurrent`: Maximum concurrent tasks (default: 5)
+- `--budget`: Total budget for batch
+- `--output-dir`: Directory for output files
+- `--name`: Batch operation name
+
+**Example:**
+
+```bash
+# Launch a batch
+brightpath batch launch ./tasks.txt --provider cursor
+
+# Launch with custom settings
+brightpath batch launch ./tasks.txt \
+  --provider cursor \
+  --max-concurrent 10 \
+  --budget 50.00 \
+  --name "Documentation Update"
+```
+
+### `batch status`
+
+Check status of batch operations.
+
+```bash
+brightpath batch status [batch-id] [flags]
+```
+
+**Flags:**
+- `--watch`: Continuously watch status
+- `--json`: Output in JSON format
+
+**Example:**
+
+```bash
+# Check status of specific batch
+brightpath batch status batch-123
+
+# Watch all batches
+brightpath batch status --watch
+
+# Get JSON output
+brightpath batch status batch-123 --json
+```
+
+### `batch list`
+
+List all batch operations.
+
+```bash
+brightpath batch list [flags]
+```
+
+**Flags:**
+- `--status`: Filter by status (running, completed, failed)
+- `--since`: Show batches since date
+
+**Example:**
+
+```bash
+# List all batches
+brightpath batch list
+
+# List running batches
+brightpath batch list --status running
+
+# List recent batches
+brightpath batch list --since 2024-01-01
+```
+
+### `batch cancel`
+
+Cancel a running batch operation.
+
+```bash
+brightpath batch cancel <batch-id> [--force]
+```
+
+**Example:**
+
+```bash
+# Cancel a batch
+brightpath batch cancel batch-123
+
+# Force cancel without cleanup
+brightpath batch cancel batch-123 --force
+```
+
+## Config Commands
+
+Configuration management.
+
+### `config validate`
+
+Validate configuration file.
+
+```bash
+brightpath config validate [config-file]
+```
+
+**Example:**
+
+```bash
+# Validate default config
+brightpath config validate
+
+# Validate specific file
+brightpath config validate ./custom-config.yaml
+```
+
+### `config show`
+
+Display current configuration.
+
+```bash
+brightpath config show [--section <section>]
+```
+
+**Example:**
+
+```bash
+# Show full config
+brightpath config show
+
+# Show specific section
+brightpath config show --section providers
+```
+
+### `config path`
+
+Show path to configuration file being used.
+
+```bash
+brightpath config path
+```
+
+## Provider Commands
+
+Provider management and testing.
+
+### `provider list`
+
+List available providers.
+
+```bash
+brightpath provider list
+```
+
+### `provider test`
+
+Test provider connectivity.
+
+```bash
+brightpath provider test <provider-name> [flags]
+```
+
+**Flags:**
+- `--verbose`: Show detailed test output
+- `--timeout`: Test timeout in seconds
+
+**Example:**
+
+```bash
+# Test Cursor provider
+brightpath provider test cursor
+
+# Test with verbose output
+brightpath provider test cursor --verbose
+```
+
+## Utility Commands
+
+### `version`
+
+Display version information.
+
+```bash
+brightpath version [--short]
+```
+
+### `help`
+
+Display help information.
+
+```bash
+brightpath help [command]
+```
+
+**Example:**
+
+```bash
+# General help
+brightpath help
+
+# Command-specific help
+brightpath help batch launch
+```
+
+## Next Steps
+
+- [Learn about batch operations](/docs/tools/brightpath/batch-operations)
+- [Explore multi-round orchestration](/docs/tools/brightpath/multi-round)
+- [Configure providers](/docs/tools/brightpath/providers)

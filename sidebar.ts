@@ -128,6 +128,26 @@ export const docs: Navigation = [
   },
   {
     type: "category",
+    label: "Tools",
+    icon: "wrench",
+    items: [
+      {
+        type: "category",
+        label: "Brightpath CLI",
+        icon: "terminal",
+        link: "docs/tools/brightpath",
+        items: [
+          "docs/tools/brightpath/installation",
+          "docs/tools/brightpath/commands",
+          "docs/tools/brightpath/batch-operations",
+          "docs/tools/brightpath/multi-round",
+          "docs/tools/brightpath/providers",
+        ],
+      },
+    ],
+  },
+  {
+    type: "category",
     label: "Deployment",
     icon: "cloud-upload",
     link: "docs/deployment",
