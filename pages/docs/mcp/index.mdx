@@ -51,14 +51,25 @@ capabilities tailored to its domain:
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
   <AgentCapability
-    name="FigmaToFullStack"
-    agentType="Figma to Full-Stack Code Generator"
-    domain="figmatofullstack.ai / figmatofullstack.com"
+    name="FigmaToFullstack.com"
+    agentType="Design-to-Code Platform"
+    domain="figmatofullstack.com"
     capabilities={[
-      "Convert Figma designs to production-ready code",
-      "Support for React, Vue, and Angular frameworks",
-      "Responsive design generation",
-      "Component library integration",
+      "Convert Figma designs to production code",
+      "Multi-framework export (React, Vue, Angular, Svelte)",
+      "Design token extraction and sync",
+      "Component library generation",
+    ]}
+  />
+  <AgentCapability
+    name="FigmaToFullstack.ai"
+    agentType="AI Design Assistant"
+    domain="figmatofullstack.ai"
+    capabilities={[
+      "AI-powered design analysis",
+      "Accessibility audits (WCAG 2.1/2.2)",
+      "Automatic responsive generation",
+      "UX improvement recommendations",
     ]}
   />
   <AgentCapability

@@ -9,23 +9,27 @@ type DomainInfo = {
 
 const domainInfoMap: Record<string, DomainInfo> = {
   "figmatofullstack.ai": {
-    name: "FigmaToFullStack",
-    agentType: "Figma to Full-Stack Code Generator",
+    name: "FigmaToFullstack.ai",
+    agentType: "AI-Powered Design Assistant",
     capabilities: [
-      "Convert Figma designs to production-ready code",
-      "Support for React, Vue, and Angular frameworks",
-      "Responsive design generation",
-      "Component library integration",
+      "AI-powered design analysis and recommendations",
+      "Intelligent layout optimization suggestions",
+      "Comprehensive accessibility audits (WCAG 2.1/2.2)",
+      "Automatic responsive layout generation",
+      "UX improvement recommendations",
+      "Color contrast validation and fixes",
     ],
   },
   "figmatofullstack.com": {
-    name: "FigmaToFullStack",
-    agentType: "Figma to Full-Stack Code Generator",
+    name: "FigmaToFullstack.com",
+    agentType: "Design-to-Code Conversion Platform",
     capabilities: [
       "Convert Figma designs to production-ready code",
-      "Support for React, Vue, and Angular frameworks",
-      "Responsive design generation",
-      "Component library integration",
+      "Support for React, Vue, Angular, and Svelte",
+      "Design token extraction and sync",
+      "Component library generation with Storybook",
+      "Multi-framework code export",
+      "Design system consistency maintenance",
     ],
   },
   "brightforest.ai": {
