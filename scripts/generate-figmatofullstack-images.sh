@@ -13,27 +13,24 @@ NC='\033[0m' # No Color
 if [ -z "$XAI_API_KEY" ]; then
     echo -e "${RED}Error: XAI_API_KEY environment variable is not set${NC}"
     echo "Please set your xAI API key: export XAI_API_KEY='your-api-key-here'"
+    echo ""
+    echo "To get an API key:"
+    echo "1. Visit https://x.ai/api"
+    echo "2. Sign up or log in to your xAI account"
+    echo "3. Generate an API key"
+    echo "4. Run: export XAI_API_KEY='your-key-here'"
+    echo ""
+    echo -e "${YELLOW}Alternatively, add XAI_API_KEY to Cursor Dashboard > Cloud Agents > Secrets${NC}"
     exit 1
 fi
 
-echo -e "${GREEN}Starting hero image generation for 13 documentation domains...${NC}\n"
+echo -e "${GREEN}Generating hero images for figmatofullstack.ai and figmatofullstack.com...${NC}\n"
 
-# Define arrays for domain names and prompts
+# Define arrays for domain names and enhanced professional prompts
 declare -A DOMAINS
 DOMAINS=(
-    ["brightforest-io"]="Minimal tech platform illustration with interconnected forest-themed nodes and data streams, dark background, green and teal accent colors, modern flat design"
-    ["brightforestx-com"]="Enterprise cloud architecture diagram with multi-tenant layers, dark background, blue and purple gradients, professional tech illustration"
-    ["brightpath-ai"]="Abstract neural network pathways forming a bright illuminated path through digital space, dark background, golden and cyan light trails"
-    ["pathx-ai"]="Algorithm optimization visualization with flowcharts and performance graphs trending upward, dark background, orange and white accents"
     ["figmatofullstack-com"]="Professional cinematic visualization of design-to-code transformation: glowing Figma design frames with UI components (buttons, forms, navigation) in vibrant pink and blue on left, seamlessly morphing into clean React code with syntax highlighting on right. Center shows smooth flowing particles and light trails representing automated conversion. Dark navy gradient background (#0A1628 to #1A2332) with subtle grid pattern. Modern sleek professional tech aesthetic, isometric perspective, photorealistic rendering with soft ambient lighting and blue-pink accent glows, ultra HD quality"
     ["figmatofullstack-ai"]="Sophisticated AI-powered design assistant visualization: center shows sleek holographic interface displaying UI design with floating AI analysis nodes highlighting accessibility issues, spacing improvements, and layout optimizations. Ethereal purple and gold AI particles flow around design representing intelligent enhancement. Multiple device frames (desktop, tablet, mobile) show auto-generated responsive variations. Subtle neural network patterns in background suggesting machine learning. Dark elegant background (#0D0221 to #1A1034) with premium gold accents (#D4AF37) and vibrant purple highlights (#8B5CF6). Professional tech-luxury aesthetic, floating UI elements with glass morphism, soft volumetric lighting, futuristic but approachable, ultra HD quality"
-    ["mlninjas-com"]="Machine learning ninja silhouette with data katana slicing through datasets, dark background, red and silver accents"
-    ["clifforddalsoniii-com"]="Professional developer portfolio with floating code blocks and project cards, dark background, emerald and white accents"
-    ["getdiyai-com"]="DIY AI workshop with tools, gears, and neural network building blocks, dark background, yellow and orange warm tones"
-    ["getdiyrpa-com"]="Robotic process automation with connected workflow nodes and automation bots, dark background, blue and green accents"
-    ["appnowhq-com"]="Rapid app development with building blocks assembling into mobile and web apps, dark background, coral and teal accents"
-    ["brightforest-ai"]="MLOps pipeline visualization with model training, deployment, and monitoring stages, dark background, green and blue data flows"
-    ["iheartai-ai"]="Heart-shaped circuit board with AI learning pathways, warm educational theme, dark background, red and pink with white light"
 )
 
 # API configuration
@@ -57,13 +54,12 @@ generate_image() {
     CURRENT=$((CURRENT + 1))
     
     echo -e "${BLUE}[$CURRENT/$TOTAL] Processing: ${domain}${NC}"
-    echo -e "  Prompt: ${prompt:0:60}..."
+    echo -e "  Prompt: ${prompt:0:80}..."
     
     # Create output directory if it doesn't exist
     mkdir -p "$output_dir"
     
     # Create JSON payload
-    # Note: Using 1024x1024 as xAI's standard size, images will be optimized for display
     local json_payload=$(jq -n \
         --arg model "$MODEL" \
         --arg prompt "$prompt" \
@@ -142,7 +138,7 @@ done
 
 # Summary
 echo -e "\n${BLUE}═══════════════════════════════════════════════════════${NC}"
-echo -e "${GREEN}Image Generation Complete!${NC}"
+echo -e "${GREEN}FigmaToFullstack Image Generation Complete!${NC}"
 echo -e "${BLUE}═══════════════════════════════════════════════════════${NC}"
 echo -e "  Total domains: ${TOTAL}"
 echo -e "  ${GREEN}Successfully generated: ${SUCCESS_COUNT}${NC}"
@@ -155,5 +151,8 @@ if [ $FAILED_COUNT -gt 0 ]; then
     done
     exit 1
 else
-    echo -e "\n${GREEN}All hero images generated successfully! 🎉${NC}"
+    echo -e "\n${GREEN}All figmatofullstack hero images generated successfully! 🎉${NC}"
+    echo -e "\nGenerated images:"
+    echo -e "  - docs/public/images/figmatofullstack-ai/hero.png"
+    echo -e "  - docs/public/images/figmatofullstack-com/hero.png"
 fi
