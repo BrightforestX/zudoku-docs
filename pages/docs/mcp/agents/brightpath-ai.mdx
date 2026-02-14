@@ -1,0 +1,252 @@
+---
+title: BrightPath.ai - AI Model Orchestration Agent
+description: Model selection and inference pipeline design agent
+sidebar_icon: brain
+---
+
+# BrightPath.ai AI Model Orchestration Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **BrightPath.ai AI Model Orchestration Agent** helps you select optimal AI models, design efficient inference pipelines, and manage the complete model lifecycle across different deployment targets.
+
+## Overview
+
+This agent specializes in AI model orchestration, helping teams navigate the complex landscape of available models, optimize inference pipelines, and deploy models effectively.
+
+## Key Capabilities
+
+### Model Selection
+- Compare models across benchmarks and use cases
+- Recommend models based on requirements (latency, accuracy, cost)
+- Evaluate trade-offs between model size and performance
+- Access up-to-date model leaderboards and benchmarks
+
+### Pipeline Design
+- Design efficient multi-model inference pipelines
+- Configure model ensembles and routing logic
+- Optimize batch processing and caching strategies
+- Handle model versioning and A/B testing
+
+### Deployment Management
+- Deploy models to various targets (cloud, edge, on-premise)
+- Configure auto-scaling and load balancing
+- Monitor inference performance and costs
+- Manage model serving infrastructure
+
+## Example Tools
+
+### `recommend_model`
+
+Get AI model recommendations based on requirements.
+
+```json
+{
+  "name": "recommend_model",
+  "description": "Recommend optimal AI models based on task requirements and constraints",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "task_type": {
+        "type": "string",
+        "enum": ["text_generation", "image_generation", "embeddings", "classification", "object_detection"],
+        "description": "Type of AI task"
+      },
+      "constraints": {
+        "type": "object",
+        "properties": {
+          "max_latency_ms": {"type": "integer"},
+          "max_cost_per_1k_requests": {"type": "number"},
+          "min_accuracy_score": {"type": "number"},
+          "deployment_target": {"type": "string", "enum": ["cloud", "edge", "mobile"]}
+        }
+      },
+      "quality_priority": {
+        "type": "string",
+        "enum": ["speed", "accuracy", "cost", "balanced"],
+        "default": "balanced"
+      }
+    },
+    "required": ["task_type"]
+  }
+}
+```
+
+### `design_pipeline`
+
+Design an inference pipeline with multiple models.
+
+```json
+{
+  "name": "design_pipeline",
+  "description": "Design a multi-stage inference pipeline with routing and fallback logic",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "pipeline_name": {
+        "type": "string",
+        "description": "Name for the pipeline"
+      },
+      "stages": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "model_id": {"type": "string"},
+            "routing_condition": {"type": "string"},
+            "fallback_model": {"type": "string"},
+            "cache_enabled": {"type": "boolean"}
+          }
+        }
+      },
+      "optimization_goals": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["minimize_latency", "minimize_cost", "maximize_accuracy"]
+        }
+      }
+    },
+    "required": ["pipeline_name", "stages"]
+  }
+}
+```
+
+### `compare_models`
+
+Compare multiple models on specific benchmarks.
+
+```json
+{
+  "name": "compare_models",
+  "description": "Compare performance metrics across multiple AI models",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "model_ids": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "List of model identifiers to compare"
+      },
+      "benchmarks": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Benchmarks to evaluate (e.g., 'MMLU', 'HumanEval')"
+      },
+      "metrics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["accuracy", "latency", "throughput", "cost_per_token"]
+        }
+      }
+    },
+    "required": ["model_ids"]
+  }
+}
+```
+
+### `deploy_inference_endpoint`
+
+Deploy a model as an inference endpoint.
+
+```json
+{
+  "name": "deploy_inference_endpoint",
+  "description": "Deploy an AI model as a scalable inference endpoint",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "model_id": {
+        "type": "string",
+        "description": "Model identifier to deploy"
+      },
+      "endpoint_name": {
+        "type": "string",
+        "description": "Name for the inference endpoint"
+      },
+      "scaling_config": {
+        "type": "object",
+        "properties": {
+          "min_instances": {"type": "integer"},
+          "max_instances": {"type": "integer"},
+          "target_requests_per_second": {"type": "number"}
+        }
+      },
+      "hardware": {
+        "type": "string",
+        "enum": ["cpu", "gpu_t4", "gpu_a100", "gpu_h100"],
+        "description": "Hardware type for inference"
+      }
+    },
+    "required": ["model_id", "endpoint_name"]
+  }
+}
+```
+
+## Available Resources
+
+- **Model Catalog**: Browse thousands of pre-trained models with metadata
+- **Benchmark Results**: Access latest benchmark scores and leaderboards
+- **Pipeline Templates**: Pre-built pipeline configurations for common use cases
+- **Cost Calculators**: Estimate inference costs across providers
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://orchestration.brightpath.ai
+
+# Server Name
+brightpath-orchestration
+
+# Required Environment Variables
+BRIGHTPATH_API_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Model Selection">
+    ```
+    Recommend a text generation model with less than 100ms latency,
+    under $5 per 1M tokens, deployable to AWS Lambda.
+    ```
+  </Tab>
+  <Tab title="Pipeline Design">
+    ```
+    Design a two-stage pipeline: use a small model for simple queries,
+    fallback to GPT-4 for complex ones, with caching enabled.
+    ```
+  </Tab>
+  <Tab title="Comparison">
+    ```
+    Compare GPT-4, Claude 3.5, and Llama 3.1 on code generation benchmarks
+    focusing on accuracy and cost.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Model Selection**: "Find the best open-source model for sentiment analysis"
+- **Cost Optimization**: "Design a pipeline to reduce LLM costs by 50% without losing quality"
+- **Performance Tuning**: "Compare response times of different embedding models"
+- **Deployment**: "Deploy Llama 3.1 to production with auto-scaling"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [BrightForest.ai](/docs/mcp/agents/brightforest-ai) - MLOps and model deployment
+- [PathX.ai](/docs/mcp/agents/pathx-ai) - Algorithm optimization and tuning
+- [MLNinjas.com](/docs/mcp/agents/mlninjas-com) - Model training and experiments

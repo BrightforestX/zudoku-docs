@@ -1,0 +1,277 @@
+---
+title: MLNinjas.com - ML Training Agent
+description: Experiment tracking and hyperparameter search agent
+sidebar_icon: flask
+---
+
+# MLNinjas.com ML Training Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **MLNinjas.com ML Training Agent** coordinates distributed training jobs, tracks experiments, searches hyperparameter spaces, and manages training artifacts for machine learning projects.
+
+## Overview
+
+This agent specializes in ML training workflows, helping data scientists manage the complexity of training, experimenting, and optimizing machine learning models.
+
+## Key Capabilities
+
+### Experiment Tracking
+- Log metrics, parameters, and artifacts
+- Compare experiments across runs
+- Visualize training curves and performance
+- Version datasets and model checkpoints
+
+### Hyperparameter Search
+- Automated hyperparameter optimization
+- Support for Optuna, Ray Tune, Weights & Biases
+- Parallel trial execution
+- Early stopping for inefficient trials
+
+### Distributed Training
+- Coordinate multi-GPU and multi-node training
+- Manage training job scheduling
+- Handle fault tolerance and checkpointing
+- Optimize resource allocation
+
+## Example Tools
+
+### `start_training`
+
+Start a new training job with experiment tracking.
+
+```json
+{
+  "name": "start_training",
+  "description": "Start a model training job with automatic experiment tracking",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "experiment_name": {
+        "type": "string",
+        "description": "Name for this experiment"
+      },
+      "model_config": {
+        "type": "object",
+        "description": "Model architecture and hyperparameters"
+      },
+      "dataset": {
+        "type": "string",
+        "description": "Dataset identifier or path"
+      },
+      "hardware": {
+        "type": "object",
+        "properties": {
+          "gpu_count": {"type": "integer"},
+          "gpu_type": {"type": "string"},
+          "distributed": {"type": "boolean"}
+        }
+      },
+      "tracking": {
+        "type": "object",
+        "properties": {
+          "log_interval": {"type": "integer"},
+          "save_checkpoints": {"type": "boolean"},
+          "tags": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "required": ["experiment_name", "model_config", "dataset"]
+  }
+}
+```
+
+### `search_hyperparameters`
+
+Run automated hyperparameter search.
+
+```json
+{
+  "name": "search_hyperparameters",
+  "description": "Execute hyperparameter search using specified strategy",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "base_config": {
+        "type": "object",
+        "description": "Base model configuration"
+      },
+      "search_space": {
+        "type": "object",
+        "description": "Parameter ranges to explore",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "min": {"type": "number"},
+            "max": {"type": "number"},
+            "distribution": {"type": "string", "enum": ["uniform", "log-uniform", "categorical"]}
+          }
+        }
+      },
+      "search_algorithm": {
+        "type": "string",
+        "enum": ["random", "grid", "bayesian", "hyperband", "optuna"],
+        "default": "bayesian"
+      },
+      "objective_metric": {
+        "type": "string",
+        "description": "Metric to optimize (e.g., 'val_accuracy')"
+      },
+      "direction": {
+        "type": "string",
+        "enum": ["minimize", "maximize"],
+        "description": "Optimization direction"
+      },
+      "max_trials": {
+        "type": "integer",
+        "default": 100
+      },
+      "parallel_trials": {
+        "type": "integer",
+        "default": 4,
+        "description": "Number of trials to run in parallel"
+      }
+    },
+    "required": ["base_config", "search_space", "objective_metric"]
+  }
+}
+```
+
+### `compare_experiments`
+
+Compare metrics across multiple experiments.
+
+```json
+{
+  "name": "compare_experiments",
+  "description": "Compare metrics, parameters, and results across experiments",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "experiment_ids": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Experiments to compare"
+      },
+      "metrics": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Metrics to compare (e.g., 'accuracy', 'loss')"
+      },
+      "visualization_type": {
+        "type": "string",
+        "enum": ["line_chart", "bar_chart", "parallel_coordinates", "scatter"],
+        "default": "line_chart"
+      },
+      "export_format": {
+        "type": "string",
+        "enum": ["json", "csv", "pdf"],
+        "description": "Format for exported comparison report"
+      }
+    },
+    "required": ["experiment_ids"]
+  }
+}
+```
+
+### `resume_training`
+
+Resume a paused or failed training job.
+
+```json
+{
+  "name": "resume_training",
+  "description": "Resume training from a checkpoint",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "experiment_id": {
+        "type": "string",
+        "description": "Experiment to resume"
+      },
+      "checkpoint_path": {
+        "type": "string",
+        "description": "Path to checkpoint file (defaults to latest)"
+      },
+      "updated_config": {
+        "type": "object",
+        "description": "Configuration updates (e.g., learning rate)"
+      },
+      "reset_optimizer": {
+        "type": "boolean",
+        "default": false,
+        "description": "Reset optimizer state"
+      }
+    },
+    "required": ["experiment_id"]
+  }
+}
+```
+
+## Available Resources
+
+- **Experiment Logs**: All training metrics, parameters, and system logs
+- **Model Checkpoints**: Saved model weights and optimizer states
+- **Training Datasets**: Versioned training and validation datasets
+- **Hyperparameter Histories**: Complete search histories and best configs
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://training.mlninjas.com
+
+# Server Name
+mlninjas-training
+
+# Required Environment Variables
+MLNINJAS_API_KEY=your-api-key
+MLNINJAS_WORKSPACE=your-workspace-id
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Start Training">
+    ```
+    Start training a ResNet50 on ImageNet with 4 GPUs, log metrics
+    every 100 steps, and save checkpoints every epoch.
+    ```
+  </Tab>
+  <Tab title="Hyperparameter Search">
+    ```
+    Search learning rate (1e-5 to 1e-2) and dropout (0.1 to 0.5)
+    using Bayesian optimization, maximize val_accuracy, run 50 trials.
+    ```
+  </Tab>
+  <Tab title="Compare">
+    ```
+    Compare experiments 'baseline-v1', 'augmentation-v2', and
+    'larger-model-v3' on validation accuracy and training time.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Training Management**: "Train BERT on our custom dataset with 8 GPUs"
+- **Optimization**: "Find optimal hyperparameters for my image classifier"
+- **Experiment Comparison**: "Which experiment achieved the best F1 score?"
+- **Resume Training**: "Resume the training job that failed yesterday"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [PathX.ai](/docs/mcp/agents/pathx-ai) - Algorithm benchmarking and profiling
+- [BrightForest.ai](/docs/mcp/agents/brightforest-ai) - MLOps and model deployment
+- [BrightPath.ai](/docs/mcp/agents/brightpath-ai) - Model selection and orchestration

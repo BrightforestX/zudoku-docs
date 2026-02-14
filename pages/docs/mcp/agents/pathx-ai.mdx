@@ -1,0 +1,271 @@
+---
+title: PathX.ai - Algorithm Optimization Agent
+description: Benchmark runner and hyperparameter tuning agent
+sidebar_icon: chart-line
+---
+
+# PathX.ai Algorithm Optimization Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **PathX.ai Algorithm Optimization Agent** runs benchmarks, tunes hyperparameters, and optimizes algorithm performance for machine learning and data processing workflows.
+
+## Overview
+
+This agent specializes in algorithm optimization, helping data scientists and ML engineers find optimal configurations through systematic experimentation and performance profiling.
+
+## Key Capabilities
+
+### Benchmark Automation
+- Run standardized ML benchmarks (MLPerf, GLUE, SuperGLUE)
+- Create custom benchmark suites
+- Compare algorithm performance across datasets
+- Generate performance reports with visualizations
+
+### Hyperparameter Tuning
+- Automated hyperparameter search (grid, random, Bayesian)
+- Multi-objective optimization (accuracy vs. speed vs. cost)
+- Early stopping and pruning for efficient search
+- Track and visualize tuning progress
+
+### Performance Profiling
+- Profile compute and memory usage
+- Identify bottlenecks in ML pipelines
+- Optimize data loading and preprocessing
+- Suggest hardware acceleration opportunities
+
+## Example Tools
+
+### `run_benchmark`
+
+Execute a benchmark suite on an algorithm or model.
+
+```json
+{
+  "name": "run_benchmark",
+  "description": "Run standardized benchmarks to evaluate algorithm performance",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "algorithm_id": {
+        "type": "string",
+        "description": "Algorithm or model identifier"
+      },
+      "benchmark_suite": {
+        "type": "string",
+        "enum": ["mlperf_training", "mlperf_inference", "glue", "superglue", "custom"],
+        "description": "Benchmark suite to run"
+      },
+      "datasets": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Specific datasets to benchmark on"
+      },
+      "metrics": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Metrics to collect (accuracy, f1, latency, throughput)"
+      },
+      "hardware": {
+        "type": "string",
+        "enum": ["cpu", "gpu", "tpu"],
+        "description": "Hardware to run benchmark on"
+      }
+    },
+    "required": ["algorithm_id", "benchmark_suite"]
+  }
+}
+```
+
+### `tune_hyperparameters`
+
+Perform hyperparameter optimization.
+
+```json
+{
+  "name": "tune_hyperparameters",
+  "description": "Search for optimal hyperparameters using specified strategy",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "model_config": {
+        "type": "object",
+        "description": "Base model configuration"
+      },
+      "search_space": {
+        "type": "object",
+        "description": "Hyperparameter ranges to search",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "type": {"type": "string", "enum": ["float", "int", "categorical"]},
+            "min": {"type": "number"},
+            "max": {"type": "number"},
+            "values": {"type": "array"}
+          }
+        }
+      },
+      "strategy": {
+        "type": "string",
+        "enum": ["grid", "random", "bayesian", "hyperband"],
+        "description": "Search strategy"
+      },
+      "objective": {
+        "type": "string",
+        "description": "Metric to optimize (e.g., 'val_accuracy')"
+      },
+      "max_trials": {
+        "type": "integer",
+        "default": 100,
+        "description": "Maximum number of trials"
+      },
+      "early_stopping": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable early stopping for poor trials"
+      }
+    },
+    "required": ["model_config", "search_space", "objective"]
+  }
+}
+```
+
+### `profile_performance`
+
+Profile algorithm performance and identify bottlenecks.
+
+```json
+{
+  "name": "profile_performance",
+  "description": "Profile compute, memory, and I/O performance of algorithm execution",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "algorithm_id": {
+        "type": "string",
+        "description": "Algorithm to profile"
+      },
+      "profiling_mode": {
+        "type": "string",
+        "enum": ["cpu", "memory", "gpu", "io", "all"],
+        "default": "all",
+        "description": "What to profile"
+      },
+      "sample_input": {
+        "type": "object",
+        "description": "Sample input data for profiling"
+      },
+      "iterations": {
+        "type": "integer",
+        "default": 10,
+        "description": "Number of profiling iterations"
+      }
+    },
+    "required": ["algorithm_id"]
+  }
+}
+```
+
+### `compare_algorithms`
+
+Compare performance of multiple algorithms on same task.
+
+```json
+{
+  "name": "compare_algorithms",
+  "description": "Compare multiple algorithms across performance metrics",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "algorithm_ids": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Algorithms to compare"
+      },
+      "test_datasets": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Datasets for comparison"
+      },
+      "metrics": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Metrics to evaluate"
+      },
+      "generate_report": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate visualization report"
+      }
+    },
+    "required": ["algorithm_ids", "test_datasets"]
+  }
+}
+```
+
+## Available Resources
+
+- **Benchmark Results**: Historical benchmark data and trends
+- **Tuning History**: Past hyperparameter search results
+- **Performance Profiles**: Detailed profiling reports with visualizations
+- **Optimization Guides**: Best practices for algorithm optimization
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://optimization.pathx.ai
+
+# Server Name
+pathx-optimization
+
+# Required Environment Variables
+PATHX_API_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Benchmark">
+    ```
+    Run MLPerf inference benchmark on my BERT model using GPU,
+    measure latency and throughput.
+    ```
+  </Tab>
+  <Tab title="Tuning">
+    ```
+    Tune learning rate (1e-5 to 1e-2) and batch size (8, 16, 32)
+    for my image classifier, optimize for validation accuracy.
+    ```
+  </Tab>
+  <Tab title="Profiling">
+    ```
+    Profile my data preprocessing pipeline, identify memory bottlenecks,
+    and suggest optimization opportunities.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Model Selection**: "Compare ResNet50 vs EfficientNet vs ViT on ImageNet"
+- **Hyperparameter Search**: "Find optimal learning rate and dropout for my transformer"
+- **Performance Analysis**: "Why is my model training so slow? Profile it."
+- **Optimization**: "Reduce inference latency by 50% without losing accuracy"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [BrightPath.ai](/docs/mcp/agents/brightpath-ai) - Model selection and orchestration
+- [MLNinjas.com](/docs/mcp/agents/mlninjas-com) - Experiment tracking and training
+- [BrightForest.ai](/docs/mcp/agents/brightforest-ai) - MLOps and deployment

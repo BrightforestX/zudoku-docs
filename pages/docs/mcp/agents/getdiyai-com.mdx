@@ -1,0 +1,287 @@
+---
+title: GetDIYAI.com - DIY AI Builder Agent
+description: Template selection and model configuration agent for no-code AI
+sidebar_icon: cube
+---
+
+# GetDIYAI.com DIY AI Builder Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **GetDIYAI.com DIY AI Builder Agent** helps users select AI templates, configure models, and deploy custom AI solutions without requiring deep machine learning expertise.
+
+## Overview
+
+This agent specializes in democratizing AI development, enabling non-experts to build and deploy AI applications through guided workflows and pre-built templates.
+
+## Key Capabilities
+
+### Template Selection
+- Browse curated AI application templates
+- Match templates to use cases and requirements
+- Customize templates with no-code configuration
+- Preview template capabilities and examples
+
+### Model Configuration
+- Select pre-trained models for specific tasks
+- Configure model parameters with guided wizards
+- Fine-tune models on custom data (no-code)
+- Test and validate model performance
+
+### No-Code Deployment
+- Deploy AI apps with one-click deployment
+- Generate API endpoints automatically
+- Create embeddable widgets and components
+- Monitor usage and performance
+
+## Example Tools
+
+### `browse_templates`
+
+Browse available AI application templates.
+
+```json
+{
+  "name": "browse_templates",
+  "description": "Browse and search AI application templates by category or use case",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "category": {
+        "type": "string",
+        "enum": ["chatbot", "image_generation", "text_analysis", "recommendation", "prediction", "automation"],
+        "description": "Template category"
+      },
+      "use_case": {
+        "type": "string",
+        "description": "Specific use case (e.g., 'customer support chatbot')"
+      },
+      "complexity": {
+        "type": "string",
+        "enum": ["beginner", "intermediate", "advanced"],
+        "description": "Desired complexity level"
+      },
+      "filters": {
+        "type": "object",
+        "properties": {
+          "industry": {"type": "string"},
+          "deployment_target": {"type": "string"},
+          "pricing_tier": {"type": "string"}
+        }
+      }
+    }
+  }
+}
+```
+
+### `create_ai_app`
+
+Create a new AI application from a template.
+
+```json
+{
+  "name": "create_ai_app",
+  "description": "Create a new AI application using a template",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "template_id": {
+        "type": "string",
+        "description": "Template to use"
+      },
+      "app_name": {
+        "type": "string",
+        "description": "Name for the AI application"
+      },
+      "configuration": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "AI model to use"
+          },
+          "custom_data": {
+            "type": "string",
+            "description": "Path to custom training data (optional)"
+          },
+          "parameters": {
+            "type": "object",
+            "description": "Model-specific parameters"
+          }
+        }
+      },
+      "branding": {
+        "type": "object",
+        "properties": {
+          "logo": {"type": "string"},
+          "primary_color": {"type": "string"},
+          "app_description": {"type": "string"}
+        }
+      }
+    },
+    "required": ["template_id", "app_name"]
+  }
+}
+```
+
+### `configure_model`
+
+Configure an AI model with guided wizard.
+
+```json
+{
+  "name": "configure_model",
+  "description": "Configure AI model parameters using a no-code wizard",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "AI app to configure"
+      },
+      "task_type": {
+        "type": "string",
+        "enum": ["text_generation", "classification", "qa", "summarization", "translation"],
+        "description": "AI task type"
+      },
+      "model_preference": {
+        "type": "string",
+        "enum": ["fastest", "most_accurate", "balanced", "cheapest"],
+        "default": "balanced"
+      },
+      "fine_tune": {
+        "type": "object",
+        "properties": {
+          "enabled": {"type": "boolean"},
+          "training_data": {"type": "string"},
+          "epochs": {"type": "integer"}
+        }
+      },
+      "behavior": {
+        "type": "object",
+        "properties": {
+          "temperature": {"type": "number"},
+          "max_length": {"type": "integer"},
+          "system_prompt": {"type": "string"}
+        }
+      }
+    },
+    "required": ["app_id", "task_type"]
+  }
+}
+```
+
+### `deploy_ai_app`
+
+Deploy an AI application with one click.
+
+```json
+{
+  "name": "deploy_ai_app",
+  "description": "Deploy AI application with automatic API and widget generation",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "AI app to deploy"
+      },
+      "deployment_target": {
+        "type": "string",
+        "enum": ["cloud", "on_premise", "edge"],
+        "default": "cloud"
+      },
+      "generate_api": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate REST API endpoint"
+      },
+      "generate_widget": {
+        "type": "boolean",
+        "default": false,
+        "description": "Generate embeddable widget code"
+      },
+      "scaling": {
+        "type": "object",
+        "properties": {
+          "auto_scale": {"type": "boolean"},
+          "min_instances": {"type": "integer"},
+          "max_instances": {"type": "integer"}
+        }
+      },
+      "custom_domain": {
+        "type": "string",
+        "description": "Optional custom domain"
+      }
+    },
+    "required": ["app_id"]
+  }
+}
+```
+
+## Available Resources
+
+- **Template Library**: Hundreds of pre-built AI app templates
+- **Model Catalog**: Curated models for different tasks
+- **Training Datasets**: Sample datasets for fine-tuning
+- **Deployment Guides**: Step-by-step deployment instructions
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://builder.getdiyai.com
+
+# Server Name
+getdiyai-builder
+
+# Required Environment Variables
+GETDIYAI_API_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Browse Templates">
+    ```
+    Show me chatbot templates for customer support, beginner-friendly,
+    suitable for e-commerce businesses.
+    ```
+  </Tab>
+  <Tab title="Create App">
+    ```
+    Create a customer support chatbot named "HelpBot" using GPT-4,
+    fine-tune on my support ticket data, and add my company branding.
+    ```
+  </Tab>
+  <Tab title="Deploy">
+    ```
+    Deploy my sentiment analysis app to the cloud with auto-scaling,
+    generate a REST API and embeddable widget.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Chatbot Creation**: "Build a customer support chatbot without coding"
+- **Image Generation**: "Create an AI logo generator for my design business"
+- **Text Analysis**: "Build a sentiment analyzer for social media monitoring"
+- **Recommendations**: "Create a product recommendation system for my store"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [BrightPath.ai](/docs/mcp/agents/brightpath-ai) - Advanced model orchestration
+- [BrightForest.ai](/docs/mcp/agents/brightforest-ai) - MLOps and deployment
+- [IHeartAI.ai](/docs/mcp/agents/iheartai-ai) - AI learning and tutorials

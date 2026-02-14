@@ -1,0 +1,265 @@
+---
+title: BrightForestX.com - Enterprise Configuration Agent
+description: Multi-tenant setup and SLA management agent for enterprise deployments
+sidebar_icon: building
+---
+
+# BrightForestX.com Enterprise Configuration Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **BrightForestX.com Enterprise Configuration Agent** manages multi-tenant configurations, SLA monitoring, compliance settings, and enterprise-grade operational requirements for large-scale BrightForest deployments.
+
+## Overview
+
+This agent specializes in enterprise operations, handling complex multi-tenant architectures, ensuring SLA compliance, and managing enterprise security and governance requirements.
+
+## Key Capabilities
+
+### Multi-Tenant Management
+- Configure tenant isolation and resource allocation
+- Manage tenant-specific settings and branding
+- Handle tenant provisioning and deprovisioning
+- Monitor cross-tenant resource usage
+
+### SLA Management
+- Define and monitor service level agreements
+- Track uptime, latency, and error rate metrics
+- Trigger alerts when SLA thresholds are breached
+- Generate SLA compliance reports
+
+### Compliance & Governance
+- Enforce security policies across tenants
+- Manage data residency requirements
+- Configure audit logging and retention
+- Handle GDPR, SOC2, and HIPAA compliance
+
+## Example Tools
+
+### `create_tenant`
+
+Provision a new tenant with enterprise configuration.
+
+```json
+{
+  "name": "create_tenant",
+  "description": "Create a new tenant with specified configuration and resource limits",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "tenant_name": {
+        "type": "string",
+        "description": "Unique tenant identifier"
+      },
+      "tier": {
+        "type": "string",
+        "enum": ["starter", "professional", "enterprise"],
+        "description": "Service tier determining resource limits"
+      },
+      "configuration": {
+        "type": "object",
+        "properties": {
+          "custom_domain": {"type": "string"},
+          "sso_enabled": {"type": "boolean"},
+          "data_region": {"type": "string"},
+          "retention_days": {"type": "integer"}
+        }
+      },
+      "admin_email": {
+        "type": "string",
+        "format": "email",
+        "description": "Primary administrator email"
+      }
+    },
+    "required": ["tenant_name", "tier", "admin_email"]
+  }
+}
+```
+
+### `configure_sla`
+
+Define SLA metrics and thresholds for a tenant.
+
+```json
+{
+  "name": "configure_sla",
+  "description": "Configure SLA monitoring and alerting for a tenant",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "tenant_id": {
+        "type": "string",
+        "description": "Target tenant ID"
+      },
+      "sla_config": {
+        "type": "object",
+        "properties": {
+          "uptime_percentage": {
+            "type": "number",
+            "minimum": 90,
+            "maximum": 100,
+            "description": "Guaranteed uptime percentage"
+          },
+          "max_latency_ms": {
+            "type": "integer",
+            "description": "Maximum acceptable latency in milliseconds"
+          },
+          "error_rate_threshold": {
+            "type": "number",
+            "description": "Maximum error rate percentage"
+          }
+        }
+      },
+      "alert_channels": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Notification channels for SLA breaches"
+      }
+    },
+    "required": ["tenant_id", "sla_config"]
+  }
+}
+```
+
+### `generate_compliance_report`
+
+Generate compliance reports for audit purposes.
+
+```json
+{
+  "name": "generate_compliance_report",
+  "description": "Generate compliance report for specified standards and time period",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "tenant_id": {
+        "type": "string",
+        "description": "Tenant to generate report for"
+      },
+      "compliance_standard": {
+        "type": "string",
+        "enum": ["soc2", "gdpr", "hipaa", "iso27001"],
+        "description": "Compliance standard to report on"
+      },
+      "start_date": {
+        "type": "string",
+        "format": "date",
+        "description": "Report period start date"
+      },
+      "end_date": {
+        "type": "string",
+        "format": "date",
+        "description": "Report period end date"
+      },
+      "format": {
+        "type": "string",
+        "enum": ["pdf", "json", "csv"],
+        "default": "pdf"
+      }
+    },
+    "required": ["tenant_id", "compliance_standard", "start_date", "end_date"]
+  }
+}
+```
+
+### `manage_resource_quota`
+
+Update resource quotas and limits for a tenant.
+
+```json
+{
+  "name": "manage_resource_quota",
+  "description": "Update resource quotas for a tenant",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "tenant_id": {
+        "type": "string",
+        "description": "Target tenant ID"
+      },
+      "quotas": {
+        "type": "object",
+        "properties": {
+          "max_users": {"type": "integer"},
+          "max_api_calls_per_month": {"type": "integer"},
+          "storage_gb": {"type": "number"},
+          "max_concurrent_jobs": {"type": "integer"}
+        }
+      },
+      "effective_date": {
+        "type": "string",
+        "format": "date",
+        "description": "When quota changes take effect"
+      }
+    },
+    "required": ["tenant_id", "quotas"]
+  }
+}
+```
+
+## Available Resources
+
+- **Tenant Configurations**: Access tenant-specific settings and parameters
+- **SLA Metrics**: Real-time and historical SLA compliance data
+- **Audit Logs**: Complete audit trail of configuration changes
+- **Compliance Documents**: Templates and generated compliance reports
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://enterprise.brightforestx.com
+
+# Server Name
+brightforestx-enterprise
+
+# Required Environment Variables
+BRIGHTFORESTX_API_KEY=your-api-key
+BRIGHTFORESTX_ORG_ID=your-organization-id
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Tenant Setup">
+    ```
+    Create a new enterprise tenant named 'acme-corp' with SSO enabled,
+    data residency in EU, and 99.9% uptime SLA.
+    ```
+  </Tab>
+  <Tab title="SLA Monitoring">
+    ```
+    Check if any tenants have breached their SLA in the last 24 hours
+    and generate incident reports.
+    ```
+  </Tab>
+  <Tab title="Compliance">
+    ```
+    Generate a SOC2 compliance report for tenant 'megacorp' covering
+    Q1 2026.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Tenant Onboarding**: "Provision 5 new enterprise tenants from the sales pipeline"
+- **SLA Monitoring**: "Alert me if any tenant's error rate exceeds 1% in production"
+- **Compliance Audits**: "Generate GDPR compliance reports for all EU tenants"
+- **Resource Management**: "Increase API quota for tenant X by 50% starting next month"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [BrightForest.io](/docs/mcp/agents/brightforest-io) - Platform deployment and infrastructure
+- [BrightForest.ai](/docs/mcp/agents/brightforest-ai) - MLOps and data pipeline management

@@ -1,0 +1,285 @@
+---
+title: GetDIYRPA.com - RPA Workflow Agent
+description: Automation recipe builder and integration connector agent
+sidebar_icon: gears
+---
+
+# GetDIYRPA.com RPA Workflow Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **GetDIYRPA.com RPA Workflow Agent** builds automation recipes, creates integration connectors, and orchestrates robotic process automation workflows without code.
+
+## Overview
+
+This agent specializes in workflow automation, helping users automate repetitive tasks and integrate disparate systems through visual workflow design and pre-built connectors.
+
+## Key Capabilities
+
+### Automation Recipe Builder
+- Visual workflow designer (no-code)
+- Pre-built automation templates
+- Conditional logic and branching
+- Error handling and retry mechanisms
+
+### Integration Connectors
+- 500+ pre-built app connectors
+- Custom API integration wizard
+- Data transformation and mapping
+- Authentication management (OAuth, API keys)
+
+### Workflow Orchestration
+- Schedule automations (cron, triggers, webhooks)
+- Monitor workflow execution
+- Debug and troubleshoot failures
+- Parallel and sequential task execution
+
+## Example Tools
+
+### `create_workflow`
+
+Create a new automation workflow.
+
+```json
+{
+  "name": "create_workflow",
+  "description": "Create a new RPA workflow with visual designer or code",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "workflow_name": {
+        "type": "string",
+        "description": "Name for the automation workflow"
+      },
+      "description": {
+        "type": "string",
+        "description": "What this workflow does"
+      },
+      "trigger": {
+        "type": "object",
+        "properties": {
+          "type": {"type": "string", "enum": ["schedule", "webhook", "email", "file_upload", "manual"]},
+          "config": {"type": "object"}
+        }
+      },
+      "steps": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "action": {"type": "string"},
+            "connector": {"type": "string"},
+            "config": {"type": "object"},
+            "error_handling": {"type": "string", "enum": ["retry", "skip", "fail", "fallback"]}
+          }
+        }
+      },
+      "generate_from_description": {
+        "type": "boolean",
+        "default": false,
+        "description": "Generate workflow from natural language description"
+      }
+    },
+    "required": ["workflow_name"]
+  }
+}
+```
+
+### `add_connector`
+
+Add an integration connector to a workflow.
+
+```json
+{
+  "name": "add_connector",
+  "description": "Add a new app integration connector to workflow",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "workflow_id": {
+        "type": "string",
+        "description": "Target workflow"
+      },
+      "connector_type": {
+        "type": "string",
+        "description": "App to connect (e.g., 'slack', 'gmail', 'salesforce')"
+      },
+      "action": {
+        "type": "string",
+        "description": "Action to perform (e.g., 'send_message', 'create_record')"
+      },
+      "authentication": {
+        "type": "object",
+        "properties": {
+          "method": {"type": "string", "enum": ["oauth", "api_key", "basic"]},
+          "credentials": {"type": "object"}
+        }
+      },
+      "config": {
+        "type": "object",
+        "description": "Connector-specific configuration"
+      },
+      "data_mapping": {
+        "type": "object",
+        "description": "Map data from previous steps"
+      }
+    },
+    "required": ["workflow_id", "connector_type", "action"]
+  }
+}
+```
+
+### `execute_workflow`
+
+Execute a workflow immediately or on schedule.
+
+```json
+{
+  "name": "execute_workflow",
+  "description": "Execute an automation workflow immediately or schedule it",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "workflow_id": {
+        "type": "string",
+        "description": "Workflow to execute"
+      },
+      "execution_mode": {
+        "type": "string",
+        "enum": ["immediate", "scheduled", "triggered"],
+        "default": "immediate"
+      },
+      "schedule": {
+        "type": "object",
+        "properties": {
+          "cron": {"type": "string"},
+          "timezone": {"type": "string"}
+        },
+        "description": "Schedule configuration (if execution_mode is 'scheduled')"
+      },
+      "input_data": {
+        "type": "object",
+        "description": "Input data for the workflow"
+      },
+      "notify_on_completion": {
+        "type": "boolean",
+        "default": false
+      },
+      "error_notification": {
+        "type": "boolean",
+        "default": true
+      }
+    },
+    "required": ["workflow_id"]
+  }
+}
+```
+
+### `monitor_workflow`
+
+Monitor workflow execution and get logs.
+
+```json
+{
+  "name": "monitor_workflow",
+  "description": "Monitor workflow execution status and retrieve logs",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "workflow_id": {
+        "type": "string",
+        "description": "Workflow to monitor"
+      },
+      "execution_id": {
+        "type": "string",
+        "description": "Specific execution to monitor (optional)"
+      },
+      "show_logs": {
+        "type": "boolean",
+        "default": true,
+        "description": "Include execution logs"
+      },
+      "filter_by_status": {
+        "type": "string",
+        "enum": ["all", "running", "completed", "failed", "pending"],
+        "default": "all"
+      },
+      "time_range": {
+        "type": "object",
+        "properties": {
+          "start": {"type": "string", "format": "date-time"},
+          "end": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "required": ["workflow_id"]
+  }
+}
+```
+
+## Available Resources
+
+- **Workflow Templates**: Pre-built automation recipes for common tasks
+- **Connector Library**: 500+ app integrations with documentation
+- **Execution Logs**: Historical workflow execution data
+- **Trigger Events**: Available trigger types and configuration
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://workflows.getdiyrpa.com
+
+# Server Name
+getdiyrpa-workflows
+
+# Required Environment Variables
+GETDIYRPA_API_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Create Workflow">
+    ```
+    Create a workflow that sends a Slack message when a new customer
+    signs up, adds them to our CRM, and sends a welcome email.
+    ```
+  </Tab>
+  <Tab title="Add Connector">
+    ```
+    Add a Google Sheets connector to my data sync workflow,
+    append new rows from form submissions every hour.
+    ```
+  </Tab>
+  <Tab title="Schedule">
+    ```
+    Schedule my daily report workflow to run at 9 AM EST every
+    weekday, email results to the team.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Data Sync**: "Sync new Stripe customers to Salesforce automatically"
+- **Notifications**: "Alert Slack when website error rate exceeds 1%"
+- **Data Processing**: "Process uploaded CSV files and update database"
+- **Multi-Step Workflows**: "Complete onboarding: create account, send email, notify team"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [GetDIYAI.com](/docs/mcp/agents/getdiyai-com) - Build AI-powered automation
+- [BrightForest.io](/docs/mcp/agents/brightforest-io) - Deploy automation infrastructure
+- [AppNowHQ.com](/docs/mcp/agents/appnowhq-com) - Build custom automation apps

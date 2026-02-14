@@ -1,0 +1,310 @@
+---
+title: BrightForest.ai - MLOps Agent
+description: Model deployment and data pipeline orchestration agent
+sidebar_icon: diagram-project
+---
+
+# BrightForest.ai MLOps Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **BrightForest.ai MLOps Agent** manages end-to-end MLOps workflows including model deployment, monitoring, data pipeline orchestration, and experiment management.
+
+## Overview
+
+This agent specializes in production machine learning operations, bridging the gap between ML development and production deployment with automated pipelines and monitoring.
+
+## Key Capabilities
+
+### Model Deployment
+- Deploy models to production environments
+- Manage model versioning and rollbacks
+- Configure A/B testing and canary deployments
+- Monitor model performance in production
+
+### Data Pipeline Orchestration
+- Design and schedule data pipelines
+- Orchestrate ETL/ELT workflows
+- Manage feature stores
+- Handle data quality and validation
+
+### Experiment Management
+- Track ML experiments and metadata
+- Compare model performance across versions
+- Manage model registry
+- Automate model retraining workflows
+
+## Example Tools
+
+### `deploy_model`
+
+Deploy a trained model to production.
+
+```json
+{
+  "name": "deploy_model",
+  "description": "Deploy ML model to production with monitoring and scaling",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "model_id": {
+        "type": "string",
+        "description": "Model identifier from registry"
+      },
+      "deployment_name": {
+        "type": "string",
+        "description": "Name for this deployment"
+      },
+      "environment": {
+        "type": "string",
+        "enum": ["staging", "production"],
+        "default": "staging"
+      },
+      "deployment_strategy": {
+        "type": "string",
+        "enum": ["replace", "blue_green", "canary", "shadow"],
+        "default": "canary",
+        "description": "Deployment strategy"
+      },
+      "infrastructure": {
+        "type": "object",
+        "properties": {
+          "hardware": {"type": "string", "enum": ["cpu", "gpu"]},
+          "replicas": {"type": "integer"},
+          "auto_scaling": {"type": "boolean"}
+        }
+      },
+      "monitoring": {
+        "type": "object",
+        "properties": {
+          "enable_drift_detection": {"type": "boolean"},
+          "enable_performance_monitoring": {"type": "boolean"},
+          "alert_threshold": {"type": "number"}
+        }
+      }
+    },
+    "required": ["model_id", "deployment_name"]
+  }
+}
+```
+
+### `create_data_pipeline`
+
+Create a data processing pipeline.
+
+```json
+{
+  "name": "create_data_pipeline",
+  "description": "Create and orchestrate a data processing pipeline",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "pipeline_name": {
+        "type": "string",
+        "description": "Name for the data pipeline"
+      },
+      "pipeline_type": {
+        "type": "string",
+        "enum": ["etl", "feature_engineering", "training_data_prep", "inference_data_prep"],
+        "description": "Type of pipeline"
+      },
+      "steps": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string"},
+            "task": {"type": "string"},
+            "config": {"type": "object"}
+          }
+        }
+      },
+      "schedule": {
+        "type": "object",
+        "properties": {
+          "type": {"type": "string", "enum": ["cron", "event", "manual"]},
+          "cron": {"type": "string"},
+          "event_trigger": {"type": "string"}
+        }
+      },
+      "data_sources": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Input data sources"
+      },
+      "data_sinks": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Output destinations"
+      }
+    },
+    "required": ["pipeline_name", "pipeline_type", "steps"]
+  }
+}
+```
+
+### `monitor_model_performance`
+
+Monitor deployed model performance and drift.
+
+```json
+{
+  "name": "monitor_model_performance",
+  "description": "Monitor model performance metrics and detect data/concept drift",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "deployment_id": {
+        "type": "string",
+        "description": "Deployment to monitor"
+      },
+      "metrics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["accuracy", "latency", "throughput", "error_rate", "drift_score"]
+        }
+      },
+      "time_range": {
+        "type": "object",
+        "properties": {
+          "start": {"type": "string", "format": "date-time"},
+          "end": {"type": "string", "format": "date-time"}
+        }
+      },
+      "drift_detection": {
+        "type": "object",
+        "properties": {
+          "enabled": {"type": "boolean"},
+          "reference_data": {"type": "string"},
+          "threshold": {"type": "number"}
+        }
+      },
+      "generate_report": {
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "required": ["deployment_id"]
+  }
+}
+```
+
+### `setup_feature_store`
+
+Configure a feature store for ML features.
+
+```json
+{
+  "name": "setup_feature_store",
+  "description": "Set up feature store for managing ML features",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "store_name": {
+        "type": "string",
+        "description": "Feature store name"
+      },
+      "features": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string"},
+            "type": {"type": "string"},
+            "source": {"type": "string"},
+            "transformation": {"type": "string"}
+          }
+        }
+      },
+      "online_store": {
+        "type": "object",
+        "properties": {
+          "enabled": {"type": "boolean"},
+          "provider": {"type": "string", "enum": ["redis", "dynamodb", "bigtable"]}
+        }
+      },
+      "offline_store": {
+        "type": "object",
+        "properties": {
+          "enabled": {"type": "boolean"},
+          "provider": {"type": "string", "enum": ["s3", "bigquery", "snowflake"]}
+        }
+      },
+      "versioning": {
+        "type": "boolean",
+        "default": true
+      }
+    },
+    "required": ["store_name", "features"]
+  }
+}
+```
+
+## Available Resources
+
+- **Model Registry**: All registered models with metadata and versions
+- **Deployment Logs**: Real-time and historical deployment logs
+- **Pipeline Definitions**: Data pipeline configurations and schedules
+- **Performance Metrics**: Model performance and drift metrics
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://mlops.brightforest.ai
+
+# Server Name
+brightforest-mlops
+
+# Required Environment Variables
+BRIGHTFOREST_AI_KEY=your-api-key
+BRIGHTFOREST_WORKSPACE=your-workspace-id
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Deploy Model">
+    ```
+    Deploy my fraud detection model (version 2.1.0) to production
+    using canary strategy, enable drift detection, scale to 3 replicas.
+    ```
+  </Tab>
+  <Tab title="Data Pipeline">
+    ```
+    Create a daily ETL pipeline that loads raw transactions from S3,
+    applies feature engineering, and writes to feature store.
+    ```
+  </Tab>
+  <Tab title="Monitoring">
+    ```
+    Monitor my recommendation model's accuracy, latency, and drift
+    over the past week, alert if accuracy drops below 85%.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Model Deployment**: "Deploy my trained model to production with monitoring"
+- **Data Processing**: "Create a pipeline to prepare training data daily"
+- **Performance Monitoring**: "Alert me if model accuracy degrades"
+- **Feature Management**: "Set up a feature store for my recommendation system"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [BrightPath.ai](/docs/mcp/agents/brightpath-ai) - Model selection and orchestration
+- [MLNinjas.com](/docs/mcp/agents/mlninjas-com) - Model training and experiments
+- [PathX.ai](/docs/mcp/agents/pathx-ai) - Algorithm optimization

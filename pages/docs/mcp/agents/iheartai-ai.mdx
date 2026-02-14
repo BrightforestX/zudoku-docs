@@ -1,0 +1,282 @@
+---
+title: IHeartAI.ai - AI Learning Agent
+description: Tutorial recommendation and project guidance agent
+sidebar_icon: graduation-cap
+---
+
+# IHeartAI.ai AI Learning Agent
+
+<Badge variant="warning">Coming Soon</Badge>
+
+The **IHeartAI.ai AI Learning Agent** recommends tutorials, guides learners through AI projects, and provides personalized learning paths for AI and machine learning education.
+
+## Overview
+
+This agent specializes in AI education, helping learners at all levels navigate the complex landscape of AI/ML concepts, tools, and best practices through personalized guidance.
+
+## Key Capabilities
+
+### Tutorial Recommendations
+- Personalized learning paths based on skill level
+- Curated tutorials for specific topics and technologies
+- Interactive coding exercises and challenges
+- Progress tracking and skill assessment
+
+### Project Guidance
+- Step-by-step project walkthroughs
+- Code review and debugging assistance
+- Best practice recommendations
+- Portfolio project suggestions
+
+### Learning Path Curation
+- Custom learning roadmaps for career goals
+- Prerequisite tracking and recommendations
+- Resource aggregation (courses, books, papers)
+- Skill gap analysis
+
+## Example Tools
+
+### `recommend_tutorials`
+
+Get personalized tutorial recommendations.
+
+```json
+{
+  "name": "recommend_tutorials",
+  "description": "Recommend tutorials based on learning goals and current skill level",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "topic": {
+        "type": "string",
+        "description": "AI/ML topic to learn (e.g., 'deep learning', 'NLP', 'computer vision')"
+      },
+      "skill_level": {
+        "type": "string",
+        "enum": ["beginner", "intermediate", "advanced"],
+        "description": "Current skill level"
+      },
+      "learning_style": {
+        "type": "string",
+        "enum": ["video", "text", "interactive", "hands_on", "mixed"],
+        "default": "mixed"
+      },
+      "time_commitment": {
+        "type": "string",
+        "description": "Available time per week (e.g., '5 hours')"
+      },
+      "goals": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Learning goals (e.g., ['build chatbot', 'get ML job'])"
+      },
+      "include_prerequisites": {
+        "type": "boolean",
+        "default": true,
+        "description": "Include prerequisite tutorials"
+      }
+    },
+    "required": ["topic", "skill_level"]
+  }
+}
+```
+
+### `create_learning_path`
+
+Generate a personalized learning path.
+
+```json
+{
+  "name": "create_learning_path",
+  "description": "Create a comprehensive learning path for a specific goal",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "goal": {
+        "type": "string",
+        "description": "Learning goal (e.g., 'Become an ML Engineer', 'Master NLP')"
+      },
+      "current_skills": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Skills you already have"
+      },
+      "target_skills": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Skills you want to acquire"
+      },
+      "timeline": {
+        "type": "string",
+        "description": "Timeframe to achieve goal (e.g., '6 months')"
+      },
+      "include_projects": {
+        "type": "boolean",
+        "default": true,
+        "description": "Include hands-on projects in path"
+      },
+      "include_certifications": {
+        "type": "boolean",
+        "default": false,
+        "description": "Include certification recommendations"
+      }
+    },
+    "required": ["goal"]
+  }
+}
+```
+
+### `guide_project`
+
+Get step-by-step guidance for an AI project.
+
+```json
+{
+  "name": "guide_project",
+  "description": "Get guided assistance for building an AI/ML project",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "project_description": {
+        "type": "string",
+        "description": "What you want to build"
+      },
+      "project_type": {
+        "type": "string",
+        "enum": ["chatbot", "image_classifier", "recommender", "nlp_app", "computer_vision", "time_series"],
+        "description": "Type of project"
+      },
+      "current_progress": {
+        "type": "string",
+        "enum": ["not_started", "planning", "data_collection", "model_building", "deployment"],
+        "description": "Current stage of project"
+      },
+      "tech_stack": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "Technologies you're using or want to use"
+      },
+      "help_needed": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["architecture", "data_prep", "model_selection", "training", "debugging", "deployment"]
+        }
+      }
+    },
+    "required": ["project_description", "project_type"]
+  }
+}
+```
+
+### `assess_skills`
+
+Assess current AI/ML skills and identify gaps.
+
+```json
+{
+  "name": "assess_skills",
+  "description": "Assess skills and identify learning gaps",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "type": "string",
+        "enum": ["machine_learning", "deep_learning", "nlp", "computer_vision", "mlops", "data_science"],
+        "description": "Domain to assess"
+      },
+      "self_assessment": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "description": "Self-rated skills (1-5 scale)"
+      },
+      "target_role": {
+        "type": "string",
+        "description": "Target job role (e.g., 'ML Engineer', 'Data Scientist')"
+      },
+      "include_quiz": {
+        "type": "boolean",
+        "default": false,
+        "description": "Include interactive skill quiz"
+      },
+      "generate_roadmap": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate learning roadmap to close gaps"
+      }
+    },
+    "required": ["domain"]
+  }
+}
+```
+
+## Available Resources
+
+- **Tutorial Library**: Curated collection of AI/ML tutorials and courses
+- **Project Templates**: Starter templates for common AI projects
+- **Learning Roadmaps**: Pre-built learning paths for various goals
+- **Code Examples**: Annotated code examples and best practices
+
+## Connection Details
+
+```bash
+# MCP Server URL (Placeholder)
+mcp://learning.iheartai.ai
+
+# Server Name
+iheartai-learning
+
+# Required Environment Variables
+IHEARTAI_API_KEY=your-api-key
+```
+
+## Example Prompts
+
+<Tabs>
+  <Tab title="Tutorials">
+    ```
+    Recommend tutorials for learning transformer models, I'm intermediate
+    in deep learning, prefer video content, have 10 hours per week.
+    ```
+  </Tab>
+  <Tab title="Learning Path">
+    ```
+    Create a 6-month learning path to become an NLP engineer.
+    I know Python and basic ML, want to master transformers and LLMs.
+    ```
+  </Tab>
+  <Tab title="Project Guidance">
+    ```
+    Guide me through building a sentiment analysis API. I'm at the
+    data collection stage, using PyTorch and FastAPI.
+    ```
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+- **Career Transition**: "I want to switch from web dev to ML engineering"
+- **Skill Building**: "Learn computer vision for my robotics project"
+- **Project Help**: "How do I fine-tune BERT for my use case?"
+- **Assessment**: "What skills do I need to become a senior ML engineer?"
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="play" href="/docs/mcp/getting-started">
+    Connect to this agent
+  </Card>
+  <Card title="All Agents" icon="users" href="/docs/mcp/agents">
+    Browse other agents
+  </Card>
+</CardGroup>
+
+## Related Agents
+
+- [GetDIYAI.com](/docs/mcp/agents/getdiyai-com) - Build AI apps without deep ML knowledge
+- [BrightPath.ai](/docs/mcp/agents/brightpath-ai) - Understand model selection
+- [MLNinjas.com](/docs/mcp/agents/mlninjas-com) - Learn experiment tracking
