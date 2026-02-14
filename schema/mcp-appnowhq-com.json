@@ -1,0 +1,24 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "appnowhq.com MCP Server",
+    "version": "0.1.0"
+  },
+  "x-mcp-server": {
+    "status": "coming_soon"
+  },
+  "paths": {
+    "/mcp": {
+      "post": {
+        "operationId": "app_builder",
+        "summary": "App builder agent for rapid application development and deployment",
+        "x-zuplo-mcp-tool": true,
+        "responses": {
+          "200": {
+            "description": "Coming soon"
+          }
+        }
+      }
+    }
+  }
+}

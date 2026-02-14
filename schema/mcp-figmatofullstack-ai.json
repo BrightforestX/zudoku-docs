@@ -1,0 +1,24 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "figmatofullstack.ai MCP Server",
+    "version": "0.1.0"
+  },
+  "x-mcp-server": {
+    "status": "coming_soon"
+  },
+  "paths": {
+    "/mcp": {
+      "post": {
+        "operationId": "ai_design_assistant",
+        "summary": "AI design assistant agent for providing intelligent design recommendations and assistance",
+        "x-zuplo-mcp-tool": true,
+        "responses": {
+          "200": {
+            "description": "Coming soon"
+          }
+        }
+      }
+    }
+  }
+}
