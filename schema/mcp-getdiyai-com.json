@@ -1,21 +1,236 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "getdiyai.com MCP Server",
-    "version": "0.1.0"
+    "title": "GetDIYAI.com MCP Server",
+    "version": "0.2.0",
+    "description": "No-code AI workflow builder with drag-and-drop components, template marketplace, and one-click deployment"
   },
   "x-mcp-server": {
-    "status": "coming_soon"
+    "status": "in_development"
   },
   "paths": {
-    "/mcp": {
+    "/templates/browse": {
       "post": {
-        "operationId": "diy_ai_builder",
-        "summary": "DIY AI builder agent for creating custom AI solutions without coding",
+        "operationId": "browse_templates",
+        "summary": "Browse and search AI workflow templates by category or use case",
         "x-zuplo-mcp-tool": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "chatbot",
+                      "image_generation",
+                      "text_analysis",
+                      "recommendation",
+                      "prediction",
+                      "automation"
+                    ],
+                    "description": "Template category"
+                  },
+                  "use_case": {
+                    "type": "string",
+                    "description": "Specific use case (e.g., 'customer support chatbot')"
+                  },
+                  "complexity": {
+                    "type": "string",
+                    "enum": ["beginner", "intermediate", "advanced"],
+                    "description": "Desired complexity level"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Coming soon"
+            "description": "List of matching templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "templates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "name": { "type": "string" },
+                          "category": { "type": "string" },
+                          "description": { "type": "string" },
+                          "rating": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workflows/create": {
+      "post": {
+        "operationId": "create_ai_workflow",
+        "summary": "Create a new AI workflow using a template",
+        "x-zuplo-mcp-tool": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "template_id": {
+                    "type": "string",
+                    "description": "Template to use"
+                  },
+                  "workflow_name": {
+                    "type": "string",
+                    "description": "Name for the AI workflow"
+                  },
+                  "configuration": {
+                    "type": "object",
+                    "properties": {
+                      "model": {
+                        "type": "string",
+                        "description": "AI model to use"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "description": "Model-specific parameters"
+                      }
+                    }
+                  }
+                },
+                "required": ["template_id", "workflow_name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Workflow created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workflow_id": { "type": "string" },
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workflows/{workflow_id}/configure": {
+      "post": {
+        "operationId": "configure_model",
+        "summary": "Configure AI model parameters using a no-code wizard",
+        "x-zuplo-mcp-tool": true,
+        "parameters": [
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "task_type": {
+                    "type": "string",
+                    "enum": ["text_generation", "classification", "qa", "summarization", "translation"],
+                    "description": "AI task type"
+                  },
+                  "model_preference": {
+                    "type": "string",
+                    "enum": ["fastest", "most_accurate", "balanced", "cheapest"],
+                    "default": "balanced"
+                  }
+                },
+                "required": ["task_type"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Model configured successfully"
+          }
+        }
+      }
+    },
+    "/workflows/{workflow_id}/deploy": {
+      "post": {
+        "operationId": "deploy_ai_workflow",
+        "summary": "Deploy AI workflow as an application with automatic API and widget generation",
+        "x-zuplo-mcp-tool": true,
+        "parameters": [
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "deployment_target": {
+                    "type": "string",
+                    "enum": ["cloud", "on_premise", "edge"],
+                    "default": "cloud"
+                  },
+                  "generate_api": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Generate REST API endpoint"
+                  },
+                  "generate_widget": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Generate embeddable widget code"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Workflow deployed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deployment_url": { "type": "string" },
+                    "api_endpoint": { "type": "string" },
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
           }
         }
       }
