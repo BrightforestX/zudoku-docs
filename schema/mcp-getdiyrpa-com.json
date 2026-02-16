@@ -1,21 +1,412 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "getdiyrpa.com MCP Server",
-    "version": "0.1.0"
+    "title": "GetDIYRPA.com MCP Server",
+    "version": "0.1.0",
+    "description": "RPA Workflow Agent - Build automation recipes, create integration connectors, and orchestrate robotic process automation workflows without code"
   },
   "x-mcp-server": {
-    "status": "coming_soon"
+    "status": "coming_soon",
+    "features": [
+      "Visual workflow designer (no-code)",
+      "Pre-built automation templates",
+      "500+ app connectors",
+      "Schedule automations",
+      "Monitor workflow execution"
+    ]
   },
   "paths": {
-    "/mcp": {
+    "/workflows": {
       "post": {
-        "operationId": "rpa_workflow",
-        "summary": "RPA workflow agent for automating business processes and repetitive tasks",
+        "operationId": "create_workflow",
+        "summary": "Create a new RPA workflow with visual designer or code",
+        "description": "Create a new automation workflow. Can generate workflow from natural language description or define steps manually.",
         "x-zuplo-mcp-tool": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "workflow_name": {
+                    "type": "string",
+                    "description": "Name for the automation workflow"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "What this workflow does"
+                  },
+                  "trigger": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "schedule",
+                          "webhook",
+                          "email",
+                          "file_upload",
+                          "manual"
+                        ],
+                        "description": "How the workflow is triggered"
+                      },
+                      "config": {
+                        "type": "object",
+                        "description": "Trigger-specific configuration"
+                      }
+                    }
+                  },
+                  "steps": {
+                    "type": "array",
+                    "description": "Workflow steps to execute",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "action": {
+                          "type": "string",
+                          "description": "Action to perform"
+                        },
+                        "connector": {
+                          "type": "string",
+                          "description": "App connector to use"
+                        },
+                        "config": {
+                          "type": "object",
+                          "description": "Step configuration"
+                        },
+                        "error_handling": {
+                          "type": "string",
+                          "enum": ["retry", "skip", "fail", "fallback"],
+                          "description": "How to handle errors"
+                        }
+                      }
+                    }
+                  },
+                  "generate_from_description": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Generate workflow from natural language description"
+                  }
+                },
+                "required": ["workflow_name"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Coming soon"
+            "description": "Workflow created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workflow_id": {
+                      "type": "string",
+                      "description": "Unique workflow identifier"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["created", "draft"]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workflows/{workflow_id}/connectors": {
+      "post": {
+        "operationId": "add_connector",
+        "summary": "Add a new app integration connector to workflow",
+        "description": "Add an integration connector to connect with external apps (Slack, Gmail, Salesforce, etc.)",
+        "x-zuplo-mcp-tool": true,
+        "parameters": [
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Target workflow ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "connector_type": {
+                    "type": "string",
+                    "description": "App to connect (e.g., 'slack', 'gmail', 'salesforce')"
+                  },
+                  "action": {
+                    "type": "string",
+                    "description": "Action to perform (e.g., 'send_message', 'create_record')"
+                  },
+                  "authentication": {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "enum": ["oauth", "api_key", "basic"]
+                      },
+                      "credentials": {
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "config": {
+                    "type": "object",
+                    "description": "Connector-specific configuration"
+                  },
+                  "data_mapping": {
+                    "type": "object",
+                    "description": "Map data from previous steps"
+                  }
+                },
+                "required": ["connector_type", "action"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Connector added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connector_id": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workflows/{workflow_id}/execute": {
+      "post": {
+        "operationId": "execute_workflow",
+        "summary": "Execute an automation workflow immediately or schedule it",
+        "description": "Run a workflow immediately, schedule it for later, or set up triggered execution",
+        "x-zuplo-mcp-tool": true,
+        "parameters": [
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Workflow to execute"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "execution_mode": {
+                    "type": "string",
+                    "enum": ["immediate", "scheduled", "triggered"],
+                    "default": "immediate",
+                    "description": "When to execute the workflow"
+                  },
+                  "schedule": {
+                    "type": "object",
+                    "properties": {
+                      "cron": {
+                        "type": "string",
+                        "description": "Cron expression for scheduling"
+                      },
+                      "timezone": {
+                        "type": "string",
+                        "description": "Timezone for schedule"
+                      }
+                    },
+                    "description": "Schedule configuration (if execution_mode is 'scheduled')"
+                  },
+                  "input_data": {
+                    "type": "object",
+                    "description": "Input data for the workflow"
+                  },
+                  "notify_on_completion": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Send notification when workflow completes"
+                  },
+                  "error_notification": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Send notification on errors"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Workflow execution started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "execution_id": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["running", "scheduled", "pending"]
+                    },
+                    "started_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workflows/{workflow_id}/monitor": {
+      "get": {
+        "operationId": "monitor_workflow",
+        "summary": "Monitor workflow execution status and retrieve logs",
+        "description": "Get real-time status, execution logs, and history for a workflow",
+        "x-zuplo-mcp-tool": true,
+        "parameters": [
+          {
+            "name": "workflow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Workflow to monitor"
+          },
+          {
+            "name": "execution_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Specific execution to monitor (optional)"
+          },
+          {
+            "name": "show_logs",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "description": "Include execution logs"
+          },
+          {
+            "name": "filter_by_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["all", "running", "completed", "failed", "pending"],
+              "default": "all"
+            },
+            "description": "Filter executions by status"
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Filter start time"
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Filter end time"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workflow monitoring data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workflow_id": {
+                      "type": "string"
+                    },
+                    "executions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "execution_id": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "started_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "completed_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "duration_ms": {
+                            "type": "number"
+                          },
+                          "success": {
+                            "type": "boolean"
+                          },
+                          "logs": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
