@@ -21,7 +21,7 @@ echo -e "${GREEN}Starting hero image generation for 13 documentation domains...$
 # Define arrays for domain names and prompts
 declare -A DOMAINS
 DOMAINS=(
-    ["brightforest-io"]="Minimal tech platform illustration with interconnected forest-themed nodes and data streams, dark background, green and teal accent colors, modern flat design"
+    ["brightforest-io"]="Professional CI/CD platform dashboard illustration showing interconnected deployment pipeline nodes in a forest tree pattern, with glowing data streams flowing between them, container orchestration visualization, automated workflow paths, modern developer workspace aesthetic, dark navy background with vibrant green and bright teal accent colors, subtle grid pattern, clean flat design with depth, enterprise-grade technical illustration, DevOps themed"
     ["brightforestx-com"]="Enterprise cloud architecture diagram with multi-tenant layers, dark background, blue and purple gradients, professional tech illustration"
     ["brightpath-ai"]="Abstract neural network pathways forming a bright illuminated path through digital space, dark background, golden and cyan light trails"
     ["pathx-ai"]="Algorithm optimization visualization with flowcharts and performance graphs trending upward, dark background, orange and white accents"

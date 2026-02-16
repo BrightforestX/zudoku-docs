@@ -36,7 +36,8 @@ Each domain directory currently contains a `placeholder.svg` file:
 
 ### Future: Grok Imagine API Generated Images
 
-The placeholder SVGs are temporary and will be replaced with AI-generated images from the Grok Imagine API (xAI).
+The placeholder SVGs are temporary and will be replaced with AI-generated images from the Grok
+Imagine API (xAI).
 
 #### Generating New Images
 
@@ -72,7 +73,7 @@ import { DomainHero } from "@/components/DomainHero";
 
 <DomainHero
   domain="brightforest-io"
-  title="brightforest.io"
+  title="BrightForest.io"
   description="Primary platform and documentation hub"
 />
 ```
@@ -127,21 +128,21 @@ All images (both placeholders and generated) should be:
 
 ### Color Gradients (Current Placeholders)
 
-| Domain                  | Gradient Colors      |
-| ----------------------- | -------------------- |
-| brightforest.io         | Green (#2E7D32 → #66BB6A) |
-| brightforestx.com       | Blue (#1565C0 → #42A5F5) |
-| brightpath.ai           | Purple (#6A1B9A → #BA68C8) |
-| pathx.ai                | Red (#C62828 → #EF5350) |
-| figmatofullstack.com    | Teal (#00695C → #26A69A) |
-| figmatofullstack.ai     | Pink (#AD1457 → #EC407A) |
-| mlninjas.com            | Orange (#E65100 → #FF9800) |
-| clifforddalsoniii.com   | Deep Purple (#4A148C → #9C27B0) |
-| getdiyai.com            | Light Blue (#0277BD → #29B6F6) |
-| getdiyrpa.com           | Light Green (#558B2F → #9CCC65) |
-| appnowhq.com            | Coral & Teal (#FF6B6B → #FF8E53 → #26C6DA) |
-| brightforest.ai         | Cyan (#00838F → #26C6DA) |
-| iheartai.ai             | Rose (#D81B60 → #F06292) |
+| Domain                | Gradient Colors                 |
+| --------------------- | ------------------------------- |
+| BrightForest.io       | Green (#2E7D32 → #66BB6A)       |
+| brightforestx.com     | Blue (#1565C0 → #42A5F5)        |
+| brightpath.ai         | Purple (#6A1B9A → #BA68C8)      |
+| pathx.ai              | Red (#C62828 → #EF5350)         |
+| figmatofullstack.com  | Teal (#00695C → #26A69A)        |
+| figmatofullstack.ai   | Pink (#AD1457 → #EC407A)        |
+| mlninjas.com          | Orange (#E65100 → #FF9800)      |
+| clifforddalsoniii.com | Deep Purple (#4A148C → #9C27B0) |
+| getdiyai.com          | Light Blue (#0277BD → #29B6F6)  |
+| getdiyrpa.com         | Light Green (#558B2F → #9CCC65) |
+| appnowhq.com          | Red (#D32F2F → #F44336)         |
+| brightforest.ai       | Cyan (#00838F → #26C6DA)        |
+| iheartai.ai           | Rose (#D81B60 → #F06292)        |
 
 ## Related Documentation
 
@@ -160,4 +161,5 @@ When contributing new images or updating existing ones:
 
 ---
 
-**Note**: Placeholder SVGs are version-controlled. Generated PNG images from Grok Imagine API should be added to `.gitignore` if they become too large or change frequently.
+**Note**: Placeholder SVGs are version-controlled. Generated PNG images from Grok Imagine API should
+be added to `.gitignore` if they become too large or change frequently.
