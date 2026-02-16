@@ -1,5 +1,3 @@
-import { lazy } from "react";
-
 const ProductCard = ({
   title,
   description,
@@ -20,9 +18,9 @@ const ProductCard = ({
       </div>
       <h3 className="text-xl font-bold">{title}</h3>
     </div>
-    
+
     <p className="mb-4 text-muted-foreground">{description}</p>
-    
+
     <ul className="mb-6 space-y-2">
       {features.map((feature, index) => (
         <li key={index} className="flex items-start gap-2 text-sm">
@@ -31,7 +29,7 @@ const ProductCard = ({
         </li>
       ))}
     </ul>
-    
+
     <a
       href={link}
       className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all"
@@ -58,7 +56,8 @@ const ProductsShowcase = () => {
   const products = [
     {
       title: "MCP Server",
-      description: "Connect AI assistants directly to documentation with our FastMCP-based server.",
+      description:
+        "Connect AI assistants directly to documentation with our FastMCP-based server.",
       icon: "🤖",
       link: "/docs/products/mcp-server",
       features: [
@@ -71,7 +70,8 @@ const ProductsShowcase = () => {
     },
     {
       title: "Mobile App",
-      description: "Access documentation on iOS and Android with offline support and voice navigation.",
+      description:
+        "Access documentation on iOS and Android with offline support and voice navigation.",
       icon: "📱",
       link: "/docs/products/mobile-app",
       features: [
@@ -84,7 +84,8 @@ const ProductsShowcase = () => {
     },
     {
       title: "CLI Tool",
-      description: "Powerful Go-based command-line interface for terminal documentation access.",
+      description:
+        "Powerful Go-based command-line interface for terminal documentation access.",
       icon: "⚡",
       link: "/docs/products/cli-tool",
       features: [
@@ -104,8 +105,8 @@ const ProductsShowcase = () => {
           Access Documentation Your Way
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Choose the platform that fits your workflow - web, mobile, or terminal.
-          All with 100% test coverage and production-ready quality.
+          Choose the platform that fits your workflow - web, mobile, or
+          terminal. All with 100% test coverage and production-ready quality.
         </p>
       </div>
 
@@ -119,7 +120,9 @@ const ProductsShowcase = () => {
         <div className="flex items-start gap-4">
           <div className="text-3xl">🎯</div>
           <div>
-            <h3 className="text-xl font-bold mb-2">Unified Developer Experience</h3>
+            <h3 className="text-xl font-bold mb-2">
+              Unified Developer Experience
+            </h3>
             <p className="text-muted-foreground mb-4">
               All our products integrate seamlessly with unified authentication,
               synchronized bookmarks, and consistent APIs across platforms.
