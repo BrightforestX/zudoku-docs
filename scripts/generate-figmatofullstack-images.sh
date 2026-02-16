@@ -13,27 +13,23 @@ NC='\033[0m' # No Color
 if [ -z "$XAI_API_KEY" ]; then
     echo -e "${RED}Error: XAI_API_KEY environment variable is not set${NC}"
     echo "Please set your xAI API key: export XAI_API_KEY='your-api-key-here'"
+    echo ""
+    echo "To get an API key:"
+    echo "1. Visit https://console.x.ai/"
+    echo "2. Sign up or log in"
+    echo "3. Navigate to API Keys section"
+    echo "4. Create a new API key"
+    echo "5. Export it: export XAI_API_KEY='your-key'"
     exit 1
 fi
 
-echo -e "${GREEN}Starting hero image generation for 13 documentation domains...${NC}\n"
+echo -e "${GREEN}Starting hero image generation for FigmaToFullstack domains...${NC}\n"
 
 # Define arrays for domain names and prompts
 declare -A DOMAINS
 DOMAINS=(
-    ["brightforest-io"]="Minimal tech platform illustration with interconnected forest-themed nodes and data streams, dark background, green and teal accent colors, modern flat design"
-    ["brightforestx-com"]="Enterprise cloud architecture diagram with multi-tenant layers, dark background, blue and purple gradients, professional tech illustration"
-    ["brightpath-ai"]="Abstract neural network pathways forming a bright illuminated path through digital space, dark background, golden and cyan light trails"
-    ["pathx-ai"]="Algorithm optimization visualization with flowcharts and performance graphs trending upward, dark background, orange and white accents"
     ["figmatofullstack-com"]="Professional design-to-code platform visualization: sleek Figma interface on left transitioning through a glowing transformation pipeline into clean React component code on right, modern software development aesthetic, dark navy background with teal and aqua accent lighting (teal to turquoise gradient effects), floating UI elements showing design frames morphing into code, component trees, minimalist tech illustration style, high-quality professional rendering, sharp details, modern and sophisticated"
     ["figmatofullstack-ai"]="AI-powered design assistant platform: central AI brain core with neural network pathways connecting to floating design elements (UI layouts, color palettes, accessibility icons, responsive layouts), intelligent enhancement visualization with AI processing indicators, modern tech aesthetic, dark background with vibrant pink and magenta accent lighting (deep pink to bright pink gradient effects), AI sparkles and enhancement glow effects, professional software illustration, clean composition with depth, futuristic and intelligent atmosphere"
-    ["mlninjas-com"]="Machine learning ninja silhouette with data katana slicing through datasets, dark background, red and silver accents"
-    ["clifforddalsoniii-com"]="Professional developer portfolio with floating code blocks and project cards, dark background, emerald and white accents"
-    ["getdiyai-com"]="DIY AI workshop with tools, gears, and neural network building blocks, dark background, yellow and orange warm tones"
-    ["getdiyrpa-com"]="Robotic process automation with connected workflow nodes and automation bots, dark background, blue and green accents"
-    ["appnowhq-com"]="Rapid app development with building blocks assembling into mobile and web apps, dark background, coral and teal accents"
-    ["brightforest-ai"]="MLOps pipeline visualization with model training, deployment, and monitoring stages, dark background, green and blue data flows"
-    ["iheartai-ai"]="Heart-shaped circuit board with AI learning pathways, warm educational theme, dark background, red and pink with white light"
 )
 
 # API configuration
@@ -57,7 +53,7 @@ generate_image() {
     CURRENT=$((CURRENT + 1))
     
     echo -e "${BLUE}[$CURRENT/$TOTAL] Processing: ${domain}${NC}"
-    echo -e "  Prompt: ${prompt:0:60}..."
+    echo -e "  Prompt: ${prompt:0:80}..."
     
     # Create output directory if it doesn't exist
     mkdir -p "$output_dir"
@@ -154,5 +150,5 @@ if [ $FAILED_COUNT -gt 0 ]; then
     done
     exit 1
 else
-    echo -e "\n${GREEN}All hero images generated successfully! 🎉${NC}"
+    echo -e "\n${GREEN}All FigmaToFullstack hero images generated successfully! 🎉${NC}"
 fi

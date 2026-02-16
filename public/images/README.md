@@ -61,8 +61,32 @@ Generated `hero.png` files will:
 
 - Be domain-specific and professionally designed
 - Reflect the unique purpose and branding of each domain
-- Maintain 1200x630 pixel dimensions for consistency
+- Generated at 1024x1024 pixels (resized to 1200x630 for display)
 - Be optimized for web delivery (target < 500KB)
+
+#### Professional Prompts (Updated February 2026)
+
+**figmatofullstack.com:**
+```
+Professional design-to-code platform visualization: sleek Figma interface on left 
+transitioning through a glowing transformation pipeline into clean React component 
+code on right, modern software development aesthetic, dark navy background with 
+teal and aqua accent lighting (teal to turquoise gradient effects), floating UI 
+elements showing design frames morphing into code, component trees, minimalist 
+tech illustration style, high-quality professional rendering, sharp details, 
+modern and sophisticated
+```
+
+**figmatofullstack.ai:**
+```
+AI-powered design assistant platform: central AI brain core with neural network 
+pathways connecting to floating design elements (UI layouts, color palettes, 
+accessibility icons, responsive layouts), intelligent enhancement visualization 
+with AI processing indicators, modern tech aesthetic, dark background with 
+vibrant pink and magenta accent lighting (deep pink to bright pink gradient 
+effects), AI sparkles and enhancement glow effects, professional software 
+illustration, clean composition with depth, futuristic and intelligent atmosphere
+```
 
 ## Usage in Documentation
 
