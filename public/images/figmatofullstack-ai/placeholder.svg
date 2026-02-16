@@ -1,12 +1,136 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="grad-figmatofullstack-ai" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#AD1457;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#EC407A;stop-opacity:1" />
+    <linearGradient id="bg-gradient-ai" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D0221;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A1034;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="accent-gradient-ai" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:0.9" />
+      <stop offset="50%" style="stop-color:#8B5CF6;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:0.9" />
+    </linearGradient>
+    <radialGradient id="glow-gradient-ai">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:0" />
+    </radialGradient>
+    
+    <!-- Neural network pattern -->
+    <pattern id="neural-ai" width="60" height="60" patternUnits="userSpaceOnUse">
+      <circle cx="30" cy="30" r="1.5" fill="#8B5CF6" opacity="0.2"/>
+      <line x1="30" y1="30" x2="0" y2="0" stroke="#8B5CF6" stroke-width="0.5" opacity="0.1"/>
+      <line x1="30" y1="30" x2="60" y2="0" stroke="#8B5CF6" stroke-width="0.5" opacity="0.1"/>
+      <line x1="30" y1="30" x2="0" y2="60" stroke="#8B5CF6" stroke-width="0.5" opacity="0.1"/>
+    </pattern>
+    
+    <!-- Glow filter -->
+    <filter id="glow-ai" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Glass morphism effect -->
+    <filter id="glass-ai">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.7 0"/>
+    </filter>
   </defs>
-  <rect width="1200" height="630" fill="url(#grad-figmatofullstack-ai)"/>
-  <text x="600" y="315" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg-gradient-ai)"/>
+  <rect width="1200" height="630" fill="url(#neural-ai)"/>
+  
+  <!-- Large purple glow -->
+  <circle cx="600" cy="315" r="300" fill="url(#glow-gradient-ai)" opacity="0.4"/>
+  
+  <!-- Central holographic interface -->
+  <g transform="translate(400, 180)">
+    <!-- Main interface panel with glass effect -->
+    <rect x="0" y="0" width="400" height="280" rx="12" fill="#1E1B4B" fill-opacity="0.3" stroke="url(#accent-gradient-ai)" stroke-width="2" filter="url(#glass-ai)"/>
+    
+    <!-- UI design preview in center -->
+    <rect x="50" y="40" width="300" height="200" rx="8" fill="#2D2654" opacity="0.6"/>
+    <rect x="70" y="60" width="80" height="25" rx="4" fill="#8B5CF6" opacity="0.7"/>
+    <rect x="160" y="60" width="100" height="25" rx="4" fill="#D4AF37" opacity="0.5"/>
+    <rect x="70" y="100" width="260" height="60" rx="4" fill="#374151" opacity="0.4"/>
+    <rect x="70" y="175" width="260" height="50" rx="4" fill="#374151" opacity="0.4"/>
+  </g>
+  
+  <!-- AI analysis nodes -->
+  <g filter="url(#glow-ai)">
+    <!-- Top left node -->
+    <circle cx="300" cy="200" r="6" fill="#D4AF37" opacity="0.9"/>
+    <circle cx="300" cy="200" r="12" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.5"/>
+    <text x="250" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#D4AF37" opacity="0.8">Accessibility</text>
+    
+    <!-- Top right node -->
+    <circle cx="900" cy="220" r="6" fill="#8B5CF6" opacity="0.9"/>
+    <circle cx="900" cy="220" r="12" fill="none" stroke="#8B5CF6" stroke-width="1" opacity="0.5"/>
+    <text x="915" y="225" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#8B5CF6" opacity="0.8">Spacing</text>
+    
+    <!-- Bottom left node -->
+    <circle cx="320" cy="420" r="6" fill="#D4AF37" opacity="0.9"/>
+    <circle cx="320" cy="420" r="12" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.5"/>
+    <text x="260" y="440" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#D4AF37" opacity="0.8">Layout</text>
+    
+    <!-- Bottom right node -->
+    <circle cx="880" cy="400" r="6" fill="#8B5CF6" opacity="0.9"/>
+    <circle cx="880" cy="400" r="12" fill="none" stroke="#8B5CF6" stroke-width="1" opacity="0.5"/>
+    <text x="895" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#8B5CF6" opacity="0.8">UX Score</text>
+  </g>
+  
+  <!-- Connection lines from nodes to center -->
+  <path d="M 300 200 L 450 270" stroke="#D4AF37" stroke-width="1" opacity="0.3" stroke-dasharray="2,2"/>
+  <path d="M 900 220 L 750 280" stroke="#8B5CF6" stroke-width="1" opacity="0.3" stroke-dasharray="2,2"/>
+  <path d="M 320 420 L 450 370" stroke="#D4AF37" stroke-width="1" opacity="0.3" stroke-dasharray="2,2"/>
+  <path d="M 880 400 L 750 360" stroke="#8B5CF6" stroke-width="1" opacity="0.3" stroke-dasharray="2,2"/>
+  
+  <!-- AI particles -->
+  <g opacity="0.6" filter="url(#glow-ai)">
+    <circle cx="350" cy="280" r="2" fill="#D4AF37">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="850" cy="310" r="2" fill="#8B5CF6">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="450" cy="400" r="2" fill="#D4AF37">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="750" cy="250" r="2" fill="#8B5CF6">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="550" cy="350" r="2" fill="#D4AF37">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Device frames indicators (small representations) -->
+  <g transform="translate(150, 100)" opacity="0.4">
+    <!-- Desktop -->
+    <rect x="0" y="0" width="40" height="25" rx="2" fill="none" stroke="#8B5CF6" stroke-width="1"/>
+    <!-- Tablet -->
+    <rect x="50" y="5" width="20" height="28" rx="2" fill="none" stroke="#8B5CF6" stroke-width="1"/>
+    <!-- Mobile -->
+    <rect x="80" y="8" width="12" height="20" rx="2" fill="none" stroke="#8B5CF6" stroke-width="1"/>
+  </g>
+  
+  <!-- Title and subtitle -->
+  <text x="600" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="700" fill="#FFFFFF" text-anchor="middle">
     figmatofullstack.ai
   </text>
+  <text x="600" y="580" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#A78BFA" text-anchor="middle">
+    AI-Enhanced Design Intelligence Platform
+  </text>
+  
+  <!-- Decorative accents -->
+  <circle cx="120" cy="120" r="60" fill="url(#glow-gradient-ai)" opacity="0.15"/>
+  <circle cx="1080" cy="510" r="70" fill="url(#glow-gradient-ai)" opacity="0.15"/>
+  
+  <!-- AI badge indicator -->
+  <g transform="translate(1050, 80)">
+    <rect x="0" y="0" width="100" height="30" rx="15" fill="#8B5CF6" opacity="0.2" stroke="#D4AF37" stroke-width="1"/>
+    <text x="50" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#D4AF37" text-anchor="middle">AI-Powered</text>
+  </g>
 </svg>

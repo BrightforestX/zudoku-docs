@@ -25,8 +25,8 @@ DOMAINS=(
     ["brightforestx-com"]="Enterprise cloud architecture diagram with multi-tenant layers, dark background, blue and purple gradients, professional tech illustration"
     ["brightpath-ai"]="Abstract neural network pathways forming a bright illuminated path through digital space, dark background, golden and cyan light trails"
     ["pathx-ai"]="Algorithm optimization visualization with flowcharts and performance graphs trending upward, dark background, orange and white accents"
-    ["figmatofullstack-com"]="Professional design-to-code platform visualization: sleek Figma interface on left transitioning through a glowing transformation pipeline into clean React component code on right, modern software development aesthetic, dark navy background with teal and aqua accent lighting (teal to turquoise gradient effects), floating UI elements showing design frames morphing into code, component trees, minimalist tech illustration style, high-quality professional rendering, sharp details, modern and sophisticated"
-    ["figmatofullstack-ai"]="AI-powered design assistant platform: central AI brain core with neural network pathways connecting to floating design elements (UI layouts, color palettes, accessibility icons, responsive layouts), intelligent enhancement visualization with AI processing indicators, modern tech aesthetic, dark background with vibrant pink and magenta accent lighting (deep pink to bright pink gradient effects), AI sparkles and enhancement glow effects, professional software illustration, clean composition with depth, futuristic and intelligent atmosphere"
+    ["figmatofullstack-com"]="Professional cinematic visualization of design-to-code transformation: glowing Figma design frames with UI components (buttons, forms, navigation) in vibrant pink and blue on left, seamlessly morphing into clean React code with syntax highlighting on right. Center shows smooth flowing particles and light trails representing automated conversion. Dark navy gradient background (#0A1628 to #1A2332) with subtle grid pattern. Modern sleek professional tech aesthetic, isometric perspective, photorealistic rendering with soft ambient lighting and blue-pink accent glows, ultra HD quality"
+    ["figmatofullstack-ai"]="Sophisticated AI-powered design assistant visualization: center shows sleek holographic interface displaying UI design with floating AI analysis nodes highlighting accessibility issues, spacing improvements, and layout optimizations. Ethereal purple and gold AI particles flow around design representing intelligent enhancement. Multiple device frames (desktop, tablet, mobile) show auto-generated responsive variations. Subtle neural network patterns in background suggesting machine learning. Dark elegant background (#0D0221 to #1A1034) with premium gold accents (#D4AF37) and vibrant purple highlights (#8B5CF6). Professional tech-luxury aesthetic, floating UI elements with glass morphism, soft volumetric lighting, futuristic but approachable, ultra HD quality"
     ["mlninjas-com"]="Machine learning ninja silhouette with data katana slicing through datasets, dark background, red and silver accents"
     ["clifforddalsoniii-com"]="Professional developer portfolio with floating code blocks and project cards, dark background, emerald and white accents"
     ["getdiyai-com"]="DIY AI workshop with tools, gears, and neural network building blocks, dark background, yellow and orange warm tones"
@@ -63,6 +63,7 @@ generate_image() {
     mkdir -p "$output_dir"
     
     # Create JSON payload
+    # Note: Using 1024x1024 as xAI's standard size, images will be optimized for display
     local json_payload=$(jq -n \
         --arg model "$MODEL" \
         --arg prompt "$prompt" \
