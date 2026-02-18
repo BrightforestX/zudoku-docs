@@ -89,7 +89,7 @@ export const docs: Navigation = [
     type: "category",
     label: "Integrations",
     icon: "blocks",
-    items: ["docs/configuration/sentry"],
+    items: ["docs/configuration/sentry", "docs/logging"],
   },
   {
     type: "category",
