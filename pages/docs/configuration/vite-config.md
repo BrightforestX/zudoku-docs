@@ -14,5 +14,5 @@ Zudoku will automatically pick up the configuration file and will use it to augm
 configuration.
 
 You can find an
-[example project](https://github.com/zuplo/zudoku/tree/main/examples/with-vite-config) on GitHub
-that demonstrates how to use a custom Vite configuration with Zudoku.
+[example project](https://github.com/BrightforestX/zudoku/tree/main/examples/with-vite-config) on
+GitHub that demonstrates how to use a custom Vite configuration with Zudoku.

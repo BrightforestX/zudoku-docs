@@ -53,5 +53,6 @@ have you up and running with a modern, customizable site that your developers wi
 ## 🚀 Pro Tips
 
 - Use `npm run build` to create a production build
-- Check out our [examples](https://github.com/zuplo/zudoku/tree/main/examples) for inspiration
+- Check out our [examples](https://github.com/BrightforestX/zudoku/tree/main/examples) for
+  inspiration
 - Join our [Discord community](https://discord.zudoku.dev) for support and tips

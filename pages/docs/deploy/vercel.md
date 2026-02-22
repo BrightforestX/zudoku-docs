@@ -79,7 +79,7 @@ your `vercel.json` file. See the
 [Vercel Configuration](https://vercel.com/docs/projects/project-configuration#redirects) for more
 information.
 
-This is a current limitation. See [#115](https://github.com/zuplo/zudoku/issues/151).
+This is a current limitation. See [zuplo/zudoku#151](https://github.com/zuplo/zudoku/issues/151).
 
 :::
 

@@ -20,7 +20,7 @@ interfaces:
 - **EventConsumerPlugin**: Handle custom events
 
 You can find all available plugin interfaces in the
-[Zudoku source code](https://github.com/zuplo/zudoku/blob/main/packages/zudoku/src/lib/core/plugins.ts).
+[Zudoku source code](https://github.com/BrightforestX/zudoku/blob/main/packages/zudoku/src/lib/core/plugins.ts).
 
 ## Defining Plugins
 

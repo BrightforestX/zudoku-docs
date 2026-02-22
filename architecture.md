@@ -33,5 +33,6 @@ flowchart TB
 
 ## See also
 
-- [pages/docs/](pages/docs/) — Configuration and guides
-- [FEATURE_ROADMAP.md](FEATURE_ROADMAP.md)
+- [Configuration and guides](docs/configuration/overview) — Site configuration, customization, and
+  guides
+- [FEATURE_ROADMAP.md](FEATURE_ROADMAP.md) — BDD feature testing roadmap
