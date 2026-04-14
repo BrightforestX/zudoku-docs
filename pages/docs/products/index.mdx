@@ -3,7 +3,7 @@ title: Products
 description: Multi-platform tools for accessing documentation
 ---
 
-import ProductsShowcase from "../../src/components/ProductsShowcase";
+import ProductsShowcase from "../../../src/components/ProductsShowcase";
 
 # Products
 
@@ -14,15 +14,20 @@ import ProductsShowcase from "../../src/components/ProductsShowcase";
 We believe developers should access documentation in the way that best fits their workflow:
 
 ### 🌐 **Web Browser**
+
 Perfect for detailed reading, visual learning, and exploring documentation while coding.
 
 ### 📱 **Mobile App**
+
 Ideal for learning on the go, commuting, or reviewing documentation away from your desk.
 
 ### ⚡ **Command Line**
-Best for quick lookups, automation, scripting, and integrating documentation into your development workflow.
+
+Best for quick lookups, automation, scripting, and integrating documentation into your development
+workflow.
 
 ### 🤖 **AI Assistants**
+
 Let AI help you navigate and understand documentation through natural language queries.
 
 ## Technical Excellence
@@ -41,11 +46,11 @@ Every product includes comprehensive testing:
 
 ### Performance Benchmarks
 
-| Platform | Startup Time | Search Speed | Memory Usage |
-|----------|-------------|--------------|--------------|
-| MCP Server | < 50ms | < 50ms | < 20 MB |
-| Mobile App | < 1s | < 100ms | 40-60 MB |
-| CLI Tool | < 50ms | < 100ms | < 10 MB |
+| Platform   | Startup Time | Search Speed | Memory Usage |
+| ---------- | ------------ | ------------ | ------------ |
+| MCP Server | < 50ms       | < 50ms       | < 20 MB      |
+| Mobile App | < 1s         | < 100ms      | 40-60 MB     |
+| CLI Tool   | < 50ms       | < 100ms      | < 10 MB      |
 
 ### Architecture Highlights
 
@@ -62,7 +67,7 @@ Single sign-on works across all platforms:
 ```typescript
 // Same authentication flow everywhere
 const auth = useAuth();
-await auth.signIn({ provider: 'google' });
+await auth.signIn({ provider: "google" });
 ```
 
 ### Data Synchronization

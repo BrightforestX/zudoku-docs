@@ -3,6 +3,15 @@ import type { ZudokuConfig } from "zudoku";
 import { Button } from "zudoku/ui/Button.js";
 import { components, docs } from "./sidebar";
 import {
+  Badge,
+  Card,
+  CardGroup,
+  Info,
+  Tab,
+  Tabs,
+  Warning,
+} from "./src/components/mdx/MintlifyMdx.js";
+import {
   AgentCapability,
   CliCommand,
   ComparisonTable,
@@ -17,7 +26,7 @@ import GithubIcon from "./src/GithubIcon";
 
 const ThemePlayground = lazy(() => import("./src/ThemeEditor.js"));
 const LandingPage = lazy(() => import("./src/LandingPage"));
-const McpComingSoon = lazy(() => import("./src/components/McpComingSoon.js"));
+const McpComingSoon = lazy(() => import("./src/components/McpComingSoon.tsx"));
 
 // MCP domain mapping for schema files
 const mcpDomainSchemas: Record<string, string> = {
@@ -28,6 +37,7 @@ const mcpDomainSchemas: Record<string, string> = {
   "brightforestx.com": "./schema/mcp-brightforestx-com.json",
   "brightpath.ai": "./schema/mcp-brightpath-ai.json",
   "pathx.ai": "./schema/mcp-pathx-ai.json",
+  "pathx-ai": "./schema/mcp-pathx-ai.json",
   "iheartai.ai": "./schema/mcp-iheartai-ai.json",
   "appnowhq.com": "./schema/mcp-appnowhq-com.json",
   "getdiyai.com": "./schema/mcp-getdiyai-com.json",
@@ -109,6 +119,7 @@ const config: ZudokuConfig = {
     type: "pagefind",
   },
   redirects: [
+    { from: "/docs/roadmap", to: "/docs/roadmap/index" },
     { from: "/docs", to: "/docs/quickstart" },
     { from: "/getting-started", to: "/docs/quickstart" },
     { from: "/app-quickstart", to: "/docs/quickstart" },
@@ -176,6 +187,13 @@ const config: ZudokuConfig = {
       CliCommand,
       AgentCapability,
       ComparisonTable,
+      Badge,
+      Card,
+      CardGroup,
+      Tabs,
+      Tab,
+      Info,
+      Warning,
     },
   },
   slots: {

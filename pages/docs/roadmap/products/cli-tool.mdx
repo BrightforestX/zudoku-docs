@@ -1,0 +1,208 @@
+---
+title: Zudoku CLI Tool
+description: Command-line documentation generator and pipeline integration tool
+---
+
+<DomainHero
+  domain="zudoku-cli"
+  title="Zudoku CLI Tool"
+  description="Command-line documentation generator and pipeline integration tool"
+/>
+
+# Zudoku CLI Tool
+
+## Overview
+
+The **Zudoku CLI Tool** brings the power of automated documentation to your terminal. Designed for
+developers, DevOps engineers, and automation enthusiasts, it integrates seamlessly into your CI/CD
+pipelines, shell scripts, and development workflows with zero-friction setup.
+
+It works alongside [Zudoku MCP Server](/docs/roadmap/products/mcp-server) for comprehensive
+enterprise documentation solutions.
+
+## Key Features
+
+### Command Line Power
+
+- ✅ Instant documentation generation from code
+- ✅ Pipeline integration with any CI/CD system
+- ✅ Shell script automation
+- ✅ Git hooks integration
+- ✅ Docker container support
+- ✅ Cross-platform binaries (Linux, macOS, Windows)
+
+### Developer-Friendly
+
+- **Multiple Output Formats**: Markdown, HTML, PDF, JSON
+- **Template System**: Customizable documentation templates
+- **Language Detection**: Auto-detects and documents Go, Python, JavaScript, TypeScript, Rust, and
+  more
+- **Git Integration**: Automatic changelog and version detection
+- **Preview Mode**: Built-in web server for documentation preview
+
+## Installation
+
+### NPM Installation (Global)
+
+```bash
+npm install -g zudoku-cli
+```
+
+### Homebrew (macOS/Linux)
+
+```bash
+brew install zudoku/tools/zudoku-cli
+```
+
+### Docker Installation
+
+```bash
+docker pull zudoku/cli:latest
+```
+
+### Download Binaries
+
+Visit [releases.zudoku.com](https://releases.zudoku.com) for direct downloads of pre-built binaries.
+
+## Quick Start
+
+### Generate Docs from a Project
+
+```bash
+zudoku generate --source ./src --output ./docs
+```
+
+### Integrate into GitHub Actions
+
+```yaml
+- name: Generate Documentation
+  run: zudoku generate --source . --format markdown --output docs/
+```
+
+### Preview Documentation
+
+```bash
+zudoku serve --port 3000
+```
+
+## Use Cases
+
+### CI/CD Integration
+
+Automatically generate API documentation on every commit and deploy to GitHub Pages.
+
+### Development Teams
+
+Keep documentation synced with code changes through pre-commit hooks.
+
+### Open Source Projects
+
+Provide comprehensive documentation without manual maintenance overhead.
+
+### Enterprise Pipelines
+
+Integrate documentation checks into deployment gates and quality assurance processes.
+
+## Commands
+
+### Core Commands
+
+```bash
+zudoku generate    # Generate documentation from source code
+zudoku serve       # Start local preview server
+zudoku validate    # Validate documentation files
+zudoku deploy      # Deploy docs to configured platforms
+zudoku config      # Manage CLI configuration
+```
+
+### Advanced Options
+
+```bash
+zudoku generate --language go --include-private --toc-depth 3
+zudoku validate --strict --check-links
+zudoku deploy --platform github-pages --branch gh-pages
+```
+
+## Configuration
+
+Create a `.zudokurc.json` file in your project root:
+
+```json
+{
+  "source": "./src",
+  "output": "./docs",
+  "format": "markdown",
+  "exclude": ["node_modules", "test_*"],
+  "template": "default",
+  "platforms": {
+    "github-pages": {
+      "enabled": true,
+      "branch": "gh-pages"
+    }
+  }
+}
+```
+
+## Supported Languages
+
+- **Go**: Functions, structs, interfaces, godoc comments
+- **Python**: Classes, functions, type hints, docstrings
+- **JavaScript/TypeScript**: ES6+ syntax, JSDoc comments, React components
+- **Rust**: Structs, enums, functions, documentation attributes
+- **Java**: Classes, methods, Javadoc comments
+- **And more**: PHP, Ruby, C#, etc.
+
+## Roadmap
+
+### Current Version (v1.8)
+
+- ✅ Multi-language support
+- ✅ GitHub Actions integration
+- 🔨 Advanced template system
+- 📋 Custom language parsers
+
+### Q2 2026
+
+- 📋 AI-assisted documentation generation
+- 📋 Real-time collaboration features
+- 📋 Plugin architecture
+
+### Q3 2026
+
+- 📋 Advanced analytics and usage metrics
+- 📋 Enterprise SSO integration
+- 📋 Audit trail features
+
+### Q4 2026
+
+- 📋 Autonomous documentation updates
+- 📋 Machine learning-driven template suggestions
+- 📋 Advanced validation rules
+
+## Performance
+
+- **Generate Speed**: < 2 seconds for typical projects
+- **Memory Usage**: < 50MB for large codebases
+- **Disk I/O**: Minimal, optimized for container environments
+- **Docker Size**: < 50MB compressed base image
+
+## Pricing
+
+### Open Source
+
+Free for all open source projects.
+
+### Professional
+
+$29/month per seat - Advanced templates, priority support, custom integrations.
+
+### Enterprise
+
+Contact [enterprise@zudoku.com](mailto:enterprise@zudoku.com) for enterprise licensing.
+
+## Related Documentation
+
+- [Main Roadmap](/docs/roadmap/index)
+- [Zudoku MCP Server](/docs/roadmap/products/mcp-server)
+- [Installation Guide](/docs/install)
+- [CLI API Reference](/docs/api/cli)

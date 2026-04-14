@@ -1,0 +1,316 @@
+---
+domain: "pathx.ai"
+---
+
+# A: How to Prepare for System Design Interviews
+
+This guide covers everything you need to know to ace system design interviews, with a focus on
+structured preparation and common pitfalls.
+
+## Study Philosophy
+
+**Don't memorize patterns. Understand principles.**
+
+Memorizing solutions leads to inflexible thinking. Focus on:
+
+- First principles thinking
+- Trade-off analysis
+- Problem decomposition
+- Communication clarity
+
+## Study Plan (4-6 weeks)
+
+### Phase 1: Foundations (Week 1-2)
+
+**Goal:** Master core concepts
+
+1. **Read the basics:**
+   - [System Design Framework](./system-design-framework.md) — mandatory first read
+   - [Estimation Guide](./estimation-guide.md) — critical numbers and calculations
+   - [Distributed Systems](./distributed-systems.md) — CAP, consensus, consistency
+
+2. **Study infrastructure components:**
+   - Load balancers (L4 vs L7, algorithms)
+   - Databases (SQL vs NoSQL tradeoffs)
+   - Caches (Redis, Memcached, local vs distributed)
+   - Message queues (Kafka, RabbitMQ, SQS)
+   - CDN and DNS
+
+### Phase 2: Problems & Solutions (Week 3-4)
+
+**Goal:** Solve problems end-to-end
+
+Solve 15-20 problems from [Common Problems](./common-problems.md) using the frameworks. For each
+problem:
+
+**Follow the 8-step framework:**
+
+1. Requirements gathering 🔍
+2. Constraints identification 📏
+3. High-level design 🏗️
+4. Data model 💾
+5. APIs 📡
+6. Scaling considerations 📈
+7. Failure modes & redundancy 🛡️
+8. Security & compliance 🔐
+
+**Practice patterns, don't memorize them.**
+
+### Phase 3: Deep Dives (Week 5)
+
+**Goal:** Handle complexity
+
+Study advanced topics:
+
+- Microservices vs monoliths
+- Service mesh (Istio)
+- Observability (metrics, logs, tracing)
+- Security (OAuth, JWT, encryption)
+- Compliance (FedRAMP, SOC 2, HIPAA)
+
+### Phase 4: Mock Interviews (Week 6)
+
+**Practice delivering solutions:**
+
+- Time yourself (45-60 minutes per problem)
+- Practice whiteboarding if online (Lucidchart, Draw.io)
+- Explain trade-offs clearly
+- Anticipate follow-up questions
+
+## Common Mistakes to Avoid
+
+### 1. Jumping to Design
+
+❌ "I think we need microservices with Kubernetes" ✅ "To understand the problem better: What's the
+expected number of users?"
+
+### 2. Feature Creep
+
+❌ "Let's also add analytics, AI, and real-time chat" ✅ Focus on core requirements first
+
+### 3. Technology Name-Dropping
+
+❌ "We'll use 5 different databases" ✅ Explain WHY each technology choice
+
+### 4. Ignoring Scale
+
+❌ "Each server handles the load" ✅ Always estimate: users, requests/second, storage
+
+### 5. Poor Trade-off Discussion
+
+❌ "We'll make it fast" ✅ "Latency vs consistency vs cost trade-offs"
+
+### 6. No Error Handling
+
+❌ "The API works perfectly" ✅ Discuss failure modes and recovery
+
+## How to Solve a Problem
+
+### Step 1: Understand the Problem (5-10 min)
+
+**Clarify all assumptions.** Ask questions like:
+
+- How many users? DAU/MAU?
+- Read-to-write ratio?
+- Data retention? Compliance?
+- SLOs? Budget? Timeline?
+
+**Example questions:**
+
+> "What are the key functional requirements?" "What's the scale — DAU, storage needs?" "Are there
+> existing systems to integrate with?"
+
+### Step 2: Define Scope & Boundaries (2-3 min)
+
+**Draw boxes around the problem. Be explicit about what you WON'T solve.**
+
+### Step 3: High-Level Architecture (5-7 min)
+
+\*\*Draw boxes and arrows. Show how components talk to each other.'
+
+Common components:
+
+- Load balancer → Application servers → Database
+- Cache layers, message queues, background workers
+
+### Step 4: Dive Deep on Key Components (20-30 min)
+
+**Pick 2-3 critical aspects to detail:**
+
+- Data model (schema, indexes, sharding)
+- APIs (REST/GraphQL, authentication, rate limiting)
+- Scaling (horizontal vs vertical, bottlenecks)
+
+### Step 5: Discuss Trade-offs & Alternatives (5-10 min)
+
+**Nothing is free. Every choice has costs:**
+
+> "We could use NoSQL for scale but lose ACID guarantees"
+
+**Always have backup plans:**
+
+> "If we need stronger consistency, we'd switch to PostgreSQL but scale differently"
+
+### Step 6: Handle Edge Cases & Failure (3-5 min)
+
+**Discuss:**
+
+- Single points of failure
+- Recovery strategies
+- Monitoring & alerting
+- Graceful degradation
+
+## Role-Specific Preparation
+
+### Frontend Engineer
+
+- Focus on UI/UX scalability (lazy loading, virtual scrolling)
+- State management at scale
+- Performance (bundle splitting, CDN)
+- Feature flags and gradual rollouts
+
+### Backend Engineer
+
+- API design and microservices
+- Database design and optimization
+- Caching strategies and distributed systems
+- Security and authentication
+
+### Full-Stack Engineer
+
+- End-to-end understanding
+- Integration points and data flow
+- Performance across the stack
+- Deployment and DevOps
+
+### Engineering Manager
+
+- Team organization and boundaries
+- Technology choice and migration strategy
+- Risk assessment and mitigation
+- Stakeholder communication
+
+## Common System Design Questions
+
+### Beginner (45 min)
+
+- Design a URL shortener
+- Design a key-value store
+- Design a rate limiter
+- Design TinyURL
+
+### Intermediate (60 min)
+
+- Design Netflix
+- Design Instagram/Photo sharing
+- Design WhatsApp/WebSocket chat
+- Design Uber backend
+- Design Twitter
+
+### Expert (90+ min)
+
+- Design Google Ads
+- Design Facebook News Feed
+- Design Airbnb
+- Design Reddit
+
+## Advanced Preparation
+
+### Research Real Systems
+
+Study how companies actually solve it:
+
+- Read engineering blogs (Netflix, Uber, Facebook)
+- Study open-source alternatives (Mastodon for Twitter, Peertube for YouTube)
+- Analyze competitor architectures
+
+### Practice Communication
+
+**The interview is about explanation, not architecture:**
+
+- Explain concepts clearly to non-experts
+- Draw pictures while talking
+- Anticipate questions and confusions
+- Admit uncertainty gracefully
+
+### Build Real Projects
+
+Implement toy versions of the problems you study:
+
+- URL shortener service
+- Chat application
+- Simple distributed cache
+- File sharing service
+
+### Network and Study Groups
+
+Join study groups and practice discussions:
+
+- LeetCode Discuss or Reddit r/cscareerquestions
+- Local meetups (Meetup.com)
+- Online communities (Discord, Slack)
+
+## Interview Day Tips
+
+### Before the Interview
+
+- Get good sleep (interviews are exhausting)
+- Review your study notes (don't cram)
+- Have water/coffee ready
+- Close unnecessary tabs
+- Test your setup (camera, microphone, internet)
+
+### During the Interview
+
+- Take notes but don't get lost in them
+- Think out loud — explain your thought process
+- Ask clarifying questions — it's expected
+- Draw diagrams as you talk
+- Pause before answering key questions
+
+### Common Follow-up Questions
+
+- "How would you handle X% more scale?"
+- "What happens during network partition?"
+- "How do you do zero-downtime deployment?"
+- "How do you prevent data loss?"
+- "What are the security implications?"
+
+### Red Flags in Your Answers
+
+- "It depends" without explaining why
+- Too much focus on implementation details
+- Dismissing important concerns
+- Not considering operational complexity
+
+## Resources
+
+### Books
+
+- **Designing Data-Intensive Applications** by Martin Kleppmann
+- **System Design Interview** by Alex Xu (2 volumes)
+- **Building Microservices** by Sam Newman
+
+### Websites
+
+- [System Design Primer](https://github.com/donnemartin/system-design-primer)
+- [High Scalability Blog](http://highscalability.com/)
+- [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/)
+
+### Courses
+
+- [Educative.io System Design](https://www.educative.io/courses/grokking-the-system-design-interview)
+- [ByteByteGo Newsletter](https://blog.bytebytego.com/)
+
+## Final Thoughts
+
+**System design interviews test how you think about complex problems** - not whether you know
+specific technologies. Focus on:
+
+🎯 **Problem Decomposition** — Break complex problems into manageable pieces ⚖️ **Trade-off
+Analysis** — Every decision has costs and benefits  
+🔄 **Iteration** — Refactor designs as new requirements emerge 🗣️ **Communication** — Explain
+complex ideas clearly
+
+**Practice is key.** Solve problems regularly, review past designs, and learn from feedback. The
+skills you build will serve you throughout your career.

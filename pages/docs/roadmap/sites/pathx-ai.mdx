@@ -1,392 +1,229 @@
 ---
 title: pathx.ai Roadmap
 description:
-  Advanced AI development accelerator with sophisticated code generation and analysis capabilities
+  Algorithm optimization, benchmarking, and performance tuning for ML and data-intensive workflows
 ---
-
-import { DomainHero } from "@/components/DomainHero";
 
 <DomainHero
   domain="pathx-ai"
   title="pathx.ai"
-  description="Advanced AI development accelerator with sophisticated code generation and analysis capabilities"
+  description="Algorithm optimization, benchmarking, and performance tuning for ML and data-intensive workflows"
 />
 
 # pathx.ai Roadmap
 
 ## Overview
 
-**pathx.ai** is the advanced AI development accelerator that takes AI-powered coding to the next
-level. It provides sophisticated code generation, deep analysis, architectural recommendations, and
-multi-file project generation capabilities for professional developers and teams.
+**pathx.ai** is the BrightForest platform for **algorithm optimization**: standardized benchmarking,
+hyperparameter search, performance profiling, and reproducible experiment tracking for machine
+learning, data processing, and compute-heavy pipelines.
+
+It pairs with the [PathX.ai MCP agent](/docs/mcp/agents/pathx-ai) (`mcp://optimization.pathx.ai`)
+for automation inside IDEs and agent workflows.
 
 ## Domain Purpose
 
 pathx.ai is designed to:
 
-- **Accelerate Development**: Generate production-ready code at scale
-- **Enhance Code Quality**: Provide deep code analysis and optimization
-- **Architect Solutions**: Suggest and implement architectural patterns
-- **Generate Projects**: Create complete, multi-file project structures
-- **Optimize Performance**: Identify and fix performance bottlenecks
+- **Benchmark Reliably**: Run comparable suites (standard and custom) and capture consistent metrics
+- **Tune Systematically**: Search hyperparameters with grid, random, Bayesian, and multi-objective
+  strategies
+- **Profile Deeply**: Find compute, memory, and I/O bottlenecks in training and inference paths
+- **Compare Fairly**: Evaluate algorithms and model variants on the same data and hardware baselines
+- **Ship Faster**: Turn experiment results into actionable optimizations and regression-safe
+  releases
 
 ## Planned Features
 
 ### Core Features (Shared)
 
-- ✅ Professional-grade UI/UX
-- ✅ Advanced authentication and authorization
-- ✅ Real-time collaboration features
-- ✅ Enterprise-ready performance
-- ✅ Comprehensive API access
+- ✅ Responsive web application
+- ✅ User authentication and profiles
+- ✅ Dark/light theme support
+- ✅ Mobile-optimized experience
+- ✅ Accessibility compliance
 
 ### AI-Powered Tools (Shared with brightpath.ai, figmatofullstack.com, figmatofullstack.ai, brightforest.ai)
 
-- 📝 **Advanced AI Integration**: Multiple AI models simultaneously
-- 📝 **Context-Aware Generation**: Deep codebase understanding
-- 📝 **Intelligent Prompting**: Advanced prompt engineering
-- 📝 **Multi-Format Export**: Various output formats
-- 📝 **Change Tracking**: Complete version history
-- 📝 **API Ecosystem**: Extensive API integrations
-- 📝 **Usage Management**: Sophisticated quota system
+- 📝 **AI Model Integration**: Connect to frontier models for analysis and recommendations
+- 📝 **Experiment Assistance**: Natural-language summaries of runs and suggested next steps
+- 📝 **Prompt Engineering Interface**: Test and refine optimization prompts
+- 📝 **Result Export**: Reports, charts, and tables for stakeholders
+- 📝 **Version History**: Track configuration and result lineage
+- 📝 **API Integration**: Trigger runs from CI/CD and notebooks
+- 📝 **Rate Limiting UI**: Clear usage limits and quotas
 
 ### Unique Features
 
-#### 1. Advanced Code Analysis
+#### 1. Benchmark automation
 
 **Status**: 🔨 In Development
 
-Deep, AI-powered code analysis capabilities:
+- Standard suites (e.g., MLPerf-style training/inference, GLUE/SuperGLUE-style tasks) and **custom
+  suites**
+- Dataset and hardware pins for reproducible comparisons
+- Automated reports with leaderboards and regression alerts
 
-- **Architecture Review**: Analyze overall system architecture
-- **Code Quality Metrics**: Comprehensive quality scoring
-- **Security Scanning**: Identify security vulnerabilities
-- **Performance Analysis**: Detect performance bottlenecks
-- **Best Practices**: Suggest improvements based on industry standards
-- **Dependency Analysis**: Evaluate and optimize dependencies
-- **Technical Debt**: Quantify and prioritize technical debt
-- **Refactoring Suggestions**: AI-powered refactoring recommendations
+**User Value**: One place to answer “did this change make things better, on comparable hardware?”
 
-**User Value**: Professional-grade code review and optimization
-
-**Analysis Capabilities**:
-
-- Cyclomatic complexity analysis
-- Code duplication detection
-- Architectural pattern recognition
-- Performance hotspot identification
-- Security vulnerability scanning (OWASP Top 10)
-- Dependency vulnerability checking
-- Code style consistency
-- Test coverage gaps
-
-#### 2. Multi-File Project Generation
+#### 2. Hyperparameter and configuration search
 
 **Status**: 📋 Planned
 
-Complete project structure generation:
+- Search strategies: grid, random, Bayesian optimization, early stopping
+- Multi-objective tradeoffs (accuracy vs. latency vs. cost)
+- Experiment database with lineage from config → metrics → artifacts
 
-- **Full Stack Projects**: Generate frontend + backend + infrastructure
-- **Microservices**: Create complete microservice architectures
-- **Component Libraries**: Generate reusable component systems
-- **API Services**: Full REST/GraphQL API implementations
-- **Database Schemas**: Generate migrations and models
-- **CI/CD Pipelines**: Complete deployment configurations
-- **Documentation**: Comprehensive project documentation
-- **Testing Suites**: Complete test infrastructure
-
-**User Value**: Go from idea to production-ready project structure in minutes
-
-**Project Templates**:
-
-- Modern web application (React/Next.js + Node.js)
-- Mobile app (React Native with backend)
-- API service (Express, FastAPI, or NestJS)
-- Microservices architecture (Docker + Kubernetes)
-- CLI tool (TypeScript or Python)
-- Chrome extension
-- Electron desktop app
-- Serverless application (AWS Lambda, Vercel)
+**User Value**: Less manual tuning, more coverage of the search space with traceable decisions
 
 ## Technical Architecture
 
-### AI/ML Capabilities
+### Optimization stack
 
-- **Multi-Model**: GPT-4, Claude, Gemini, Codex integration
-- **Fine-Tuning**: Custom models for specific use cases
-- **Context Windows**: Handle large codebases (100k+ tokens)
-- **Code Understanding**: AST parsing and semantic analysis
-- **Pattern Recognition**: Learn from codebase patterns
+- **Job orchestration**: Queues for long-running benchmarks and sweeps
+- **Metrics store**: Time-series and tabular metrics with run IDs and tags
+- **Artifact storage**: Checkpoints, traces, and profiler outputs
+- **GPU/CPU scheduling**: Fair sharing and pinned hardware profiles where needed
 
-### Code Processing
+### Analysis & AI
 
-- **AST Parsing**: Multi-language syntax tree analysis
-- **Static Analysis**: Advanced static code analysis
-- **Dynamic Analysis**: Runtime behavior prediction
-- **Dependency Graph**: Complete dependency mapping
-- **Impact Analysis**: Change impact prediction
+- **LLM-assisted triage**: Summarize failures, outliers, and slow stages
+- **Anomaly detection**: Flag regressions vs. historical baselines
+- **Recommendation layer**: Suggest next experiments from prior results
 
-### Infrastructure
+### Integrations
 
-- **Compute**: GPU-accelerated AI inference
-- **Storage**: Efficient code repository storage
-- **Caching**: Intelligent caching for faster responses
-- **Scaling**: Auto-scaling based on demand
-- **Security**: Isolated execution environments
+- **Notebooks**: Jupyter, Colab, and similar via API keys and webhooks
+- **CI**: GitHub Actions, GitLab CI, and other pipelines for pre-merge benchmarks
+- **MCP**: [PathX.ai Algorithm Optimization Agent](/docs/mcp/agents/pathx-ai) for IDE-integrated
+  workflows
 
 ## Differentiation
 
-pathx.ai differentiates through:
+pathx.ai stands out through:
 
-### 1. Professional-Grade AI
+### 1. Optimization-first product
 
-- **Advanced Models**: Latest and most capable AI models
-- **Deep Context**: Understands entire codebases
-- **Production Quality**: Generates deployment-ready code
-- **Multi-Language**: Support for 20+ programming languages
+- Purpose-built for **measurement and tuning**, not generic code generation
+- Strong defaults for **reproducibility** (configs, seeds, environment fingerprints)
 
-### 2. Comprehensive Analysis
+### 2. Depth on performance
 
-- **Beyond Linting**: Deep architectural and performance analysis
-- **Security Focus**: Enterprise-grade security scanning
-- **Actionable Insights**: Specific, prioritized recommendations
-- **Continuous Learning**: Improves based on codebase patterns
+- Profiling across **training, inference, and data loading**
+- Guidance on **hardware utilization** and batching strategies
 
-### 3. Scale & Complexity
+### 3. Fair comparison
 
-- **Large Projects**: Handle enterprise-scale codebases
-- **Complex Architectures**: Microservices, monorepos, multi-tenant
-- **Team Collaboration**: Built for team workflows
-- **CI/CD Integration**: Seamless pipeline integration
+- Side-by-side runs on **declared hardware and dataset revisions**
+- Regression detection when metrics slip
 
-### 4. Developer Experience
+### 4. Ecosystem fit
 
-- **IDE Plugins**: VS Code, JetBrains, Vim integrations
-- **CLI Tools**: Powerful command-line interface
-- **API First**: Comprehensive REST and GraphQL APIs
-- **Webhooks**: Real-time event notifications
+- Works alongside [brightpath.ai](/docs/roadmap/sites/brightpath-ai) (learning paths) and
+  [brightforest.ai](/docs/roadmap/sites/brightforest-ai) (broader AI dev tooling)
 
 ## Development Phases
 
-### Phase 1: Advanced Generation (Current)
+### Phase 1: Benchmarks & reporting (current)
 
-- ✅ Multi-language code generation
-- ✅ Context-aware completions
-- 🔨 Advanced code analysis engine
-- 🔨 Architecture recommendation system
-- 🔨 Performance optimization detection
+- ✅ Public positioning aligned with MCP agent and schema
+- 🔨 Core benchmark runner and result storage
+- 🔨 Baseline dashboards and exportable reports
+- 🔨 Initial API for triggering runs
 
-### Phase 2: Project Generation (Q2 2026)
+### Phase 2: Tuning & search (Q2 2026)
 
-- 📋 Multi-file project templates
-- 📋 Full-stack application generation
-- 📋 Microservices scaffolding
-- 📋 Infrastructure code generation
-- 📋 Complete test suite generation
+- 📋 Hyperparameter search workers and scheduling
+- 📋 Multi-objective optimization UI
+- 📋 Experiment comparison and diff views
 
-### Phase 3: Team & Enterprise (Q3 2026)
+### Phase 3: Teams & governance (Q3 2026)
 
-- 📋 Team collaboration features
-- 📋 Shared code libraries
-- 📋 Custom model fine-tuning
-- 📋 Enterprise integrations
-- 📋 Advanced security features
+- 📋 Shared workspaces, roles, and audit-friendly run history
+- 📋 Org-wide baselines and approval flows for production configs
+- 📋 SSO and enterprise billing hooks
 
-### Phase 4: AI-Driven Development (Q4 2026)
+### Phase 4: Autonomous optimization loops (Q4 2026)
 
-- 📋 Autonomous debugging
-- 📋 Predictive development
-- 📋 AI pair programming
-- 📋 Automated refactoring
-- 📋 Intelligent test generation
+- 📋 Closed-loop suggestions from historical runs
+- 📋 Deeper CI integration (gates on benchmark regressions)
+- 📋 Optional auto-pr for config changes with human review
 
-## User Personas
+## User personas
 
-### 1. Senior Developer
+### 1. ML engineer
 
-**Profile**: 8+ years experience, technical lead **Needs**: Architecture guidance, code review,
-optimization **Journey**: Complex feature → Analysis → Generation → Review → Deploy
+**Needs**: Reliable benchmarks, fast iteration on model configs **Journey**: Define suite → run
+sweep → compare metrics → promote best config
 
-### 2. Engineering Manager
+### 2. Data scientist
 
-**Profile**: Manages development team **Needs**: Code quality metrics, team productivity,
-consistency **Journey**: Team onboarding → Standards setup → Monitoring → Optimization
+**Needs**: Exploratory tuning without losing reproducibility **Journey**: Notebook or UI experiment
+→ track lineage → share report
 
-### 3. Startup CTO
+### 3. Research engineer
 
-**Profile**: Building MVP quickly **Needs**: Fast prototyping, production quality, scalability
-**Journey**: Idea → Multi-file generation → Customization → Launch
+**Needs**: Publication-grade reproducibility and fair comparisons **Journey**: Pin environments →
+run ablations → export tables and artifacts
 
-### 4. Enterprise Architect
+### 4. Platform / performance engineer
 
-**Profile**: Designs large-scale systems **Needs**: Architecture validation, pattern enforcement,
-migration planning **Journey**: Architecture design → Validation → Code generation → Implementation
+**Needs**: Fleet-wide profiling and regression detection **Journey**: Schedule jobs → monitor
+baselines → alert on drift
 
-## Success Metrics
+## Success metrics
 
-### Code Quality
+### Optimization outcomes
 
-- **Analysis Accuracy**: 95%+ correct issue identification
-- **Security Findings**: Critical vulnerabilities detected
-- **Performance Improvements**: Measurable performance gains
-- **Technical Debt Reduction**: Code quality score improvements
+- **Regression rate**: Fewer performance regressions reaching production
+- **Time to best config**: Median sweeps to reach target metric threshold
+- **Reproducibility**: % of runs with complete config and environment capture
 
-### Generation Quality
+### Platform
 
-- **Build Success Rate**: Generated code builds without errors
-- **Test Pass Rate**: Generated tests pass reliably
-- **Production Readiness**: % of code deployed without changes
-- **User Satisfaction**: Code quality ratings
+- **Job success rate**: Completed vs. failed benchmark/tuning jobs
+- **Latency**: Queue time and wall-clock for standard suites
+- **Uptime**: Target 99.9%+ for control plane APIs
 
-### Platform Performance
+## Example programs
 
-- **Generation Speed**: Average time for multi-file generation
-- **Analysis Speed**: Time to analyze 100k lines of code
-- **API Response Time**: P99 < 500ms
-- **Uptime**: 99.95% availability
+### Model launch readiness
 
-## Use Cases
+1. Lock dataset revision and hardware class
+2. Run inference latency and throughput suite
+3. Compare to previous release; block if regression > threshold
 
-### 1. Legacy Modernization
+### Training cost reduction
 
-- Analyze legacy code
-- Identify modernization opportunities
-- Generate migration paths
-- Create test coverage
-- Implement gradually
+1. Define accuracy floor and cost metric
+2. Run multi-objective search over batch size, precision, and optimizer settings
+3. Promote Pareto-optimal configs to staging
 
-### 2. API Development
+## Pricing model
 
-- Design API specification
-- Generate server implementation
-- Create client SDKs
-- Generate API documentation
-- Implement authentication
+Tiers will align with **compute minutes**, **concurrent jobs**, and **retention** for metrics and
+artifacts. Details will ship with general availability; early access may use invitation-only quotas.
 
-### 3. Microservices Migration
+## Related documentation
 
-- Analyze monolith architecture
-- Identify service boundaries
-- Generate microservice structure
-- Create communication layer
-- Implement deployment configs
-
-### 4. Performance Optimization
-
-- Profile application performance
-- Identify bottlenecks
-- Generate optimized code
-- Implement caching strategies
-- Validate improvements
-
-## Technology Support
-
-### Languages (20+)
-
-- **Web**: JavaScript, TypeScript, HTML, CSS
-- **Backend**: Python, Go, Rust, Java, C#, PHP, Ruby
-- **Mobile**: Swift, Kotlin, Dart
-- **Systems**: C, C++, Rust
-- **Data**: SQL, NoSQL queries
-- **Config**: YAML, JSON, TOML, HCL
-
-### Frameworks
-
-- **Frontend**: React, Vue, Angular, Svelte, Next.js
-- **Backend**: Express, FastAPI, Django, Spring, .NET
-- **Mobile**: React Native, Flutter, SwiftUI
-- **Testing**: Jest, Vitest, Pytest, JUnit, Cypress
-
-### Platforms
-
-- **Cloud**: AWS, Azure, GCP, Vercel, Netlify
-- **Containers**: Docker, Kubernetes, Docker Compose
-- **CI/CD**: GitHub Actions, GitLab CI, CircleCI, Jenkins
-- **Databases**: PostgreSQL, MySQL, MongoDB, Redis
-
-## Pricing Model
-
-### Professional ($49/month)
-
-- Advanced code analysis
-- Multi-file generation (up to 10 files)
-- 1M tokens/month
-- IDE integrations
-- API access
-- Email support
-
-### Team ($199/month, 5 seats)
-
-- All Professional features
-- Unlimited multi-file generation
-- 10M tokens/month
-- Shared code libraries
-- Team analytics
-- Priority support
-
-### Enterprise (Custom)
-
-- All Team features
-- Unlimited tokens
-- Custom model fine-tuning
-- Dedicated infrastructure
-- SLA guarantees
-- 24/7 support
-- On-premise deployment option
-
-## API & Integrations
-
-### IDE Plugins
-
-- Visual Studio Code
-- JetBrains IDEs (IntelliJ, WebStorm, PyCharm)
-- Vim/Neovim
-- Emacs
-- Sublime Text
-
-### Version Control
-
-- GitHub
-- GitLab
-- Bitbucket
-- Azure DevOps
-
-### CI/CD
-
-- GitHub Actions
-- GitLab CI
-- CircleCI
-- Jenkins
-- Travis CI
-
-### Communication
-
-- Slack
-- Microsoft Teams
-- Discord
-- Email notifications
-
-## Related Documentation
-
-- [Main Roadmap](/docs/roadmap) - Ecosystem overview
+- [Main Roadmap](/docs/roadmap/index) - Ecosystem overview
 - [Features](/docs/roadmap/features) - BDD feature coverage
+- [PathX.ai MCP agent](/docs/mcp/agents/pathx-ai) - Tools and connection details
 - [brightpath.ai](/docs/roadmap/sites/brightpath-ai) - Learning paths
-- [brightforest.ai](/docs/roadmap/sites/brightforest-ai) - AI platform
+- [brightforest.ai](/docs/roadmap/sites/brightforest-ai) - AI development platform
 
-## Getting Started
+## Getting started
 
-Accelerate your development:
-
-1. **Sign Up**: Create pathx.ai account
-2. **Choose Plan**: Select appropriate tier
-3. **Connect Tools**: Install IDE plugins
-4. **First Analysis**: Analyze existing codebase
-5. **Generate Code**: Create your first project
-6. **Integrate**: Add to development workflow
+1. **Create account** on pathx.ai (when available) or join waitlist
+2. **Connect MCP**: Follow [PathX.ai MCP agent](/docs/mcp/agents/pathx-ai) for `pathx-optimization`
+   and env vars
+3. **Define a baseline**: First benchmark suite on your reference hardware
+4. **Run a sweep**: Small random or Bayesian search to validate the loop
+5. **Integrate CI**: Optional gate on benchmark results before merge
 
 ---
 
-**Status Legend**:
+**Status legend**:
 
 - ✅ Completed
 - 🔨 In Development

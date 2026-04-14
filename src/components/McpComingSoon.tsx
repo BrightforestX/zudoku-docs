@@ -82,6 +82,16 @@ const domainInfoMap: Record<string, DomainInfo> = {
       "Performance optimization recommendations",
     ],
   },
+  "pathx-ai": {
+    name: "PathX",
+    agentType: "Algorithm Optimization Agent",
+    capabilities: [
+      "Benchmark automation and performance profiling",
+      "Hyperparameter tuning with multiple strategies",
+      "Algorithm comparison and analysis",
+      "Performance optimization recommendations",
+    ],
+  },
   "iheartai.ai": {
     name: "iHeartAI",
     agentType: "AI Companion and Assistant",
@@ -314,3 +324,5 @@ export const McpComingSoon = () => {
     </div>
   );
 };
+
+export default McpComingSoon;

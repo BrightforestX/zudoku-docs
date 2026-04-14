@@ -1,0 +1,197 @@
+---
+title: Mobile App Authentication Integration
+description:
+  Implement secure OAuth flows, biometric authentication, and token management for iOS and Android
+---
+
+# Mobile App Authentication Integration
+
+Integrate authentication into your mobile app using OAuth 2.0 with PKCE, native biometric
+authentication, and secure token storage.
+
+## Beacon Setup
+
+Initialize the Zudoku authentication beacon in your app:
+
+```swift
+// iOS - AppDelegate.swift
+import ZudokuAuth
+
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    ZudokuAuth.configure(
+        domain: "auth.zudoku.com",
+        clientId: "your-client-id",
+        redirectUri: "com.zudoku.mobile://callback"
+    )
+    return true
+}
+```
+
+```kotlin
+// Android - Application.kt
+import com.zudoku.auth.ZudokuAuth
+
+class MyApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        ZudokuAuth.configure(
+            domain = "auth.zudoku.com",
+            clientId = "your-client-id",
+            redirectUri = "com.zudoku.mobile://callback"
+        )
+    }
+}
+```
+
+## OAuth Authentication Flow
+
+### Standard OAuth Flow
+
+```swift
+// iOS SwiftUI
+struct LoginView: View {
+    let auth = ZudokuAuth.shared
+
+    var body: some View {
+        Button("Sign In") {
+            Task {
+                do {
+                    let credentials = try await auth.authenticate()
+                    // Use credentials to access APIs
+                } catch {
+                    // Handle authentication error
+                }
+            }
+        }
+    }
+}
+```
+
+```kotlin
+// Android Compose
+@Composable
+fun LoginScreen() {
+    val context = LocalContext.current
+    val auth = ZudokuAuth.getInstance(context)
+
+    Button(onClick = {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val credentials = auth.authenticate()
+                // Use credentials to access APIs
+            } catch (e: Exception) {
+                // Handle authentication error
+            }
+        }
+    }) {
+        Text("Sign In")
+    }
+}
+```
+
+### Biometric Authentication
+
+Enable device biometric unlock:
+
+```swift
+// iOS - Enable biometric auth
+try await auth.enableBiometric()
+
+// Check if biometric is available
+let biometricsAvailable = await auth.isBiometricAvailable()
+```
+
+### Automatic Token Refresh
+
+The SDK handles token refresh automatically:
+
+```swift
+// Token refresh happens in background
+ZudokuAuth.shared.setTokenRefreshHandler { result in
+    switch result {
+    case .success(let newToken):
+        // Update your API client
+        print("Token refreshed: \(newToken)")
+    case .failure(let error):
+        // Handle refresh failure
+        print("Token refresh failed: \(error)")
+    }
+}
+```
+
+## Secure Storage
+
+Tokens are automatically stored in device keychain/keystore:
+
+```swift
+// iOS - Automatic storage
+// Tokens encrypted in iOS Keychain
+
+// Android - Automatic storage
+// Tokens encrypted in Android Keystore
+```
+
+## Logout and Session Management
+
+```swift
+// Logout from all devices
+try await auth.logout()
+
+// Check authentication status
+let isAuthenticated = await auth.isAuthenticated()
+```
+
+## Enterprise Features
+
+### SSO Integration
+
+Configure SSO for enterprise deployments:
+
+```swift
+// Configure SAML/OIDC SSO
+ZudokuAuth.configure(
+    sso: SSOConfiguration(
+        provider: .azureAD, // or .okta, .custom
+        tenantId: "your-tenant-id"
+    )
+)
+```
+
+### Certificate Pinning
+
+Enable certificate pinning for additional security:
+
+```swift
+// Domain-specific pinning
+ZudokuAuth.enableCertificatePinning([
+    "api.zudoku.com": "sha256-fingerprint-here"
+])
+```
+
+## Error Handling
+
+Common authentication errors:
+
+- `invalid_credentials`: User entered wrong credentials
+- `network_error`: Connectivity issues
+- `biometric_not_available`: Device doesn't support biometric
+- `token_expired`: Tokens need refresh
+
+## Testing
+
+Test authentication flows in different scenarios:
+
+```bash
+# iOS Simulator testing
+xcodebuild test -scheme ZudokuMobile -destination 'platform=iOS Simulator,name=iPhone 15'
+
+# Android emulator testing
+./gradlew connectedAndroidTest
+```
+
+## Next Steps
+
+- Set up redirect URIs in your IdP
+- Test authentication flows
+- Implement error handling
+- Configure for production

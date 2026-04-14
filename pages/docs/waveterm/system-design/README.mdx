@@ -1,0 +1,156 @@
+---
+domain: "pathx.ai"
+---
+
+# System Design Guide
+
+This directory contains comprehensive system design documentation and interview preparation
+materials for building production-ready, enterprise-grade systems.
+
+## Quick Navigation
+
+| Document                                                | Purpose                                       |
+| ------------------------------------------------------- | --------------------------------------------- |
+| [System Design Framework](./system-design-framework.md) | Complete 8-step framework for system design   |
+| [Estimation Guide](./estimation-guide.md)               | Back-of-envelope calculations and key numbers |
+| [Distributed Systems](./distributed-systems.md)         | CAP theorem, consistency patterns, consensus  |
+| [Common Problems](./common-problems.md)                 | Catalog of common system design problems      |
+
+## The 8-Step Framework
+
+Every system design response should address these concerns in order:
+
+1. **Requirements** - Functional and non-functional requirements, clarifying questions
+2. **Constraints** - Technical, business, and scale constraints
+3. **High-level Design** - Components, interactions, architectural decisions
+4. **Data Model** - Schema, database choice, access patterns, indexing
+5. **APIs** - Endpoints, contracts, authentication, rate limiting
+6. **Scaling** - Traffic estimation, storage estimation, throughput estimation
+7. **Failure Modes** - Single points of failure, recovery strategies, redundancy
+8. **Security** - Authentication, authorization, encryption, compliance
+
+## Clarifying Questions (Always Start Here)
+
+Before designing anything, ask sophisticated clarifying questions:
+
+### Scale Questions
+
+- "What's the expected number of users? DAU?"
+- "What's the read-to-write ratio?"
+- "What's the acceptable p99 latency?"
+
+### Consistency Questions
+
+- "Do we need strong consistency or is eventual consistency acceptable?"
+- "What are the compliance requirements (FedRAMP, SOC 2, etc.)?"
+
+### Architecture Questions
+
+- "Are there existing systems to integrate with?"
+- "What's the team size and expertise?"
+
+## Critical Numbers to Memorize
+
+### Powers of 2
+
+- 2^10 = 1,024 ≈ **1 Thousand (1K)**
+- 2^20 = 1,048,576 ≈ **1 Million (1M)**
+- 2^30 = 1,073,741,824 ≈ **1 Billion (1B)**
+
+### Time Conversions
+
+- **1 day** = 86,400 seconds
+- **1 month** = ~2.6 million seconds
+- **1 year** = ~31.5 million seconds
+
+### Latency Benchmarks
+
+- Memory (RAM): ~100 ns
+- SSD random read: ~150-200 µs
+- Same datacenter: ~1 ms
+- Cross-region: ~50-80 ms
+- Cross-continent: ~150 ms
+
+## Common Estimation Formulas
+
+### Requests Per Second
+
+```
+QPS = Daily requests / 86,400
+Peak QPS = Average QPS × 2.5 (peak factor)
+```
+
+### Storage Estimation
+
+```
+Storage = Data per entity × Number of entities × 3-5x (overhead)
+```
+
+### Server Capacity
+
+```
+Servers = Peak QPS / QPS per server × 2 (redundancy)
+```
+
+## Database Selection Guide
+
+| Need               | Choose             | Why                                         |
+| ------------------ | ------------------ | ------------------------------------------- |
+| ACID transactions  | PostgreSQL/MySQL   | Strong consistency, complex queries         |
+| Horizontal scaling | Cassandra/DynamoDB | High write throughput, eventual consistency |
+| Flexible schema    | MongoDB            | Document-oriented, rapid iteration          |
+| High-speed caching | Redis              | In-memory, sub-millisecond latency          |
+
+## Scaling Strategies
+
+### Read-Heavy Systems
+
+- Read replicas
+- Application caching (Redis)
+- CDN for static content
+
+### Write-Heavy Systems
+
+- Database sharding
+- Message queues for async processing
+- Event sourcing
+
+### Global Scale
+
+- Multi-region deployment
+- CDN and edge caching
+- Geo-routing
+
+## For FDE Public Sector Interviews
+
+Always include these considerations:
+
+### Compliance Focus
+
+- Audit logging (who, what, when, why)
+- Immutable logs, tamper-evident
+- Evidence for assessors
+
+### Security by Design
+
+- Authentication (OAuth, JWT, MFA)
+- Authorization on every request
+- Encryption at rest and in transit
+
+### Operational Readiness
+
+- Health checks and monitoring
+- Runbooks for common operations
+- Graceful degradation
+
+### Air-Gapped Scenarios
+
+- Local logging and forwarding when connected
+- Offline-capable operation
+- Manual approval workflows
+
+## Related Documentation
+
+- [Interview Preparation](../interview-prep/README.md) - Complete interview prep materials
+- [Security Fundamentals](../security/README.md) - Security architecture and compliance
+- [Extended Materials](../../archive/techincal-design/.cursor/rules/) - Comprehensive rule files

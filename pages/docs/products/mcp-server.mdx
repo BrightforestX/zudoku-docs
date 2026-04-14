@@ -9,17 +9,21 @@ Connect your AI assistants directly to our documentation with our high-performan
 
 ## Overview
 
-Our MCP (Model Context Protocol) server provides a standardized way for AI assistants like Claude, ChatGPT, and others to interact with documentation programmatically. Built on FastMCP architecture, it delivers real-time access to all documentation content, search capabilities, and analytics.
+Our MCP (Model Context Protocol) server provides a standardized way for AI assistants like Claude,
+ChatGPT, and others to interact with documentation programmatically. Built on FastMCP architecture,
+it delivers real-time access to all documentation content, search capabilities, and analytics.
 
 ## Key Features
 
 ### 🚀 FastMCP Architecture
+
 - High-performance server implementation
 - Low-latency responses
 - Efficient resource usage
 - Scalable design
 
 ### 📚 Documentation-Specific Tools
+
 - **get_documentation** - Retrieve any documentation page
 - **list_documentation** - Browse all available pages
 - **search_documentation** - Full-text search across all content
@@ -27,18 +31,21 @@ Our MCP (Model Context Protocol) server provides a standardized way for AI assis
 - **update_documentation** - Modify content (with authentication)
 
 ### ⚡ Real-Time Updates
+
 - WebSocket-based live updates
 - Redis pub/sub support for distributed systems
 - Instant notification of documentation changes
 - Automatic cache invalidation
 
 ### 🔐 Authentication & Security
+
 - OAuth2 provider integration
 - Token-based authentication
 - Role-based access control
 - Secure API endpoints
 
 ### 📊 Analytics & Tracking
+
 - Page view tracking
 - User engagement metrics
 - Search analytics
@@ -88,7 +95,8 @@ MCP_DOMAIN=yourdomain.com pnpm start
 
 ### Connect from Claude Desktop
 
-Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+Add to your Claude Desktop configuration
+(`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
 
 ```json
 {

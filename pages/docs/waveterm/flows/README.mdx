@@ -1,0 +1,68 @@
+---
+domain: "pathx.ai"
+---
+
+# PathX Matcher E2E Flow Diagrams
+
+D2 sequence diagrams for Flutter → Cloud Functions → Prefect/Pipedream flows.
+
+## Diagram Index
+
+| #   | File                                       | Description                                              |
+| --- | ------------------------------------------ | -------------------------------------------------------- |
+| 01  | `01-get-suggested-actions.d2`              | Unified action cards (Prefect + Pipedream + deployments) |
+| 02  | `02-get-prefect-actions.d2`                | Prefect actions fallback                                 |
+| 03  | `03-run-pipedream-action.d2`               | Execute Pipedream action                                 |
+| 04  | `04-schedule-prefect-run.d2`               | Schedule a Prefect run                                   |
+| 05  | `05-get-prefect-flow-run.d2`               | Flow run detail                                          |
+| 06  | `06-get-prefect-flow-run-logs.d2`          | Flow run logs                                            |
+| 07  | `07-get-prefect-flow-run-graph.d2`         | Flow run graph                                           |
+| 08  | `08-get-prefect-flow-run-input.d2`         | Flow run input                                           |
+| 09  | `09-cancel-prefect-run.d2`                 | Cancel flow run                                          |
+| 10  | `10-resume-prefect-run.d2`                 | Resume flow run                                          |
+| 11  | `11-trigger-prefect-run.d2`                | Trigger flow run                                         |
+| 12  | `12-set-prefect-flow-run-state.d2`         | Set flow run state                                       |
+| 13  | `13-get-prefect-flow-run-history.d2`       | Flow run history                                         |
+| 14  | `14-get-prefect-scheduled-runs.d2`         | Scheduled runs                                           |
+| 15  | `15-get-prefect-late-runs.d2`              | Late runs                                                |
+| 16  | `16-get-prefect-deployments.d2`            | Deployments list                                         |
+| 17  | `17-pause-prefect-deployment.d2`           | Pause deployment                                         |
+| 18  | `18-resume-prefect-deployment.d2`          | Resume deployment                                        |
+| 19  | `19-get-prefect-deployment-schedules.d2`   | Deployment schedules                                     |
+| 20  | `20-create-prefect-schedule.d2`            | Create schedule                                          |
+| 21  | `21-update-prefect-schedule.d2`            | Update schedule                                          |
+| 22  | `22-delete-prefect-schedule.d2`            | Delete schedule                                          |
+| 23  | `23-get-prefect-flows.d2`                  | Flow catalog                                             |
+| 24  | `24-get-prefect-server-status.d2`          | Prefect server status                                    |
+| 25  | `25-connect-pipedream.d2`                  | Pipedream OAuth connect                                  |
+| 26  | `26-get-pipedream-connection-status.d2`    | Pipedream connection status                              |
+| 27  | `27-get-pipedream-connect-token.d2`        | Pipedream OAuth token init                               |
+| 28  | `28-disconnect-pipedream.d2`               | Disconnect Pipedream                                     |
+| 29  | `29-get-pipedream-suggested-actions.d2`    | Pipedream suggested actions                              |
+| 30  | `30-send-notification-firestore.d2`        | Firestore → FCM (chat)                                   |
+| 31  | `31-send-match-notification-firestore.d2`  | Firestore → FCM (match)                                  |
+| 32  | `32-prefect-fallback-on-pipedream-fail.d2` | Prefect fallback on Pipedream fail                       |
+| 33  | `33-unauthenticated-error.d2`              | Unauthenticated error                                    |
+| 34  | `34-prefect-api-error.d2`                  | Prefect API error                                        |
+| 35  | `35-action-card-form-submit.d2`            | Action card generic submit                               |
+| 36  | `36-pipedream-token-refresh.d2`            | Pipedream token refresh                                  |
+
+## Render All to PNG
+
+```bash
+cd docs/flows
+for f in *.d2; do
+  d2 "${f}" "${f%.d2}.png"
+done
+```
+
+Or from project root:
+
+```bash
+cd /Users/clifforddalsoniii/Documents/Brightforest/projects/controller/brightpath_swarm/docs/flows
+for f in *.d2; do d2 "${f}" "${f%.d2}.png"; done
+```
+
+## D2 Version
+
+Requires D2 0.7.0+ with `sequence_diagram` support. Install: `brew install d2`.

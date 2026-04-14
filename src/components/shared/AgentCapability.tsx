@@ -3,10 +3,15 @@ import { cn } from "zudoku";
 export type ConnectionStatus = "connected" | "disconnected" | "pending";
 
 export type AgentCapabilityProps = {
-  agentName: string;
+  /** Primary display name */
+  agentName?: string;
+  /** MDX alias for `agentName` */
+  name?: string;
   domain: string;
+  /** Short role or product line (shown under the title) */
+  agentType?: string;
   capabilities: string[];
-  connectionStatus: ConnectionStatus;
+  connectionStatus?: ConnectionStatus;
   className?: string;
 };
 
@@ -33,12 +38,19 @@ const statusConfig: Record<
 
 export const AgentCapability = ({
   agentName,
+  name,
   domain,
+  agentType,
   capabilities,
-  connectionStatus,
+  connectionStatus = "pending",
   className,
 }: AgentCapabilityProps) => {
-  const status = statusConfig[connectionStatus];
+  const title = agentName ?? name ?? "Agent";
+  const resolvedStatus: ConnectionStatus =
+    connectionStatus && connectionStatus in statusConfig
+      ? connectionStatus
+      : "pending";
+  const status = statusConfig[resolvedStatus];
 
   return (
     <div
@@ -50,7 +62,12 @@ export const AgentCapability = ({
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-xl font-semibold mb-1">{agentName}</h3>
+          <h3 className="text-xl font-semibold mb-1">{title}</h3>
+          {agentType ? (
+            <p className="text-sm font-medium text-foreground/90">
+              {agentType}
+            </p>
+          ) : null}
           <p className="text-sm text-muted-foreground">{domain}</p>
         </div>
         <div

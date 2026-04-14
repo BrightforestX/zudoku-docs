@@ -1,0 +1,1240 @@
+---
+domain: pathx.ai
+---
+
+# Project Maturity and Health Rubric
+
+**Version:** 1.0  
+**Scale:** 1-10 per criterion  
+**Target markers:** ~500 (SpaceX/Google-level)  
+**Scope:** Any project in workspace (see `.vscode/sessions.json`).
+
+---
+
+## Purpose and scope
+
+- **Purpose:** Assess maturity and health of any software project in the Brightpath workspace using
+  a single, project-agnostic rubric.
+- **Scope:** All projects referenced in `.vscode/sessions.json` (kid_omega, avengers,
+  brightpath_swarm, brightpath_cli, zudoku, PathX_Matcher, wireweave, chartdb, etc.) and any future
+  repo.
+- **Use:** Score each criterion 1-10; mark N/A where the dimension does not apply; record evidence;
+  compute roll-up (average of applicable criteria or weighted). Re-assess periodically (e.g.
+  quarterly) or on major releases.
+- **N/A rules:** No Flutter → Patrol (2.7), Maestro (2.8) N/A. No auth → 8.3 N/A. No BDD → 2.9 N/A.
+  Single-tenant → 11.4 N/A. Minimal app → 6.3 tracing N/A. Mark "N/A" in scorecard and exclude from
+  roll-up.
+- **Evidence:** Each criterion has evidence prompts and markers. Evidence should be in repo, CI, or
+  docs (version control or audit log preferred over spreadsheets for durability and reversibility of
+  assessment).
+
+---
+
+## 1-10 scale (global)
+
+<Table
+  columns={["Score", "Label", "Meaning"]}
+  data={[
+    { score: "1-2", label: "Absent / Poor", meaning: "No evidence or ad hoc; critical gaps." },
+    { score: "3-4", label: "Initial", meaning: "Some evidence; inconsistent or undocumented." },
+    { score: "5-6", label: "Defined", meaning: "Repeatable; documented; partially automated." },
+    { score: "7-8", label: "Managed", meaning: "Measured; in CI; reviewed; few exceptions." },
+    {
+      score: "9-10",
+      label: "Optimizing",
+      meaning: "Excellent; trended; improved continuously; exemplar.",
+    },
+  ]}
+/>
+
+Use level descriptions (1, 3, 5, 7, 9) under each criterion to interpolate. Two assessors should
+converge when evidence is durable and level descriptions are clear (signal vs noise).
+
+---
+
+## Section 0: 160-IQ-style analytical dimensions (~55 markers)
+
+High-level analytical rigor: first-principles, systems thinking, causal reasoning, failure-mode
+rigor, trade-off explicitness. _Ref: SpaceX design principles, Google SRE, first-principles
+reasoning._
+
+### 0.1 First-principles and problem decomposition (1-10)
+
+**Definition:** The problem is defined from first principles; success and anti-goals are explicit;
+constraints and assumptions are written and validated; the solution is decomposed into verifiable
+sub-problems with traceability.
+
+**Level descriptions:**
+
+- **1:** No written problem statement or success criteria; work is demand-driven only.
+- **3:** Short problem statement exists; some success criteria; constraints or assumptions are
+  implicit.
+- **5:** Problem statement, success criteria, and anti-goals documented; constraints doc or ADR;
+  assumption list present with validation cadence.
+- **7:** Decomposition into sub-problems with acceptance criteria; traceability to requirements or
+  tickets; assumptions validated on a schedule.
+- **9:** First-principles breakdown is the source of truth for scope; invertibility: "If we removed
+  X, would the problem statement still hold?" is answerable.
+
+**Evidence prompts:** Look for problem statement or vision doc; success/anti-goals; constraints doc
+or ADR; assumption register; breakdown structure (e.g. epic/feature list) with acceptance criteria.
+
+**Markers (11):**
+
+1. Written problem statement exists.
+2. Success criteria are explicit and measurable.
+3. Anti-goals (out of scope) are stated.
+4. Constraints (time, cost, tech, compliance) are documented.
+5. Assumption list exists.
+6. Assumptions have a validation cadence.
+7. Breakdown structure (sub-problems or work items) exists.
+8. Acceptance criteria exist per sub-problem or feature.
+9. Traceability from work to problem statement (or requirements).
+10. _Invertibility:_ Evidence that the project would fail the bar if the problem were not addressed
+    from first principles (e.g. no ceremony-only docs).
+11. Reversibility of assessment: evidence is in version control or audit log.
+
+---
+
+### 0.2 Systems thinking and boundaries (~11 markers)
+
+**Definition:** System boundary (in-scope vs external) is explicit; dependencies and failure
+propagation are mapped; feedback loops (reinforcing/balancing) are considered; emergent behavior at
+scale is considered.
+
+**Level descriptions:**
+
+- **1:** No boundary or dependency documentation.
+- **3:** Simple context diagram or list of integrations; no failure propagation.
+- **5:** Context diagram and boundary doc; dependency map; failure-impact matrix or narrative.
+- **7:** Feedback loops (e.g. load → errors → retries → load) documented or diagrammed; load/chaos
+  hypotheses for emergent behavior.
+- **9:** System is analyzed as a set of loops and boundaries; unknown-unknowns process (chaos, red
+  team, tabletop) feeds back into design.
+
+**Evidence prompts:** Context diagram; boundary doc; interface inventory; dependency map;
+failure-impact matrix; loop diagram or narrative; load/chaos hypotheses.
+
+**Markers (11):**
+
+1. Context diagram exists.
+2. Boundary (in-scope vs external) is documented.
+3. Interface inventory (APIs, events, queues) exists.
+4. Dependency map (upstream/downstream) exists.
+5. Failure-impact matrix or equivalent (when X fails, Y is affected) exists.
+6. Feedback loops (reinforcing/balancing) are identified.
+7. Emergent behavior at scale is considered (document or test).
+8. Load or chaos hypotheses exist.
+9. _Invertibility:_ No critical path is undocumented (negative marker: fail if critical path has no
+   failure scenario).
+10. Process to discover new failure modes (chaos, game-day, tabletop) exists and feeds runbooks.
+11. Evidence durable (version control or audit log).
+
+---
+
+### 0.3 Causal reasoning and invariants (~11 markers)
+
+**Definition:** Causal model for critical behaviors is explicit; invariants (e.g. balance, ordering)
+are documented and tested; counterfactual and rollback reasoning are applied.
+
+**Level descriptions:**
+
+- **1:** No causal or invariant documentation.
+- **3:** Some "when X then Y" in runbooks or comments; no invariant tests.
+- **5:** Causal diagram or narrative for critical paths; invariant list; property or invariant tests
+  for key invariants.
+- **7:** Rollback scenarios documented and tested; postmortems linked to causal model and rubric
+  dimensions.
+- **9:** Causal model is the basis for incident analysis; "If this runbook were wrong, how would we
+  discover it?" is answerable.
+
+**Evidence prompts:** Causal diagram or narrative; invariant list; property/invariant tests;
+rollback scenarios; postmortem linkage to rubric.
+
+**Markers (11):**
+
+1. Causal diagram or narrative for critical behaviors exists.
+2. Invariant list (e.g. balance non-negative, ordering) exists.
+3. Property-based or invariant tests exist for key invariants.
+4. Rollback scenarios are documented.
+5. Rollback is tested (e.g. in drill or CI).
+6. Postmortems reference causal model or root cause.
+7. Postmortems are blameless and link to rubric dimensions (e.g. "maps to 9.3 Chaos").
+8. _Counterfactual:_ "If runbook were wrong, how would we discover it?" is documented or
+   drill-based.
+9. No critical path without a causal or rollback story (negative marker).
+10. Reversibility of assessment: evidence durable.
+11. Metrics used are well-defined, measurable, and actionable (would change a decision).
+
+---
+
+### 0.4 Failure-mode rigor (FMEA-light) (~12 markers)
+
+**Definition:** Failure modes for critical paths are enumerated; severity and mitigation or accepted
+risk are explicit; SPOFs are identified and mitigated or accepted; recovery and repair are defined
+and practiced.
+
+**Level descriptions:**
+
+- **1:** No failure-mode analysis.
+- **3:** Informal list of "what can go wrong"; no severity or mitigation.
+- **5:** FMEA table or failure-mode list for critical paths; severity/criticality; SPOF list with
+  mitigation or accepted risk.
+- **7:** Failure-scenario docs; recovery runbooks; repair SLAs; drill cadence.
+- **9:** Unknown-unknowns process (chaos, red team) updates failure modes and runbooks; no
+  unmitigated SPOF on critical path.
+
+**Evidence prompts:** FMEA table or failure-mode list; severity/criticality; SPOF list;
+failure-scenario docs; recovery runbooks; repair SLAs; drill cadence.
+
+**Markers (12):**
+
+1. FMEA table or failure-mode list exists for at least one critical path (deploy, data, auth,
+   payment, etc.).
+2. Severity (or equivalent) is assigned per failure mode.
+3. Likelihood or detectability (or equivalent) is considered.
+4. Mitigation or accepted risk is explicit per failure mode.
+5. SPOF list exists.
+6. Each SPOF has mitigation or accepted risk documented.
+7. Failure-scenario docs (when X fails, Y happens) exist.
+8. Recovery runbooks exist and are linked to failure modes.
+9. Repair SLAs or targets exist where relevant.
+10. Drill cadence (e.g. game-day, restore test) is defined and used.
+11. _Invertibility:_ No critical path has unmitigated SPOF (negative marker).
+12. Process to discover new failure modes and update runbooks exists.
+
+---
+
+### 0.5 Trade-off explicitness (~10 markers)
+
+**Definition:** Major trade-offs (e.g. consistency vs availability, cost vs reliability) are written
+with rationale; reversibility (one-way vs two-way door) is classified; options are compared on
+shared dimensions.
+
+**Level descriptions:**
+
+- **1:** No trade-off documentation.
+- **3:** Some trade-offs mentioned in ADRs or comments; no option table.
+- **5:** ADRs or trade-off log with rationale; reversibility tag (one-way vs two-way) on major
+  decisions; option table for at least one major decision.
+- **7:** Trade-offs are the basis for design review; option tables with criteria and scoring;
+  "reversibility of assessment" (evidence in version control) so re-run gives comparable result.
+- **9:** All material trade-offs are documented; decision quality is reviewed; assessment evidence
+  is durable and re-runnable.
+
+**Evidence prompts:** ADRs or trade-off log; reversibility tag; option table with criteria and
+scoring; evidence in version control.
+
+**Markers (10):**
+
+1. ADRs or trade-off log exists.
+2. Major decisions include rationale.
+3. Reversibility (one-way vs two-way door) is tagged where relevant.
+4. Option table (alternatives compared) exists for at least one major decision.
+5. Comparison criteria are explicit.
+6. Trade-offs are referenced in design or architecture docs.
+7. Assessment evidence is in version control or audit log (reversibility of assessment).
+8. Re-running the rubric would yield comparable result (process or tooling).
+9. No major trade-off left implicit for critical path (negative marker).
+10. Human/organizational: rubric owner and review cadence are defined.
+
+---
+
+## Section 1: Code quality and structure (~35 markers)
+
+### 1.1 Layering and separation of concerns (1-10)
+
+**Definition:** Code is organized in clear layers (e.g. api/domain/infra or ui/services/data) with
+explicit boundaries; no circular dependencies; internal boundaries are enforced (e.g. via packages
+or modules).
+
+**Level descriptions:** 1 = single blob; 3 = some split; 5 = clear layers; 7 = bounded contexts or
+modules; 9 = DDD-style or documented modular architecture with dependency rules.
+
+**Evidence:** Directory layout; presence of api/domain/infra or equivalent; internal boundaries;
+dependency direction (e.g. no domain importing from api).
+
+**Markers (8):** Layered directories; api/domain/infra (or equivalent); no circular deps; boundary
+doc or convention; dependency rule enforced (linter or CI); _invertibility:_ no critical domain
+logic in presentation layer; evidence in repo.
+
+---
+
+### 1.2 Naming and conventions (1-10)
+
+**Definition:** Naming is consistent with a style guide; linter enforces conventions; test names
+follow a pattern (e.g. TestX_Scenario_Expected).
+
+**Level descriptions:** 1 = inconsistent; 3 = partial; 5 = style guide and linter; 7 = documented
+and mostly followed; 9 = zero known violations; exceptions documented.
+
+**Evidence:** Lint config; naming samples; test name pattern.
+
+**Markers (6):** Style guide or convention doc; linter for naming; test naming pattern; no
+abbreviations in public API (or documented); evidence in repo.
+
+---
+
+### 1.3 Readability and complexity (1-10)
+
+**Definition:** Functions are reasonably short (< ~40 lines); cyclomatic complexity < 10 (or
+budget); nesting limited; control flow is clear.
+
+**Level descriptions:** 1 = many long/complex functions; 3 = some tooling; 5 = complexity budget and
+tool (gocyclo, radon, ESLint); 7 = enforced in CI; 9 = trended and refactored when over budget.
+
+**Evidence:** Tool output (gocyclo, radon, ESLint); comments for complex logic.
+
+**Markers (6):** Complexity tool in use; budget (e.g. < 10) defined; CI gate; no function > 40 lines
+without exception doc; _metric that would change a decision_ (e.g. refactor when > 15); evidence in
+repo.
+
+---
+
+### 1.4 Lint, format, and type safety (1-10)
+
+**Definition:** Linters and formatters are configured and run in CI; strict type mode where
+applicable; zero known violations or documented exceptions.
+
+**Level descriptions:** 1 = none; 3 = local only; 5 = CI; 7 = strict mode; 9 = zero violations;
+exceptions documented.
+
+**Evidence:** Config files; CI steps; zero known violations.
+
+**Markers (6):** Lint config; format config; type strict (TS strict, mypy strict, etc.); CI runs
+lint/format/type; zero violations or exception list; evidence in repo.
+
+---
+
+## Section 2: Testing (~70 markers)
+
+### 2.1 Unit test coverage (1-10)
+
+**Definition:** Line or branch coverage is measured; percentage bands map to 1-10; CI gate where
+appropriate.
+
+**Level descriptions:** 1 = < 10%; 3 = 10-39%; 5 = 40-59%; 7 = 60-79%; 9 = 80%+ with CI gate and no
+critical path untested.
+
+**Evidence:** Coverage report; CI gate; _invertibility:_ no critical path without tests (negative
+marker).
+
+**Markers (6):** Coverage tool; coverage reported in CI; band 80%+ for 9; critical paths identified
+and covered; _metric actionable_ (coverage would block release if below threshold); evidence in
+repo.
+
+---
+
+### 2.2 Unit test quality (1-10)
+
+**Definition:** Table-driven or parameterized tests; edge and error cases; meaningful assertions;
+test names follow convention.
+
+**Level descriptions:** 1 = trivial or snapshot-only; 3 = some scenarios; 5 =
+table-driven/parameterized; 7 = negative and edge cases; 9 = helpers/fixtures; no logic in tests.
+
+**Evidence:** Test file samples; assertion density; negative cases.
+
+**Markers (6):** Table-driven or parameterized tests; edge-case tests; error-path tests; assertion
+count and quality; test helpers or fixtures; naming convention (e.g. TestX_Scenario_Expected).
+
+---
+
+### 2.3 E2E / integration coverage (1-10)
+
+**Definition:** Critical user journeys or API flows are covered by E2E or integration tests; run in
+CI.
+
+**Level descriptions:** 1 = none; 3 = one smoke; 5 = few critical paths; 7 = major flows; 9 =
+critical + regression; stable.
+
+**Evidence:** E2E suite list; CI config; critical path list.
+
+**Markers (6):** E2E or integration suite exists; critical paths documented; CI runs E2E; coverage
+of deploy, auth, core flow; _causal:_ "When E2E fails, we know which flow"; evidence in repo.
+
+---
+
+### 2.4 E2E stability and maintainability (1-10)
+
+**Definition:** Flakiness is low; selectors and waits are maintainable; retries and stability
+strategy are documented.
+
+**Level descriptions:** 1 = flaky or manual; 3 = in CI but flaky; 5 = retries/selectors documented;
+7 = mostly stable; 9 = flake rate tracked; runbook for failures.
+
+**Evidence:** Flake rate; runbooks; retry policy.
+
+**Markers (5):** Retry policy; selector strategy; wait strategy; flake rate or stability target;
+runbook for E2E failures.
+
+---
+
+### 2.5 Property-based testing (1-10) — N/A if no library
+
+**Definition:** Property-based tests (Hypothesis, fast-check, etc.) cover key invariants or
+validation logic.
+
+**Level descriptions:** 1 = none; 3 = one or two; 5 = few modules; 7 = key invariants; 9 = critical
+domain logic; strategies documented.
+
+**Evidence:** Property tests; CI; strategy docs.
+
+**Markers (5):** Property-based library in use; tests for validation or domain; tests in CI;
+strategies documented; N/A note if not applicable.
+
+---
+
+### 2.6 Mutation testing (1-10) — N/A if not adopted
+
+**Definition:** Mutation testing is run on relevant code; mutation score is tracked or baseline
+recorded.
+
+**Level descriptions:** 1 = not used; 3 = proof of concept; 5 = run locally or ad hoc; 7 = in CI on
+part of codebase; 9 = CI; trend; no large drop without reason.
+
+**Evidence:** Config; reports; CI step.
+
+**Markers (5):** Mutation tool configured; scope defined; baseline or trend; CI integration; N/A if
+not adopted.
+
+---
+
+### 2.7 Flutter: Patrol (1-10) — N/A for non-Flutter
+
+**Definition:** Patrol flows cover key user journeys; run in CI; maintained.
+
+**Level descriptions:** 1 = none; 3 = one flow, manual; 5 = few flows, in CI; 7 = major flows
+covered; 9 = all critical flows; stable; documented. N/A for non-Flutter.
+
+**Markers (4):** Patrol flows exist; key flows covered; CI runs Patrol; docs; N/A for non-Flutter.
+
+---
+
+### 2.8 Flutter: Maestro (1-10) — N/A for non-Flutter
+
+**Definition:** Maestro flows cover critical flows; run in CI; aligned with BDD where used.
+
+**Level descriptions:** 1 = none; 3 = one flow; 5 = few flows, CI; 7 = major flows; BDD alignment; 9
+= critical flows; CI; BDD traceability. N/A for non-Flutter.
+
+**Markers (4):** Maestro flows exist; critical flows; CI; BDD alignment; N/A for non-Flutter.
+
+---
+
+### 2.9 BDD / feature alignment (1-10) — N/A if no BDD
+
+**Definition:** .feature files (or equivalent) exist; step definitions are in sync; scenarios run in
+CI; traceability to requirements.
+
+**Level descriptions:** 1 = none; 3 = few features, partial step defs; 5 = feature files; step defs;
+CI; 7 = traceability; error paths; 9 = full coverage; requirements linked. N/A if no BDD.
+
+**Markers (6):** Feature files; step defs; CI; traceability; coverage of happy and error paths; N/A
+if no BDD.
+
+---
+
+### 2.10 Test organization (1-10)
+
+**Definition:** Test layout (unit/integration/e2e) is clear; helpers, fixtures, factories exist;
+naming convention.
+
+**Level descriptions:** 1 = ad hoc; 3 = some structure; 5 = unit/integration/e2e separation; 7 =
+helpers; fixtures; convention; 9 = documented; no mega files; maintainable.
+
+**Evidence:** Test dir structure; unit/integration/e2e/e2e separation; helpers or fixtures; naming
+convention; no mega test files.
+
+**Markers (6):** Test dir structure; unit/integration/e2e separation; helpers or fixtures; naming
+convention; no mega test files; evidence in repo.
+
+---
+
+## Section 3: Functionality and correctness (~30 markers)
+
+### 3.1 Requirements and scope (1-10)
+
+**Definition:** Requirements are documented and traceable to work items or tests.
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = README or doc; tickets; 7 = traceability;
+acceptance criteria; 9 = BDD or equivalent; full traceability.
+
+**Markers (6):** README or requirements doc; tickets or backlog; traceability to code/tests;
+acceptance criteria; BDD or equivalent; evidence in repo.
+
+---
+
+### 3.2 Edge cases and validation (1-10)
+
+**Definition:** Allowlist validation; boundary checks; validation layer; no critical input
+unvalidated.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = validation layer; allowlist; 7 = boundary tests;
+clear errors; 9 = no critical path unvalidated.
+
+**Markers (6):** Validation on inputs; allowlist (not denylist) where relevant; boundary tests;
+error messages clear; _invertibility:_ no critical path without validation; evidence in repo.
+
+---
+
+### 3.3 Error handling (1-10)
+
+**Definition:** Consistent pattern (return codes, exceptions); wrapping with context; logging; typed
+errors where applicable.
+
+**Level descriptions:** 1 = ad hoc; 3 = partial pattern; 5 = consistent pattern; wrapping; 7 = typed
+errors; logging; 9 = no swallowed errors; full coverage.
+
+**Markers (6):** Error handling pattern; wrapping or context; logging; typed errors; no swallowed
+errors; evidence in repo.
+
+---
+
+### 3.4 Idempotency and safety (1-10)
+
+**Definition:** Critical writes or mutations are idempotent (e.g. idempotency key); tests verify
+idempotency.
+
+**Level descriptions:** 1 = none; 3 = some awareness; 5 = critical writes idempotent; 7 =
+idempotency key; tests; 9 = full coverage; retry-safe API.
+
+**Markers (6):** Idempotency for critical writes; idempotency key or equivalent; tests for
+idempotency; API design supports retry; evidence in repo.
+
+---
+
+## Section 4: Documentation and design (~35 markers)
+
+### 4.1 README and onboarding (1-10)
+
+**Definition:** README has setup, build, run, test; onboarding time for new engineer is reasonable;
+freshness is maintained.
+
+**Level descriptions:** 1 = minimal; 3 = setup/build/run; 5 = test section; prerequisites; 7 =
+troubleshooting; onboarding doc; 9 = freshness check; script.
+
+**Markers (6):** README exists; setup/build/run/test sections; prerequisites; troubleshooting;
+onboarding script or doc; last-updated or freshness check.
+
+---
+
+### 4.2 API / contract documentation (1-10)
+
+**Definition:** OpenAPI or equivalent; versioning; generated docs; examples.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = spec exists; versioning; 7 = generated docs;
+examples; 9 = changelog; up to date.
+
+**Markers (6):** API spec (OpenAPI, GraphQL, etc.); versioning scheme; generated docs; examples;
+changelog; evidence in repo.
+
+---
+
+### 4.3 Code-level documentation (1-10)
+
+**Definition:** Public API and complex logic are documented; "why" not just "what."
+
+**Level descriptions:** 1 = none; 3 = some; 5 = public API; 7 = complex logic; "why"; 9 = full
+coverage; exported items.
+
+**Markers (6):** Docstrings/comments for public API; complex logic explained; coverage of exported
+items; evidence in repo.
+
+---
+
+### 4.4 Design decisions (1-10)
+
+**Definition:** ADRs or design doc; rationale; trade-offs; alternatives considered.
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = ADR or design doc; 7 = rationale; alternatives;
+9 = trade-offs; architecture in README.
+
+**Markers (6):** ADR or design doc; rationale; trade-offs; alternatives; architecture section in
+README; evidence in repo.
+
+---
+
+## Section 5: CI/CD and deployment (~40 markers)
+
+### 5.1 Pipeline existence and stages (1-10)
+
+**Definition:** CI pipeline has lint, test, build, deploy stages; quality gates.
+
+**Level descriptions:** 1 = none; 3 = build only; 5 = lint; test; build; 7 = deploy; envs; 9 =
+quality gates; full automation.
+
+**Markers (8):** Pipeline exists; lint stage; test stage; build stage; deploy stage; envs (e.g.
+staging/prod); quality gates; evidence in repo.
+
+---
+
+### 5.2 Test automation in CI (1-10)
+
+**Definition:** Unit, integration, E2E run in CI; coverage reported; failures block or alert.
+
+**Level descriptions:** 1 = manual; 3 = unit only; 5 = unit; integration; coverage; 7 = E2E;
+failures block; 9 = flaky handling; full coverage.
+
+**Markers (8):** Unit in CI; integration in CI; E2E in CI; coverage report; failure handling; flaky
+handling; evidence in repo.
+
+---
+
+### 5.3 Security and dependency scanning (1-10)
+
+**Definition:** CVE or dependency scan in CI; block on critical/high; SBOM or audit where
+applicable.
+
+**Level descriptions:** 1 = none; 3 = manual; 5 = scan in CI; 7 = block policy; 9 = SBOM; SLSA/VEX
+where applicable.
+
+**Markers (8):** Scan in CI; block policy; SBOM or audit (SLSA, VEX where applicable); evidence in
+repo.
+
+---
+
+### 5.4 Deployment and rollback (1-10)
+
+**Definition:** Deploy is scripted; rollback procedure exists and is tested.
+
+**Level descriptions:** 1 = manual; 3 = partial; 5 = scripted deploy; 7 = rollback procedure; 9 =
+rollback tested; runbook.
+
+**Markers (8):** Scripted deploy; rollback procedure; rollback tested; runbook; evidence in repo.
+
+---
+
+## Section 6: Observability and operations (~45 markers)
+
+### 6.1 Logging (1-10)
+
+**Definition:** Structured logging; levels; no secrets; correlation IDs where relevant.
+
+**Level descriptions:** 1 = print/console; 3 = partial; 5 = structured; levels; 7 = no secrets;
+correlation ID; 9 = full coverage; audit-ready.
+
+**Markers (8):** Structured format; levels; no secrets in logs; correlation ID or request ID;
+evidence in repo.
+
+---
+
+### 6.2 Metrics and health (1-10)
+
+**Definition:** Health/readiness endpoints; SLI-oriented metrics; dashboards; alerts.
+
+**Level descriptions:** 1 = none; 3 = health only; 5 = readiness; metrics; 7 = dashboards; alerts; 9
+= SLI/SLO; runbook links.
+
+**Markers (8):** Health endpoint; readiness endpoint; metrics; SLI/SLO where relevant; dashboards;
+alerts; runbook links; evidence in repo.
+
+---
+
+### 6.3 Tracing (1-10) — N/A for minimal apps
+
+**Definition:** Distributed tracing for critical paths; sampling; used for debugging.
+
+**Level descriptions:** 1 = none; 3 = proof of concept; 5 = critical paths; 7 = sampling;
+dashboards; 9 = full coverage; debug workflow. N/A for minimal apps.
+
+**Markers (6):** Tracing instrumentation; critical path covered; sampling; N/A for minimal apps.
+
+---
+
+### 6.4 Runbooks and ops (1-10)
+
+**Definition:** Runbooks per alert or service; incident process; postmortem for P0/P1.
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = runbooks exist; 7 = linked from alerts; incident
+process; 9 = postmortem; blameless.
+
+**Markers (8):** Runbooks exist; linked from alerts; incident process; postmortem process;
+blameless; evidence in repo.
+
+---
+
+### 6.5 Operator and human factors (1-10) — 160-IQ expansion
+
+**Definition:** Runbook length and clarity; drill frequency; onboarding time (new engineer can run
+tests, deploy, interpret incident in &lt; X time); bus factor; rubric owner and review cadence.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = runbook clarity; 7 = drill cadence; onboarding
+target; 9 = bus factor; rubric owner; review cadence.
+
+**Markers (7):** Runbook clarity; drill cadence; onboarding time target; bus factor considered; doc
+freshness; rubric owner (this doc); review cadence.
+
+---
+
+## Section 7: Dependencies and supply chain (~30 markers)
+
+### 7.1 Lockfiles and pins (1-10)
+
+**Definition:** Lockfile committed; CI installs from lockfile; critical deps pinned.
+
+**Level descriptions:** 1 = none; 3 = lockfile exists; 5 = CI uses lockfile; 7 = pin policy; 9 =
+critical deps pinned; reproducible.
+
+**Markers (6):** Lockfile; CI uses lockfile; pin policy; evidence in repo.
+
+---
+
+### 7.2 Vulnerability management (1-10)
+
+**Definition:** Scan in CI; block on critical/high; SLA for remediation.
+
+**Level descriptions:** 1 = none; 3 = manual; 5 = scan in CI; 7 = block policy; 9 = SLA; remediation
+tracked.
+
+**Markers (6):** Scan; block policy; SLA; evidence in repo.
+
+---
+
+### 7.3 Dependency hygiene (1-10)
+
+**Definition:** Unused deps removed; single version where possible; SBOM or attestation where
+applicable (2025+).
+
+**Level descriptions:** 1 = none; 3 = ad hoc; 5 = unused dep check; 7 = single version; 9 =
+SBOM/VEX/attestation where applicable.
+
+**Markers (6):** Unused dep check; single version; SBOM/VEX/attestation where applicable; evidence
+in repo.
+
+---
+
+## Section 8: Security and compliance (~40 markers)
+
+### 8.1 Secrets management (1-10)
+
+**Definition:** No secrets in repo; vault or env; rotation where applicable.
+
+**Level descriptions:** 1 = secrets in repo; 3 = env vars; 5 = vault or env; scan; 7 = rotation; 9 =
+full lifecycle; audit.
+
+**Markers (6):** No secrets in repo; vault or env; scan; rotation; evidence in repo.
+
+---
+
+### 8.2 Input validation and injection (1-10)
+
+**Definition:** Parameterized queries; allowlist validation; security tests.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = parameterized queries; allowlist; 7 = validation
+layer; 9 = security tests; full coverage.
+
+**Markers (6):** Parameterized queries; allowlist; validation layer; security tests; evidence in
+repo.
+
+---
+
+### 8.3 Authentication and authorization (1-10) — N/A if no auth
+
+**Definition:** Standard protocol (OIDC, etc.); RBAC/ABAC; audit of access decisions.
+
+**Level descriptions:** 1 = custom/weak; 3 = basic; 5 = standard protocol; 7 = RBAC/ABAC; 9 = audit;
+full coverage. N/A if no auth.
+
+**Markers (6):** Auth protocol; RBAC/ABAC; audit; N/A if no auth; evidence in repo.
+
+---
+
+### 8.4 Compliance and policy-as-code (1-10) — 160-IQ expansion
+
+**Definition:** Applicable regs identified; controls mapped; policy-as-code or automated evidence
+where applicable (2025+).
+
+**Level descriptions:** 1 = none; 3 = awareness; 5 = compliance matrix; 7 = control list; 9 =
+policy-as-code; automated evidence.
+
+**Markers (6):** Compliance matrix; control list; policy-as-code; automated evidence; evidence in
+repo.
+
+---
+
+## Section 9: Resilience and fault tolerance (~45 markers)
+
+### 9.1 Redundancy and HA (1-10)
+
+**Definition:** Multi-instance; multi-AZ where applicable; failover; health checks.
+
+**Level descriptions:** 1 = single instance; 3 = multi-instance; 5 = health checks; 7 = failover;
+multi-AZ; 9 = failover tested; documented.
+
+**Markers (8):** Multi-instance; multi-AZ or equivalent; failover; health checks; failover tested;
+evidence in repo.
+
+---
+
+### 9.2 Circuit breakers and backoff (1-10)
+
+**Definition:** External calls protected; retry with backoff; timeout; circuit breaker where
+relevant.
+
+**Level descriptions:** 1 = none; 3 = timeout; 5 = retry; backoff; 7 = circuit breaker; 9 = full
+coverage; documented.
+
+**Markers (8):** Timeout on calls; retry policy; backoff; circuit breaker where relevant; evidence
+in repo.
+
+---
+
+### 9.3 Chaos and fault injection (1-10)
+
+**Definition:** Chaos experiments or game-days; results feed runbooks or design.
+
+**Level descriptions:** 1 = none; 3 = awareness; 5 = one game-day; 7 = chaos or fault injection;
+results doc; 9 = runbooks updated; regular drills.
+
+**Markers (8):** Chaos or fault injection; game-day or drill; results documented; runbooks updated;
+evidence in repo.
+
+---
+
+### 9.4 Disaster recovery (1-10)
+
+**Definition:** RTO/RPO defined; backup and restore tested.
+
+**Level descriptions:** 1 = none; 3 = backup exists; 5 = RTO/RPO doc; 7 = restore procedure; 9 =
+restore tested; runbook.
+
+**Markers (8):** RTO/RPO doc; backup procedure; restore procedure; restore tested; evidence in repo.
+
+---
+
+### 9.5 Graceful degradation (1-10)
+
+**Definition:** Degraded behavior defined and tested; feature flags or fallbacks.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = degraded behavior doc; 7 = feature flags or
+fallbacks; 9 = tested; documented.
+
+**Markers (8):** Degraded behavior doc; feature flags or fallbacks; tested; evidence in repo.
+
+---
+
+### 9.6 Causal and counterfactual (1-10) — 160-IQ expansion
+
+**Definition:** Explicit causal model for failures (when X fails, Y happens; when Y degraded, Z
+fallback); counterfactual: "If runbook wrong, how would we discover?"
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = causal model for failure paths; 7 =
+counterfactual in runbook; 9 = postmortem links; drill-based.
+
+**Markers (5):** Causal model for failure paths; counterfactual in runbook or drill; postmortem
+links to causal model; evidence in repo.
+
+---
+
+## Section 10: Scale and performance (~40 markers)
+
+### 10.1 Capacity and bottlenecks (1-10)
+
+**Definition:** Capacity model or load tests; bottleneck analysis; scaling strategy.
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = load tests; 7 = capacity doc; bottleneck
+analysis; 9 = scaling strategy; trended.
+
+**Markers (6):** Load tests; capacity doc; bottleneck analysis; evidence in repo.
+
+---
+
+### 10.2 Caching strategy (1-10)
+
+**Definition:** Multi-level caching; TTLs; invalidation strategy.
+
+**Level descriptions:** 1 = none; 3 = ad hoc; 5 = cache layer; 7 = TTLs; 9 = invalidation strategy;
+multi-level.
+
+**Markers (6):** Cache layer; TTLs; invalidation; evidence in repo.
+
+---
+
+### 10.3 Backpressure and flow control (1-10)
+
+**Definition:** Queues; limits; backpressure handling.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = rate limit or queue; 7 = backpressure; 9 =
+documented; tested.
+
+**Markers (6):** Queue or rate limit; backpressure; evidence in repo.
+
+---
+
+### 10.4 Database and query performance (1-10)
+
+**Definition:** Indexing; N+1 avoided; query review; slow-query log.
+
+**Level descriptions:** 1 = none; 3 = basic indexes; 5 = N+1 avoided; 7 = query review; 9 =
+slow-query monitoring; trended.
+
+**Markers (6):** Indexes; N+1 avoided; query review; slow-query monitoring; evidence in repo.
+
+---
+
+### 10.5 Resource budgets (1-10)
+
+**Definition:** CPU/memory/IO budgets; limits; alerts; sizing doc.
+
+**Level descriptions:** 1 = none; 3 = ad hoc; 5 = resource limits; 7 = alerts; sizing doc; 9 =
+budgets; trended; reviewed.
+
+**Markers (6):** Resource limits; alerts; sizing doc; evidence in repo.
+
+---
+
+## Section 11: Platform and reuse (~30 markers)
+
+### 11.1 API and contract stability (1-10)
+
+**Definition:** Versioning; compatibility policy; changelog; compatibility tests.
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = version scheme; 7 = compatibility policy;
+changelog; 9 = compatibility tests; documented.
+
+**Markers (6):** Version scheme; compatibility policy; changelog; compatibility tests; evidence in
+repo.
+
+---
+
+### 11.2 Reuse and shared libraries (1-10)
+
+**Definition:** Internal reuse; shared contracts; dependency graph.
+
+**Level descriptions:** 1 = none; 3 = some reuse; 5 = shared packages; 7 = contracts; 9 = dependency
+graph; documented.
+
+**Markers (6):** Shared packages; contracts; dependency graph; evidence in repo.
+
+---
+
+### 11.3 Extensibility (1-10)
+
+**Definition:** Extension points; plugin or strategy pattern; docs.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = extension API; 7 = plugin or strategy; 9 = docs;
+maintainable.
+
+**Markers (6):** Extension API; plugin or strategy; docs; evidence in repo.
+
+---
+
+### 11.4 Multi-tenancy (1-10) — N/A if single-tenant
+
+**Definition:** Isolation; quotas; tenant model.
+
+**Level descriptions:** 1 = none; 3 = awareness; 5 = tenant model; 7 = isolation; 9 = quotas;
+tested. N/A if single-tenant.
+
+**Markers (6):** Tenant model; isolation; quotas; N/A if single-tenant; evidence in repo.
+
+---
+
+## Section 12: Cost and resource efficiency (~25 markers)
+
+### 12.1 Right-sizing (1-10)
+
+**Definition:** Resource sizing from usage; metrics-driven.
+
+**Level descriptions:** 1 = none; 3 = ad hoc; 5 = sizing from metrics; 7 = right-sizing review; 9 =
+trended; documented.
+
+**Markers (5):** Sizing from metrics; right-sizing review; evidence in repo.
+
+---
+
+### 12.2 Budget and alerting (1-10)
+
+**Definition:** Budget alerts; cost attribution; tags.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = budget config; 7 = alerts; tags; 9 = cost
+attribution; dashboards.
+
+**Markers (5):** Budget config; alerts; tags; evidence in repo.
+
+---
+
+### 12.3 FinOps practices (1-10)
+
+**Definition:** Cost visibility; optimization cadence; review process.
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = cost visibility; 7 = optimization cadence; 9 =
+review process; actioned.
+
+**Markers (5):** Cost visibility; optimization cadence; review; evidence in repo.
+
+---
+
+## Section 13: Innovation and technical debt (~25 markers)
+
+### 13.1 Debt tracking (1-10)
+
+**Definition:** Debt register or backlog; prioritization; impact/effort.
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = debt list; 7 = prioritization; 9 =
+impact/effort; reviewed.
+
+**Markers (5):** Debt list; prioritization; impact/effort; evidence in repo.
+
+---
+
+### 13.2 Improvement cadence (1-10)
+
+**Definition:** Dedicated time or sprint allocation; retros; improvement actions.
+
+**Level descriptions:** 1 = none; 3 = occasional; 5 = improvement time; 7 = retro actions; 9 =
+sustained; tracked.
+
+**Markers (5):** Improvement time; retro actions; evidence in repo.
+
+---
+
+### 13.3 Experimentation (1-10)
+
+**Definition:** Safe experimentation path; rollback for experiments.
+
+**Level descriptions:** 1 = none; 3 = ad hoc; 5 = experiment process; 7 = rollback; 9 = documented;
+safe.
+
+**Markers (5):** Experiment process; rollback; evidence in repo.
+
+---
+
+## Section 14: Human factors and usability (~20 markers)
+
+### 14.1 Accessibility (1-10)
+
+**Definition:** WCAG or equivalent; a11y tests; screen-reader test.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = a11y checklist; 7 = tests; 9 = screen-reader;
+WCAG.
+
+**Markers (4):** A11y checklist; tests; screen-reader; evidence in repo.
+
+---
+
+### 14.2 Internationalization (1-10)
+
+**Definition:** i18n where user-facing; string externalization.
+
+**Level descriptions:** 1 = none; 3 = hardcoded; 5 = i18n framework; 7 = string externalization; 9 =
+full coverage. N/A if not user-facing.
+
+**Markers (4):** i18n framework; string externalization; evidence in repo.
+
+---
+
+### 14.3 Operator experience (1-10)
+
+**Definition:** Ops UX; runbook clarity; operator feedback.
+
+**Level descriptions:** 1 = none; 3 = minimal; 5 = runbook clarity; 7 = operator feedback; 9 = UX
+reviewed; improved.
+
+**Markers (4):** Runbook clarity; operator feedback; evidence in repo.
+
+---
+
+## Section 15: Risk and compliance extended (~25 markers)
+
+### 15.1 Regulatory alignment (1-10)
+
+**Definition:** Applicable regs identified; controls mapped.
+
+**Level descriptions:** 1 = none; 3 = awareness; 5 = compliance matrix; 7 = control list; 9 =
+mapped; reviewed.
+
+**Markers (5):** Compliance matrix; control list; evidence in repo.
+
+---
+
+### 15.2 Audit readiness (1-10)
+
+**Definition:** Audit trail; evidence retention; retention policy.
+
+**Level descriptions:** 1 = none; 3 = partial; 5 = audit log; 7 = retention policy; 9 = full trail;
+retention enforced.
+
+**Markers (5):** Audit log; retention policy; evidence in repo.
+
+---
+
+### 15.3 Data governance (1-10)
+
+**Definition:** Classification; retention; data map.
+
+**Level descriptions:** 1 = none; 3 = informal; 5 = data map; 7 = classification; 9 = retention;
+enforced.
+
+**Markers (5):** Data map; classification; retention; evidence in repo.
+
+---
+
+## Section 16: Maturity roll-up and applicability
+
+- **Roll-up formula:** For each project, average the scores of **applicable** criteria (exclude
+  N/A). Optionally weight critical dimensions (e.g. unit coverage, pipeline, security).
+- **Overall bands (1-10):** 9-10 Production-ready; 7-8.9 Strong; 5-6.9 Adequate; 3-4.9 Early; 1-2.9
+  Incubation.
+- **Applicability matrix:**
+
+<Table
+  columns={[
+    "Project type",
+    "Unit",
+    "E2E",
+    "Property-based",
+    "Mutation",
+    "BDD",
+    "Patrol",
+    "Maestro",
+  ]}
+  data={[
+    {
+      projectType: "Go backend",
+      unit: "Apply",
+      e2e: "Apply",
+      "property-based": "Optional",
+      mutation: "Optional",
+      bdd: "Optional",
+      patrol: "N/A",
+      maestro: "N/A",
+    },
+    {
+      projectType: "Node/TS",
+      unit: "Apply",
+      e2e: "Apply",
+      "property-based": "Optional",
+      mutation: "Optional",
+      bdd: "Apply",
+      patrol: "N/A",
+      maestro: "N/A",
+    },
+    {
+      projectType: "Flutter",
+      unit: "Apply",
+      e2e: "Apply",
+      "property-based": "Optional",
+      mutation: "Optional",
+      bdd: "Optional",
+      patrol: "Apply",
+      maestro: "Apply",
+    },
+    {
+      projectType: "Python",
+      unit: "Apply",
+      e2e: "Apply",
+      "property-based": "Apply",
+      mutation: "Optional",
+      bdd: "Optional",
+      patrol: "N/A",
+      maestro: "N/A",
+    },
+    {
+      projectType: "CLI",
+      unit: "Apply",
+      e2e: "Apply",
+      "property-based": "Optional",
+      mutation: "Optional",
+      bdd: "Optional",
+      patrol: "N/A",
+      maestro: "N/A",
+    },
+    {
+      projectType: "Multi-language",
+      unit: "Apply",
+      e2e: "Apply",
+      "property-based": "Per lang",
+      mutation: "Per lang",
+      bdd: "Apply",
+      patrol: "If Flutter",
+      maestro: "If Flutter",
+    },
+  ]}
+/>
+
+---
+
+## Section 17: Scorecard template and usage
+
+**Optional header:** Project name: \_\_\_\_\_\_\_\_\_\_\_\_ | Date: \_\_\_\_\_\_\_\_\_\_\_\_ |
+Assessor: \_\_\_\_\_\_\_\_\_\_\_\_
+
+| Criterion                                      | Score (1-10) | N/A? | Evidence/Notes |
+| ---------------------------------------------- | ------------ | ---- | -------------- |
+| 0.1 First-principles and problem decomposition |              |      |                |
+| 0.2 Systems thinking and boundaries            |              |      |                |
+| 0.3 Causal reasoning and invariants            |              |      |                |
+| 0.4 Failure-mode rigor (FMEA-light)            |              |      |                |
+| 0.5 Trade-off explicitness                     |              |      |                |
+| 1.1 Layering and separation of concerns        |              |      |                |
+| 1.2 Naming and conventions                     |              |      |                |
+| 1.3 Readability and complexity                 |              |      |                |
+| 1.4 Lint, format, and type safety              |              |      |                |
+| 2.1 Unit test coverage                         |              |      |                |
+| 2.2 Unit test quality                          |              |      |                |
+| 2.3 E2E / integration coverage                 |              |      |                |
+| 2.4 E2E stability and maintainability          |              |      |                |
+| 2.5 Property-based testing                     |              |      |                |
+| 2.6 Mutation testing                           |              |      |                |
+| 2.7 Flutter: Patrol                            |              |      |                |
+| 2.8 Flutter: Maestro                           |              |      |                |
+| 2.9 BDD / feature alignment                    |              |      |                |
+| 2.10 Test organization                         |              |      |                |
+| 3.1 Requirements and scope                     |              |      |                |
+| 3.2 Edge cases and validation                  |              |      |                |
+| 3.3 Error handling                             |              |      |                |
+| 3.4 Idempotency and safety                     |              |      |                |
+| 4.1 README and onboarding                      |              |      |                |
+| 4.2 API / contract documentation               |              |      |                |
+| 4.3 Code-level documentation                   |              |      |                |
+| 4.4 Design decisions                           |              |      |                |
+| 5.1 Pipeline existence and stages              |              |      |                |
+| 5.2 Test automation in CI                      |              |      |                |
+| 5.3 Security and dependency scanning           |              |      |                |
+| 5.4 Deployment and rollback                    |              |      |                |
+| 6.1 Logging                                    |              |      |                |
+| 6.2 Metrics and health                         |              |      |                |
+| 6.3 Tracing                                    |              |      |                |
+| 6.4 Runbooks and ops                           |              |      |                |
+| 6.5 Operator and human factors                 |              |      |                |
+| 7.1 Lockfiles and pins                         |              |      |                |
+| 7.2 Vulnerability management                   |              |      |                |
+| 7.3 Dependency hygiene                         |              |      |                |
+| 8.1 Secrets management                         |              |      |                |
+| 8.2 Input validation and injection             |              |      |                |
+| 8.3 Authentication and authorization           |              |      |                |
+| 8.4 Compliance and policy-as-code              |              |      |                |
+| 9.1 Redundancy and HA                          |              |      |                |
+| 9.2 Circuit breakers and backoff               |              |      |                |
+| 9.3 Chaos and fault injection                  |              |      |                |
+| 9.4 Disaster recovery                          |              |      |                |
+| 9.5 Graceful degradation                       |              |      |                |
+| 9.6 Causal and counterfactual                  |              |      |                |
+| 10.1 Capacity and bottlenecks                  |              |      |                |
+| 10.2 Caching strategy                          |              |      |                |
+| 10.3 Backpressure and flow control             |              |      |                |
+| 10.4 Database and query performance            |              |      |                |
+| 10.5 Resource budgets                          |              |      |                |
+| 11.1 API and contract stability                |              |      |                |
+| 11.2 Reuse and shared libraries                |              |      |                |
+| 11.3 Extensibility                             |              |      |                |
+| 11.4 Multi-tenancy                             |              |      |                |
+| 12.1 Right-sizing                              |              |      |                |
+| 12.2 Budget and alerting                       |              |      |                |
+| 12.3 FinOps practices                          |              |      |                |
+| 13.1 Debt tracking                             |              |      |                |
+| 13.2 Improvement cadence                       |              |      |                |
+| 13.3 Experimentation                           |              |      |                |
+| 14.1 Accessibility                             |              |      |                |
+| 14.2 Internationalization                      |              |      |                |
+| 14.3 Operator experience                       |              |      |                |
+| 15.1 Regulatory alignment                      |              |      |                |
+| 15.2 Audit readiness                           |              |      |                |
+| 15.3 Data governance                           |              |      |                |
+
+**Roll-up:** Average of applicable criteria (exclude N/A): \_\_\_\_\_\_\_\_ | Band: \_\_\_\_\_\_\_\_
+
+**Projects to assess:** From `.vscode/sessions.json`: kid_omega, avengers, brightpath_swarm,
+brightpath_cli, zudoku, PathX_Matcher, wireweave (and chartdb, etc. as added).

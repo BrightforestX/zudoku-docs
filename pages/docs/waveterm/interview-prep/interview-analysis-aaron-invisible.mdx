@@ -1,0 +1,472 @@
+---
+domain: pathx.ai
+title: Interview Analysis: Aaron Bawcom & Invisible Technologies
+---
+
+# Interview Analysis: Aaron Bawcom & Invisible Technologies
+
+**Role:** Senior Software Engineer, Forward Deployed (U.S. Public Sector), Invisible  
+**Interviewer:** Aaron Bawcom (Field CTO)  
+**Date:** Feb 6, 2026, 11:30 AM ET
+
+This document gives you a comprehensive analysis of the company, Aaron's concerns, predicted
+questions, and a **minimize-decline playbook** so you can calibrate your answers, preempt concerns,
+and close strong. Use it before the interview to sound aligned and reduce the chance he declines
+you.
+
+---
+
+## Table of contents
+
+1. [Company analysis (Invisible Technologies)](#1-company-analysis-invisible-technologies)
+2. [Aaron Bawcom's concerns (what he is evaluating)](#2-aaron-bawcoms-concerns-what-he-is-evaluating)
+3. [What he will ask (predicted questions and rationale)](#3-what-he-will-ask-predicted-questions-and-rationale)
+4. [Minimize-decline playbook](#4-minimize-decline-playbook)
+5. [Objection handling](#5-objection-handling)
+6. [Differentiation (why you vs. other candidates)](#6-differentiation-why-you-vs-other-candidates)
+7. [Closing strong and follow-up](#7-closing-strong-and-follow-up)
+8. [Summary](#8-summary)
+
+---
+
+## 1. Company analysis (Invisible Technologies)
+
+**Purpose:** A clear, multi-perspective mental model of the company so you can speak to their
+strategy, constraints, risks, and why the role exists—and sound like someone who has done the
+homework.
+
+### What Invisible is
+
+Invisible Technologies is an **AI software platform** (founded 2015) for the enterprise: data
+cleaning and labeling for AI, model adaptation, and human-in-the-loop where it matters. They are
+positioned as **"AI infrastructure for the enterprise"** and (per a16z) sit in the **"AI Palantir"**
+category—"WeMakeAIReal." In **September 2025** they raised **$100M** in growth funding (led by
+Vanara Capital), reaching a **$2B+ valuation**. They have been **profitable for 5+ years**, with
+**~$134M revenue (2024)**, ranked **#2 in AI on the Inc. 5000** (overall #152), **~3,100
+employees**, and **54% YoY growth**. This signals they are scaling fast and need people who can
+operate in customer environments without constant hand-holding.
+
+### Platform and product (with interview angles)
+
+Five pillars:
+
+- **Neuron** – Data infrastructure and ontologies; integrates and normalizes varied data sources for
+  AI.
+- **Atomic** – Process/workflow builder; codifies business logic and workflows so they can be
+  automated and improved.
+- **Axon** – Agentic engine; executes AI-driven processes with **full transparency and audit logs**
+  (critical for government).
+- **Synapse** – Evaluation platform; measures model performance, red-teams for reliability and bias.
+- **Expert Marketplace** – Vetted trainers and human expertise; RLHF and secure model improvement.
+
+**Interview angle:** Government messaging stresses **auditability, trust, and mission alignment**
+over black-box AI. Your answers should mirror that: evidence for assessors, transparency,
+human-in-the-loop where it matters. Mentioning **Axon's auditability** or **Synapse's red-teaming**
+shows you've read the platform.
+
+### Public sector bet (why they're hiring now)
+
+In **October 2024** Invisible launched **Global Public Sector Operations**. **Wes Green** joined as
+SVP, Global Public Sector (28 years defense and national security). **Sharon Woods** joined as SVP,
+Enterprise Accounts, Public Sector—Aaron shared and congratulated her; public sector is a stated
+focus. Use cases: fragmented legacy systems, sensitive data, **FedRAMP/compliance**, defense and
+intelligence analysis, benefits processing, health data. **FDEs are the frontline** for these
+engagements—so Aaron is hiring for a **strategic growth area**, not a backwater. Frame your interest
+as aligned with that bet.
+
+### Competitive and market perspective
+
+"AI Palantir" framing means they compete on **enterprise trust**, data integration, and
+**mission-critical deployments**—not just demos. They need engineers who think in terms of
+**repeatable patterns, compliance evidence, and customer success**, not just feature velocity. A
+candidate who only talks about moving fast will sound misaligned; one who talks about **"how this
+lands at the next agency"** or **"evidence for the assessor"** sounds like a fit.
+
+### Risks and pressures (what keeps leadership up at night)
+
+Scaling public sector without blowing up on compliance or delivery; maintaining trust with
+government customers; hiring enough people who can work in constraints. Your narrative—**production
+readiness, compliance-by-design, handoff**—directly addresses these. Weave that into "why FDE" and
+"why Invisible."
+
+### Why this matters for the interview
+
+Invisible needs people who can deploy and operate in **high-stakes, regulated environments**,
+explain trade-offs to **non-technical mission owners**, and align with **audit and compliance** from
+day one. Drop 2–3 company-specific phrases: **auditability**, **agents in the enterprise**, **public
+sector bet**—so Aaron feels you understand where they're going.
+
+**Source material:** Web search (funding, public sector, platform),
+[aaron-bawcom-cheat-sheet.md](./aaron-bawcom-cheat-sheet.md), public sector page (industries,
+messaging).
+
+---
+
+## 2. Aaron Bawcom's concerns (what he is evaluating)
+
+**Purpose:** Make explicit what he will be listening for, his likely decision-making style, and what
+would cause him to pass or champion you—so you can preempt concerns and reinforce strengths.
+
+### Role and context
+
+He is **Field CTO** (external/technical leadership), ex–**McKinsey & QuantumBlack** and **Candid
+Partners** (McKinsey acquired Candid); **26+ years** experience, **Texas A&M**; deep in regulated
+sectors—**banking, payments, capital markets, insurance, DoD/Intelligence**. He is hiring an FDE for
+U.S. Public Sector: someone who will work in customer environments, often under compliance and
+change control. His reputation: **"technical depth + facilitation"**; **"won't accept mediocrity"**
+but **"empowers team"**; **"presents his plan, entertains alternatives, then decides"**;
+**"facilitator of great solutions."** So he values **clarity, options, and decisiveness**—not
+endless debate or vagueness. Recommendations say he is "as good a programmer as anyone on his team"
+and "helps team through obstacles"; he respects **technical substance** and **collaboration**. His
+profile tagline: _"The person who said work smarter, not harder, was a slacker"_—he values leverage,
+automation, and not reinventing the wheel.
+
+### Likely concerns (with how to preempt)
+
+| Concern                                           | What he's testing                                                                                               | Red flag                                                           | Preempt                                                                                                                                                                                                                                                             |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Can you operate in a regulated environment?**   | Built or supported systems under FedRAMP, FISMA, SOC 2, etc., or can reason clearly about controls and evidence | Hand-waving on compliance or "we'll add it later"                  | Lead with one compliance-relevant story or the [banking API narrative](../banking-api-fde-narrative.md) (audit-ready design). If you lack direct FedRAMP experience, say so in one sentence and pivot: "Here's how I'd approach it" (controls, evidence, pipeline). |
+| **Can you ship and support production?**          | Logging, health checks, runbooks, incident response, handoff to customer/ops                                    | Only feature work, no ownership of reliability or operations       | Banking API and any production/on-call story. Use the phrase **"operable and auditable from day one."**                                                                                                                                                             |
+| **Can you work in the customer's constraints?**   | Air-gaps, approved stacks, long change windows, procurement                                                     | Assumes greenfield cloud and fast iteration                        | Acknowledge: "I know public sector has longer cycles and change control." One sentence on how you'd stay effective: clear process, automation, documentation, backlog that doesn't depend on the approval.                                                          |
+| **Can you communicate with non-engineers?**       | PMs, compliance, mission owners                                                                                 | Purely technical language, no translation to risk/timeline/options | At least one behavioral answer showing you framed a trade-off in business/compliance terms and got alignment.                                                                                                                                                       |
+| **Do you care about patterns and repeatability?** | His patents: IaC, compliance gates, migration prioritization                                                    | One-off solutions, no "how would this land at the next agency?"    | In system design or deployment discussion: parameterization, policy-as-code, "same pattern across environments with env-specific config." One reference to IaC or compliance gates shows you've read his background.                                                |
+| **Fit for Invisible's agentic/Gen AI direction?** | Can you reason about PoCs, guardrails, rollout in government?                                                   | Dismissive of AI/agents or no curiosity                            | One question to him about agents in the enterprise or Gen AI in public sector. One sentence in an answer: bounded PoCs, guardrails, or human-in-the-loop in a government context.                                                                                   |
+
+### What would make him lean yes
+
+Concrete stories in regulated or government-adjacent contexts; clear production/ops mindset; ability
+to discuss trade-offs and alternatives without defensiveness; questions that show you've read the
+company and his background (agents, public sector, IaC). **Champion trigger:** He can imagine you in
+front of a government customer or assessor without embarrassment—credible, clear, and
+compliance-aware.
+
+### Psychology and style
+
+He has been a "programmer as good as anyone on his team" and "helps team through obstacles." He
+respects **technical substance** and **collaboration and facilitation**. Avoid sounding like a lone
+wolf or someone who can't work within process. Use phrases like **"reusable pattern,"** **"automate
+the compliance check,"** or **"so we don't do this manually at every agency."**
+
+---
+
+## 3. What he will ask (predicted questions and rationale)
+
+**Purpose:** Tie each predicted question to his motivations and to what a strong (or weak) answer
+looks like—and prepare you for curveballs and follow-ups.
+
+### Opening / fit
+
+**Question:** "Tell me about yourself."
+
+- **Why he's asking:** Narrative, relevance to FDE and public sector, one concrete technical win.
+- **Strong answer:** 2–3 min: background → one production-ready or compliance-relevant example (e.g.
+  [banking API](../banking-api-fde-narrative.md)) → why FDE / public sector / Invisible.
+- **Red flag:** Generic, no link to regulated/production/compliance or to this role.
+
+**Possible follow-up:** "Why leave your current role?" or "What would make you say no to this
+role?"  
+**Suggested framing:** Brief, positive (growth, mission, fit). Do not badmouth current employer or
+sound hesitant.
+
+---
+
+### Behavioral (compliance, production, stakeholders, handoff)
+
+Use **STAR** (Situation, Task, Action, Result) and end with a **lesson**. Be specific.
+
+**Q1: Tell me about a time you had to build or operate a system under strict compliance (e.g. HIPAA,
+SOC 2, FedRAMP, or government rules).**
+
+- **Why he's asking:** Has you actually operated under real constraints and can you talk about
+  controls and evidence?
+- **Strong:** STAR with audit logging, access controls, change process; outcome (passed audit, no
+  findings, or traceable controls); lesson: "Compliance is easier when it's part of the design and
+  pipeline, not a bolt-on."
+- **Red flag:** Vague, no framework named, no evidence or outcome.
+
+**Q2: Tell me about a time you owned a system in production and had to respond to an incident or
+outage.**
+
+- **Why he's asking:** Ownership, triage, communication, learning from failure.
+- **Strong:** What broke, how you found out; your role (triage, fix, communicate); what you did to
+  reduce recurrence; takeaway: "Clear ownership and runbooks matter more when the customer is
+  watching."
+- **Red flag:** No outcome or no lesson; blame others.
+
+**Q3: Tell me about a time you had to explain a technical trade-off to a non-technical
+stakeholder.**
+
+- **Why he's asking:** Can you translate technical choices into impact and options for
+  decision-makers?
+- **Strong:** Who they were, the trade-off (e.g. speed vs. security), how you framed it (impact on
+  their goals, options, recommendation), aligned decision.
+- **Red flag:** Only technical jargon; no clear outcome.
+
+**Q4: Describe how you've handed off a system to a customer or ops team so they could run it without
+you.**
+
+- **Why he's asking:** FDE mindset—documentation, runbooks, sustainable handoff.
+- **Strong:** What you built, who took it over; what you provided (runbooks, docs, training,
+  escalation); how you validated (walkthrough, tabletop, first incident together); lesson on what
+  makes handoffs stick.
+- **Red flag:** No validation step or no clear owner.
+
+**Q5: Why are you interested in Forward Deployed and the U.S. public sector specifically?**
+
+- **Why he's asking:** Motivation and fit.
+- **Strong:** **30–60 seconds**, rehearsed: mission impact, working in customer's environment,
+  variety of problems, compliance and security as first-class; biggest challenges (long cycles,
+  strict compliance, legacy) and how you'd mitigate (process, automation, documentation).
+- **Red flag:** Generic or lukewarm; no link to public sector or constraints.
+
+**Curveballs (with suggested answers):**
+
+- **"What would you do differently?"** – "I'd [one concrete change]. The lesson I took was [one
+  sentence]."
+- **"What did you learn about yourself?"** – "I learned that I [strength or growth area] when [brief
+  context]."
+- **"How did you handle someone who disagreed?"** – "I listened to their concern, restated it to
+  confirm, then we looked at the trade-offs together and [outcome]."
+
+---
+
+### Technical / system design
+
+**Primary: Audit logging for a FedRAMP environment**
+
+**How he might phrase it:** "Design an audit-logging system for an application that has to meet
+FedRAMP Moderate. I care about what you log, how you retain and protect it, who can access it, and
+how you'd prove compliance to an assessor."
+
+- **Why he's asking:** Can you design for compliance and prove it to an assessor? Do you think in
+  terms of controls and evidence?
+- **Strong:** (1) **Clarifying questions:** event volume and retention; who accesses logs (ops vs.
+  auditors); ATO boundary. (2) **High-level components:** ingest (structured events, no PII unless
+  approved), store (durable, append-only, partition by time), retain (policy, automated
+  deletion/archive), access control (authorized roles only; access to logs is itself logged;
+  separation of duties). (3) **Immutability and integrity:** append-only, no in-place edit; optional
+  hash chain or signed batches for assessor verification. (4) **Proving compliance:** Map to FedRAMP
+  **AU family** (AU-2 audit events, AU-6 review/analysis, AU-9 protection of audit information,
+  AU-12 audit generation). Provide runbooks, config, and control-to-implementation matrix for
+  assessor. "I'd start from the **ATO boundary** and the AU control set, then design the pipeline so
+  every requirement maps to a concrete component."
+- **Red flag:** No mention of retention, access control, or how you'd demonstrate compliance; only
+  technical detail with no compliance framing.
+
+**Clarifying questions to ask:** (1) Expected event volume and retention? (2) Who needs to access
+logs—internal ops only, or also auditors/security? (3) Are we in scope as the application provider,
+or part of a larger boundary?
+
+**Likely follow-ups (short answer guidance):**
+
+- **"What if the customer is air-gapped?"** – Logs stay on-prem; ship a logging stack as part of the
+  deployment artifact with same retention and access rules. Updates go through their change process
+  (approved media or internal repo).
+- **"How do you handle log volume at scale?"** – Partition by time and tenant; tier hot vs. cold
+  storage; full fidelity for auth and sensitive operations; document any sampling/filtering for
+  compliance.
+- **"How would you add a new compliance rule?"** – Implement in policy-as-code, test, PR, merge;
+  document which control it supports; pipeline picks it up on next run.
+- **"What's the single biggest risk in this design?"** – e.g. "Unauthorized access to logs or
+  tampering—we mitigate with access control, immutability, and auditing access to the log store."
+
+**Optional second: IaC and compliance gates before deploy**
+
+**How he might phrase it:** "Design a pipeline that takes infrastructure-as-code (e.g. Terraform)
+and deploys to a customer environment. Before any deploy, the pipeline must check proposed changes
+against a compliance policy (e.g. no public S3 buckets, encryption required). Walk me through the
+flow, where policy lives, and how you'd add a new rule."
+
+- **Why he's asking:** Do you think in pipelines and policy-as-code? (Aligns with his
+  compliance-module patent.)
+- **Strong:** Flow: IaC in version control → `terraform plan` → compliance engine (OPA, Checkov, or
+  custom) against planned state → block on failure and report rule/resource → if pass, allow deploy
+  → log plan + policy result for audit. Policy as code in repo; versioned and reviewed. New rule:
+  implement, test, PR, merge, document which control (e.g. FedRAMP SC-28) it supports.
+- **Red flag:** No policy-as-code; no audit trail of what was checked.
+
+---
+
+### Other possible technical or situational questions
+
+- **"How would you run a Gen AI PoC in a government context?"** – Scope: narrow use case, clear
+  success criteria, data boundary (where data lives, who sees it). Risk: PII/PHI/CUI handling, model
+  provenance, no training on customer data without approval. Rollout: pilot users, feedback loop,
+  off-ramp if it doesn't meet bar. One line: "Bounded PoC, then decide whether to harden for
+  production."
+- **"Describe a time you pushed back on a customer or stakeholder."** – What was asked, why it
+  conflicted with policy/risk; how you explained risk and proposed an alternative; result:
+  relationship preserved, safer solution.
+- **"What's the hardest technical problem you've solved?"** – Pick one with production, scale, or
+  compliance angle; have a **crisp 60-second version** (context, challenge, what you did, outcome).
+- **"Where do you want to be in 3–5 years?"** – Align with FDE/technical leadership or
+  customer-facing technical role. Do not say "I want to leave engineering."
+
+---
+
+### Your questions (why each is good; what to do with his answer)
+
+1. **"How is Invisible thinking about infrastructure for agents in the enterprise, and where do FDEs
+   fit in?"** – Shows you've seen his/Invisible's focus on agents and want to connect it to your
+   role.
+2. **"What does success look like for a Forward Deployed Engineer in the U.S. public sector in the
+   first 6–12 months?"** – Signals you care about concrete outcomes and how you'll be measured.
+3. **"How do you balance speed of delivery with the compliance and change-control realities of
+   government customers?"** – Directly addresses a tension he knows well.
+4. **"What's the biggest technical or organizational challenge Invisible is tackling in public
+   sector right now?"** – Gives him a chance to be specific; shows you want to contribute to real
+   problems.
+5. **"How does the team use patterns and IaC to stay consistent across customer environments?"** –
+   Ties to his patents and Invisible's need for repeatable, compliant deployments.
+
+**What to do with his answer:** Listen; ask one brief follow-up if natural. Do not interrogate.
+
+**Source material:** [virtual-interview-aaron-fde.md](./virtual-interview-aaron-fde.md),
+[aaron-bawcom-cheat-sheet.md](./aaron-bawcom-cheat-sheet.md),
+[fde-public-sector-questions.md](./fde-public-sector-questions.md). For communication/presence:
+think out loud, check in ("Does this approach make sense so far?"), use simple language—see
+[.cursor/rules/interview-communication.mdc](.cursor/rules/interview-communication.mdc).
+
+---
+
+## 4. Minimize-decline playbook
+
+**Purpose:** Explicitly list the most likely reasons Aaron would decline you and give a
+**mitigation** for each—so you reduce that risk before and during the interview.
+
+**Checklist:** Before the interview, confirm you have a mitigation ready for each trigger. During
+the interview, ensure you've hit the key ones even if he doesn't ask the exact question.
+
+| #   | Decline trigger                                                         | Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| --- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **No evidence of regulated or compliance-aware work**                   | Lead with [banking API](../banking-api-fde-narrative.md) (production-ready, security doc, audit-friendly design) and/or one STAR story with a framework (SOC 2, HIPAA, FedRAMP, or "we had to pass an audit"). If no direct government experience: one sentence ("I haven't worked in a FedRAMP environment yet"), then pivot with 2–3 concrete steps (controls, evidence, pipeline). **Never** say "we'll add compliance later." |
+| 2   | **Seems like a product engineer, not production/handoff owner**         | Two proof points: (1) banking API narrative (health checks, logging, runbooks, docs); (2) one incident or handoff story. Use **"operable and auditable from day one"** and **"handoff so the customer or ops team can run it without me."**                                                                                                                                                                                       |
+| 3   | **Won't thrive in government constraints—expects greenfield and speed** | Acknowledge: "I know public sector has longer procurement and change windows." One sentence on how you'd stay effective: clear process, automation, documentation, backlog that doesn't depend on the approval. Optional: "I'd rather move at the speed the customer can sustain than push and break trust."                                                                                                                      |
+| 4   | **Can't translate to non-technical stakeholders**                       | One behavioral answer showing you explained a technical trade-off to a PM, compliance, or customer in terms of risk, timeline, or options—and got alignment. Weave into "tell me about yourself" or the trade-off question if he doesn't ask.                                                                                                                                                                                     |
+| 5   | **Doesn't care about patterns or repeatability**                        | In system design or deployment: parameterization, policy-as-code, "same pattern across environments," or "so the next agency gets the same rigor without redoing the work." One reference to IaC or compliance gates.                                                                                                                                                                                                             |
+| 6   | **Not a culture fit—defensive, arrogant, or can't collaborate**         | Show intellectual humility: "I'd want to validate that with the customer," "There are a few ways to do this—here's the trade-off," "I'm not 100% on that number, but here's how I'd reason about it." Ask his view: "How have you seen teams balance X and Y?" Avoid: "That's the only way," "I've always done it this way," or talking over him.                                                                                 |
+| 7   | **No interest or curiosity in AI/agents**                               | Ask at least one question about agents in the enterprise or Gen AI in public sector. In one answer, mention bounded PoCs, guardrails, or human-in-the-loop in a government context.                                                                                                                                                                                                                                               |
+| 8   | **Unclear motivation or flight risk**                                   | Clear **"why FDE," "why public sector," "why Invisible"**—30–60 seconds, rehearsed. If he asks "why leave current role?" or "what would make you say no?"—answer briefly and positively (growth, mission, fit). Do not badmouth current employer or sound lukewarm.                                                                                                                                                               |
+| 9   | **Communication style or presence doesn't fit customer-facing role**    | **Think out loud** during system design; pause to clarify ("Before I dive in, let me clarify…"); check in once or twice ("Does this approach make sense so far?"). Avoid monologuing, talking over him, or long silences. One or two genuine questions that show you're listening: "You mentioned X—how does that usually play out with agencies?"                                                                                |
+
+---
+
+## 5. Objection handling
+
+**Purpose:** When he challenges an answer or raises a concern, respond calmly and credibly—not
+defensive or flustered.
+
+**If he says or implies: "You don't have direct government/FedRAMP experience."**
+
+- **Response template:** "That's fair—I haven't worked in a FedRAMP environment yet. What I have
+  done is [compliance-relevant project or banking API]. For FedRAMP I'd [map to controls, evidence
+  for assessor, pipeline checks]. I'm a fast learner and I've read up on the control families; I'd
+  pair with your team and the customer's security folks early." Keep it short; don't over-apologize.
+
+**If he says: "How would you handle a customer who wants something that's not compliant?"**
+
+- **Response template:** "I'd explain the risk in plain language and the consequence—e.g. failing an
+  audit or losing ATO. I'd propose an alternative that meets their goal within the guardrails. If
+  they still pushed, I'd escalate and document so we don't take on risk we can't defend."
+
+**If he asks a technical follow-up you don't know (e.g. specific NIST control number).**
+
+- **Response template:** "I don't have that exact number in my head, but I know the principle—[e.g.
+  audit events must be protected and retention must be configurable]. I'd look up the specific
+  control and map our implementation to it for the assessor."
+
+**If he challenges your system design ("What about X?" or "That would fail when…").**
+
+- **Response template:** "Good catch—[acknowledge the gap]. We'd address that by [one or two
+  concrete additions]. The trade-off would be [brief]. Does that align with how you've seen it
+  done?"
+
+**General rule:** Never get defensive. **"That's a valid concern,"** **"Good point,"** or **"I'd
+want to validate that"**—then add one or two sentences that address the concern or show how you'd
+find the answer.
+
+---
+
+## 6. Differentiation (why you vs. other candidates)
+
+**Purpose:** A short, repeatable way to position yourself so Aaron can articulate to his team why to
+hire you.
+
+**Pick 2–3 themes that are true for you and weave into answers:**
+
+- **Production-first mindset:** "I care as much about how we run and prove the system as about the
+  feature set—logging, health checks, runbooks, evidence for assessors."
+- **Compliance-by-design:** "I've learned that compliance is easier when it's in the design and
+  pipeline from day one, not a bolt-on."
+- **Customer and stakeholder translation:** "I'm comfortable in the room with technical and
+  non-technical folks—I translate trade-offs so we can make a decision and move."
+- **Patterns and repeatability:** "I think about how a solution would land at the next customer or
+  agency—parameterization, policy-as-code, so we're not building one-off."
+- **Handoff and sustainability:** "I want the customer or ops team to be able to run it without
+  me—clear docs, runbooks, escalation path."
+
+**One-liner to close with (optional):** "I'd bring a combination of production discipline,
+compliance awareness, and the ability to work in the customer's constraints—so Invisible can scale
+in public sector without burning the customer or the team." Adapt to your words; use in the closing
+or if he asks "why should we hire you?"
+
+---
+
+## 7. Closing strong and follow-up
+
+**Purpose:** End on a high note and stay top-of-mind positively after the call.
+
+**Last 2–3 minutes:**
+
+- Thank him specifically: "Thanks for the time and for walking me through [one thing he said]."
+- Reaffirm interest: "I'm really excited about the role and what Invisible is doing in public
+  sector."
+- **Ask next steps:** "What are the next steps on your side?" or "Is there anything else you need
+  from me?"
+- Optional: Use your differentiation line or "why FDE" in one sentence so the last thing he hears is
+  your value prop.
+
+**What not to do:** Don't oversell or beg. Don't ask about salary or benefits unless he brings it
+up. Don't leave without clarity on next steps.
+
+**Post-interview (within 24 hours):**
+
+- Send a short thank-you email (3–5 sentences): thank him, reference **one specific topic** you
+  discussed, reiterate interest, say you **look forward to next steps**.
+- If you promised to send something (link, doc), send it the same day.
+- Do not follow up repeatedly; one thank-you is enough unless they set an expectation (e.g. "We'll
+  get back to you by Friday").
+
+**If there's a delay:** After the stated timeline passes, one brief, professional follow-up: "Hi
+Aaron, I wanted to check in on the next steps for the FDE role. I'm still very interested. Thanks."
+Do not show frustration or send multiple chasers.
+
+---
+
+## 8. Summary
+
+- **Company:** Invisible is scaling enterprise AI and has made a deliberate public sector bet; FDEs
+  are critical to deploying and operating in government and regulated environments with auditability
+  and trust. Knowing their platform, risks, and positioning helps you sound aligned.
+- **Aaron's concerns:** Regulated/production experience, customer constraints, stakeholder
+  communication, patterns and repeatability, and fit with agentic/Gen AI in government. This doc
+  gives preemptive mitigations for each.
+- **Questions:** Opening + behavioral (compliance, incident, trade-off, handoff, why FDE) + system
+  design (audit logging or IaC) + curveballs and follow-ups + your questions; for each, why he asks
+  and what a strong answer does.
+- **Minimize decline:** Sections 4–7 give a decline-trigger checklist, objection handling,
+  differentiation, and closing/follow-up so you actively reduce the chance he declines you.
+
+---
+
+## Cross-reference
+
+- [aaron-bawcom-cheat-sheet.md](./aaron-bawcom-cheat-sheet.md) – His background and likely question
+  areas
+- [virtual-interview-aaron-fde.md](./virtual-interview-aaron-fde.md) – Full virtual interview script
+  with model answers
+- [fde-public-sector-questions.md](./fde-public-sector-questions.md) – Question bank and outlines
+- [banking-api-fde-narrative.md](../banking-api-fde-narrative.md) – Banking API → FDE story
+- [compliance-controls-reference.md](./compliance-controls-reference.md) – FedRAMP, SOC 2, and other
+  frameworks
+- [prep-aaron-fde.md](../prep-aaron-fde.md) – Scratch prep; open to trigger interview-mode in Cursor

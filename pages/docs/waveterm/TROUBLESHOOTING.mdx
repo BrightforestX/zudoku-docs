@@ -1,0 +1,1004 @@
+---
+domain: pathx.ai
+title: Troubleshooting Guide
+---
+
+# Troubleshooting Guide
+
+This comprehensive guide helps diagnose and resolve common issues with the AI Agent Crew framework,
+testing infrastructure, and deployment pipelines.
+
+## Table of Contents
+
+- [Quick Diagnostics](#quick-diagnostics)
+- [Agent Issues](#agent-issues)
+- [Testing Issues](#testing-issues)
+- [Build Issues](#build-issues)
+- [Deployment Issues](#deployment-issues)
+- [Performance Issues](#performance-issues)
+- [Security Issues](#security-issues)
+- [Infrastructure Issues](#infrastructure-issues)
+- [Getting Help](#getting-help)
+
+---
+
+## Quick Diagnostics
+
+### Health Check Commands
+
+```bash
+# System health overview
+echo "=== System Health Check ==="
+docker --version && echo "✅ Docker"
+go version && echo "✅ Go"
+node --version && echo "✅ Node.js"
+git --version && echo "✅ Git"
+
+# Check running containers
+docker ps
+
+# Check disk space
+df -h
+
+# Check memory
+free -h
+
+# Check network
+curl -I https://github.com 2>/dev/null | head -1
+```
+
+### Asset Verification
+
+To verify assets are properly migrated from the submodule:
+
+![Verified Integration Image](/waveterm-assets/verified-homepage-integration.webp){height="200"
+width="300"}
+
+### Common Quick Fixes
+
+| Issue                   | Quick Fix                                                    |
+| ----------------------- | ------------------------------------------------------------ | -------------- |
+| Scripts not executable  | `chmod +x .github/scripts/**/*.sh`                           |
+| Docker containers stuck | `docker stop $(docker ps -aq) && docker rm $(docker ps -aq)` |
+| Ports in use            | `lsof -ti:PORT                                               | xargs kill -9` |
+| Test data stale         | `./.github/scripts/utilities/cleanup-test-data.sh`           |
+| Go module issues        | `go mod tidy && go mod download`                             |
+| Node module issues      | `rm -rf node_modules && npm ci`                              |
+
+---
+
+## Agent Issues
+
+### Agent Not Responding
+
+**Symptoms:**
+
+- Agent doesn't produce output
+- Agent returns generic responses
+- Agent seems unaware of its role
+
+**Solutions:**
+
+1. **Verify agent file location and naming:**
+
+```bash
+# Check agent files exist
+ls -la .github/agents/
+
+# Verify file extension
+# Should be: agent-name.agent.md
+```
+
+2. **Check agent file syntax:**
+
+```markdown
+# Agent file must start with frontmatter
+
+---
+
+name: agent-name description: Agent description version: 1.0.0 category: development
+
+---
+```
+
+3. **Verify agent is being invoked correctly:**
+
+```
+# Correct invocation
+@agent-name Please help with this task
+
+# Common mistakes
+@agent_name (wrong: uses underscore)
+@AgentName (wrong: case sensitive)
+```
+
+### Agent Produces Wrong Output
+
+**Symptoms:**
+
+- Agent performs tasks outside its scope
+- Agent uses wrong tools or patterns
+- Agent ignores constraints
+
+**Solutions:**
+
+1. **Review agent scope definition:**
+
+```markdown
+## Scope of Responsibility
+
+**Out of Scope:**
+
+- Frontend development (defer to frontend-agent)
+- Security audits (collaborate with security-agent)
+```
+
+2. **Check quality standards section:**
+
+```markdown
+## Quality Standards
+
+### Requirements
+
+- Always run tests before committing
+- Follow existing code patterns
+- Maximum function length: 50 lines
+```
+
+3. **Add explicit constraints:**
+
+```markdown
+## Operational Constraints
+
+- DO NOT modify files outside /src directory
+- DO NOT commit directly to main branch
+- ALWAYS request user confirmation for destructive actions
+```
+
+### Agent Delegation Failing
+
+**Symptoms:**
+
+- Sub-agents not being invoked
+- Circular delegation
+- Missing handoff information
+
+**Solutions:**
+
+1. **Verify dependency configuration:**
+
+```yaml
+dependencies:
+  - unit-testing-agent
+  - security-agent
+```
+
+2. **Check delegation protocol:**
+
+```markdown
+## Collaboration Protocol
+
+### Upstream Dependencies
+
+- @data-ingestion-agent: Provides code context
+
+### Downstream Handoffs
+
+- @reporting-agent: Receives test results
+```
+
+---
+
+## Testing Issues
+
+### Tests Failing to Run
+
+**Symptoms:**
+
+- Test scripts exit immediately
+- "Command not found" errors
+- Permission denied errors
+
+**Solutions:**
+
+1. **Make scripts executable:**
+
+```bash
+chmod +x .github/scripts/**/*.sh
+```
+
+2. **Check script exists:**
+
+```bash
+ls -la .github/scripts/testing/
+```
+
+3. **Run with explicit bash:**
+
+```bash
+bash .github/scripts/testing/run-unit-tests.sh
+```
+
+### Tests Timing Out
+
+**Symptoms:**
+
+- Tests hang indefinitely
+- Timeout errors in CI/CD
+- Incomplete test runs
+
+**Solutions:**
+
+1. **Increase timeout:**
+
+```bash
+TIMEOUT=600 ./.github/scripts/run-all-tests.sh unit
+```
+
+2. **Check for deadlocks:**
+
+```bash
+# Look for hanging processes
+ps aux | grep test
+```
+
+3. **Run tests in isolation:**
+
+```bash
+# Run single test file
+go test -v ./pkg/auth/ -run TestLogin -timeout 60s
+```
+
+### Coverage Below Threshold
+
+**Symptoms:**
+
+- CI fails on coverage check
+- Coverage reports show gaps
+- New code not tested
+
+**Solutions:**
+
+1. **Identify uncovered code:**
+
+```bash
+go test -coverprofile=coverage.out ./...
+go tool cover -html=coverage.out
+```
+
+2. **Add missing tests:**
+
+```go
+// Target specific uncovered functions
+func TestUncoveredFunction(t *testing.T) {
+    // Add test cases for edge conditions
+}
+```
+
+3. **Temporarily adjust threshold (not recommended for production):**
+
+```bash
+COVERAGE_THRESHOLD=70 ./.github/scripts/validation/validate-coverage.sh
+```
+
+### Integration Tests Failing
+
+**Symptoms:**
+
+- Database connection errors
+- Service unavailable errors
+- Test data inconsistencies
+
+**Solutions:**
+
+1. **Verify Docker is running:**
+
+```bash
+docker info
+```
+
+2. **Check container status:**
+
+```bash
+docker ps -a
+docker logs test-postgres
+```
+
+3. **Reset test environment:**
+
+```bash
+./.github/scripts/utilities/cleanup-test-data.sh
+./.github/scripts/utilities/setup-test-env.sh integration
+```
+
+4. **Check database connection:**
+
+```bash
+docker exec -it test-postgres psql -U postgres -c "SELECT 1"
+```
+
+### E2E Tests Failing
+
+**Symptoms:**
+
+- Browser timeout errors
+- Element not found errors
+- Screenshot shows wrong page
+
+**Solutions:**
+
+1. **Ensure application is running:**
+
+```bash
+curl -I http://localhost:8080/health
+curl -I http://localhost:3000
+```
+
+2. **Check Playwright installation:**
+
+```bash
+npx playwright install
+```
+
+3. **Run with headed mode for debugging:**
+
+```bash
+HEADED=true npx playwright test
+```
+
+4. **Increase wait times:**
+
+```typescript
+await page.waitForSelector(".element", { timeout: 30000 });
+```
+
+---
+
+## Build Issues
+
+### Go Build Failing
+
+**Symptoms:**
+
+- Compilation errors
+- Missing dependencies
+- Version mismatches
+
+**Solutions:**
+
+1. **Update dependencies:**
+
+```bash
+go mod tidy
+go mod download
+```
+
+2. **Clear module cache:**
+
+```bash
+go clean -modcache
+```
+
+3. **Check Go version:**
+
+```bash
+go version
+# Ensure it matches go.mod requirement
+```
+
+4. **Verify GOPATH:**
+
+```bash
+echo $GOPATH
+go env
+```
+
+### Docker Build Failing
+
+**Symptoms:**
+
+- Dockerfile syntax errors
+- Base image not found
+- Out of disk space
+
+**Solutions:**
+
+1. **Clean Docker resources:**
+
+```bash
+docker system prune -a --volumes
+```
+
+2. **Check Dockerfile syntax:**
+
+```bash
+docker build --no-cache -t test .
+```
+
+3. **Verify base image:**
+
+```bash
+docker pull golang:1.21-alpine
+```
+
+4. **Check available disk space:**
+
+```bash
+df -h
+docker system df
+```
+
+### Node.js Build Failing
+
+**Symptoms:**
+
+- npm install errors
+- Missing peer dependencies
+- Build script failures
+
+**Solutions:**
+
+1. **Clear npm cache:**
+
+```bash
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install
+```
+
+2. **Use specific Node version:**
+
+```bash
+nvm use 18
+# or
+nvm install 18 && nvm use 18
+```
+
+3. **Check for conflicting versions:**
+
+```bash
+npm ls
+```
+
+---
+
+## Deployment Issues
+
+### Deployment Stuck
+
+**Symptoms:**
+
+- Deployment hangs
+- Pods not becoming ready
+- Rollout timeout
+
+**Solutions:**
+
+1. **Check pod status:**
+
+```bash
+kubectl get pods
+kubectl describe pod <pod-name>
+```
+
+2. **Check container logs:**
+
+```bash
+kubectl logs <pod-name> -c <container-name>
+```
+
+3. **Check events:**
+
+```bash
+kubectl get events --sort-by='.lastTimestamp'
+```
+
+4. **Force rollback:**
+
+```bash
+kubectl rollout undo deployment/<deployment-name>
+```
+
+### Health Check Failing
+
+**Symptoms:**
+
+- Pods restarting
+- Service unavailable
+- Load balancer 502/503
+
+**Solutions:**
+
+1. **Verify health endpoint:**
+
+```bash
+kubectl exec -it <pod-name> -- curl localhost:8080/health
+```
+
+2. **Check resource limits:**
+
+```yaml
+resources:
+  limits:
+    memory: "512Mi" # Increase if OOM
+    cpu: "1"
+```
+
+3. **Adjust probe timing:**
+
+```yaml
+readinessProbe:
+  initialDelaySeconds: 30 # Increase for slow starts
+  periodSeconds: 10
+  timeoutSeconds: 5
+```
+
+### Database Migration Failing
+
+**Symptoms:**
+
+- Application won't start
+- Database errors in logs
+- Schema mismatch
+
+**Solutions:**
+
+1. **Check migration status:**
+
+```bash
+./migrate status
+```
+
+2. **Run migrations manually:**
+
+```bash
+./migrate up
+```
+
+3. **Rollback failed migration:**
+
+```bash
+./migrate down 1
+```
+
+4. **Check database connection:**
+
+```bash
+psql $DATABASE_URL -c "SELECT version();"
+```
+
+---
+
+## Performance Issues
+
+### High Latency
+
+**Symptoms:**
+
+- Slow API responses
+- Timeout errors
+- Poor user experience
+
+**Solutions:**
+
+1. **Profile the application:**
+
+```bash
+# Go profiling
+go tool pprof http://localhost:8080/debug/pprof/profile?seconds=30
+```
+
+2. **Check database queries:**
+
+```sql
+-- PostgreSQL slow query log
+EXPLAIN ANALYZE SELECT * FROM users WHERE ...
+```
+
+3. **Review caching:**
+
+```bash
+redis-cli INFO stats
+```
+
+4. **Check resource utilization:**
+
+```bash
+kubectl top pods
+kubectl top nodes
+```
+
+### High Memory Usage
+
+**Symptoms:**
+
+- OOM kills
+- Memory leak
+- Degrading performance over time
+
+**Solutions:**
+
+1. **Analyze memory profile:**
+
+```bash
+go tool pprof http://localhost:8080/debug/pprof/heap
+```
+
+2. **Check for leaks:**
+
+```go
+// Add memory stats logging
+var m runtime.MemStats
+runtime.ReadMemStats(&m)
+log.Printf("Alloc = %v MiB", m.Alloc/1024/1024)
+```
+
+3. **Increase memory limits (temporary):**
+
+```yaml
+resources:
+  limits:
+  memory: "1Gi"
+```
+
+### High CPU Usage
+
+**Symptoms:**
+
+- Slow response times
+- CPU throttling
+- Increased latency
+
+**Solutions:**
+
+1. **Profile CPU usage:**
+
+```bash
+go tool pprof http://localhost:8080/debug/pprof/profile
+```
+
+2. **Check for hot paths:**
+
+```bash
+go tool pprof -top cpu.prof
+```
+
+3. **Review concurrent operations:**
+
+```go
+// Use worker pools instead of unbounded goroutines
+pool := make(chan struct{}, 10) // limit to 10 concurrent
+```
+
+---
+
+## Security Issues
+
+### Secret Exposure
+
+**Symptoms:**
+
+- Secrets in logs
+- Credentials in error messages
+- Sensitive data visible
+
+**Solutions:**
+
+1. **Audit for exposed secrets:**
+
+```bash
+# Check git history
+git log -p | grep -i password
+git log -p | grep -i secret
+
+# Use gitleaks
+gitleaks detect --source=.
+```
+
+2. **Rotate compromised secrets:**
+
+```bash
+# Immediately rotate any exposed credentials
+aws secretsmanager rotate-secret --secret-id <secret-id>
+```
+
+3. **Review logging configuration:**
+
+```go
+// Never log sensitive data
+log.Printf("User %s authenticated", user.ID)
+// NOT: log.Printf("User %s with password %s", user.ID, password)
+```
+
+### Vulnerability Detected
+
+**Symptoms:**
+
+- Security scan failures
+- CVE alerts
+- Dependency warnings
+
+**Solutions:**
+
+1. **Check vulnerability details:**
+
+```bash
+# Go
+govulncheck ./...
+
+# Node.js
+npm audit
+```
+
+2. **Update vulnerable dependencies:**
+
+```bash
+# Go
+go get -u package@latest
+
+# Node.js
+npm update package
+npm audit fix
+```
+
+3. **Apply patches:**
+
+```bash
+# If update not available, check for patches
+npm audit fix --force  # Use with caution
+```
+
+### Authentication Failures
+
+**Symptoms:**
+
+- 401 Unauthorized errors
+- Token validation failures
+- Session issues
+
+**Solutions:**
+
+1. **Verify token configuration:**
+
+```bash
+# Check JWT token
+echo $TOKEN | cut -d'.' -f2 | base64 -d | jq .
+```
+
+2. **Check token expiration:**
+
+```bash
+# Decode and check exp claim
+echo $TOKEN | cut -d'.' -f2 | base64 -d | jq .exp
+```
+
+3. **Verify secret configuration:**
+
+```bash
+# Ensure JWT secret is set
+echo $JWT_SECRET | wc -c  # Should be reasonable length
+```
+
+---
+
+## Infrastructure Issues
+
+### Docker Issues
+
+**Symptoms:**
+
+- Container won't start
+- Image pull failures
+- Network connectivity issues
+
+**Solutions:**
+
+1. **Reset Docker:**
+
+```bash
+# Restart Docker daemon
+sudo systemctl restart docker
+
+# or on macOS
+killall Docker && open /Applications/Docker.app
+```
+
+2. **Clear all containers and images:**
+
+```bash
+docker system prune -a --volumes
+```
+
+3. **Check Docker networking:**
+
+```bash
+docker network ls
+docker network inspect bridge
+```
+
+### Port Conflicts
+
+**Symptoms:**
+
+- "Address already in use"
+- Service won't start
+- Connection refused (wrong port)
+
+**Solutions:**
+
+1. **Find process using port:**
+
+```bash
+lsof -i :8080
+netstat -tlnp | grep 8080
+```
+
+2. **Kill process:**
+
+```bash
+lsof -ti:8080 | xargs kill -9
+```
+
+3. **Use different port:**
+
+```bash
+PORT=8081 ./app
+```
+
+### Disk Space Issues
+
+**Symptoms:**
+
+- "No space left on device"
+- Build failures
+- Log write errors
+
+**Solutions:**
+
+1. **Check disk usage:**
+
+```bash
+df -h
+du -sh /* 2>/dev/null | sort -h | tail -10
+```
+
+2. **Clean up Docker:**
+
+```bash
+docker system prune -a --volumes
+```
+
+3. **Remove old logs:**
+
+```bash
+find /var/log -type f -name "*.log" -mtime +7 -delete
+```
+
+4. **Clean temporary files:**
+
+```bash
+rm -rf /tmp/*
+```
+
+---
+
+## Getting Help
+
+### Before Asking for Help
+
+1. **Check this troubleshooting guide**
+2. **Search existing issues**
+3. **Review relevant documentation**
+4. **Gather diagnostic information**
+
+### Diagnostic Information to Collect
+
+```bash
+# System info
+uname -a
+docker --version
+go version
+node --version
+
+# Recent logs
+cat .github/reports/aggregated/test-summary.md
+docker logs <container> --tail 100
+
+# Configuration
+cat .github/workflows/*.yml
+ls -la .github/scripts/
+```
+
+### How to Report Issues
+
+Create an issue with:
+
+```markdown
+## Issue Description
+
+[Clear description of the problem]
+
+## Steps to Reproduce
+
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+## Expected Behavior
+
+[What should happen]
+
+## Actual Behavior
+
+[What actually happens]
+
+## Environment
+
+- OS: [e.g., Ubuntu 22.04]
+- Docker: [version]
+- Go: [version]
+- Node.js: [version]
+
+## Logs
+```
+
+[Relevant log output]
+
+```
+
+## Screenshots
+[If applicable]
+```
+
+### Support Channels
+
+| Channel           | Use Case              | Response Time     |
+| ----------------- | --------------------- | ----------------- |
+| **Documentation** | Self-service          | Immediate         |
+| **GitHub Issues** | Bug reports, features | 1-2 business days |
+| **Discussions**   | Questions, ideas      | Community-driven  |
+| **Emergency**     | Production issues     | Escalation path   |
+
+---
+
+## Quick Reference
+
+### Command Cheat Sheet
+
+```bash
+# Reset everything
+./.github/scripts/utilities/cleanup-test-data.sh
+docker system prune -a --volumes
+
+# Run quick diagnostics
+./.github/scripts/run-all-tests.sh quick
+
+# Check all services
+docker ps
+kubectl get pods
+curl localhost:8080/health
+
+# View logs
+docker logs <container> --tail 100
+kubectl logs <pod> --tail 100
+
+# Force restart
+docker restart <container>
+kubectl rollout restart deployment/<deployment>
+```
+
+### Error Code Reference
+
+| Code     | Meaning           | Action             |
+| -------- | ----------------- | ------------------ |
+| Exit 1   | General error     | Check logs         |
+| Exit 126 | Permission denied | chmod +x           |
+| Exit 127 | Command not found | Install dependency |
+| Exit 137 | OOM killed        | Increase memory    |
+| Exit 143 | SIGTERM           | Graceful shutdown  |
+
+---
+
+**Document Version**: 1.0.0  
+**Last Updated**: 2026-02-08  
+**Maintained By**: DevOps Team ps Team

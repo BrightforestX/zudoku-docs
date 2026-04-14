@@ -1,0 +1,1593 @@
+---
+domain: pathx.ai
+---
+
+# CrewAI Comprehensive Feature Reference
+
+> Generated from official CrewAI documentation (docs.crewai.com), Feb 2026.
+
+---
+
+## Table of Contents
+
+1. [Flows](#1-crewai-flows)
+2. [Memory](#2-crewai-memory)
+3. [Knowledge Sources](#3-crewai-knowledge-sources)
+4. [Training](#4-crewai-training)
+5. [Testing](#5-crewai-testing)
+6. [CLI](#6-crewai-cli)
+7. [YAML Config & Decorators](#7-crewai-yaml-config--decorators)
+8. [Pipelines / Multi-Crew Orchestration](#8-crewai-pipelines--multi-crew-orchestration)
+9. [LLM Configuration](#9-crewai-llm-configuration)
+10. [Telemetry & Callbacks](#10-crewai-telemetry--callbacks)
+11. [Code Execution](#11-crewai-code-execution)
+12. [Guardrails](#12-crewai-guardrails)
+13. [Human Input](#13-crewai-human-input)
+14. [Async Execution](#14-crewai-async-execution)
+15. [LangChain Tool Integration](#15-crewai-langchain-tool-integration)
+16. [LlamaIndex Tool Integration](#16-crewai-llamaindex-tool-integration)
+
+---
+
+## 1. CrewAI Flows
+
+Flows are the event-driven orchestration layer for chaining Crews, tasks, and arbitrary Python
+logic.
+
+### Imports
+
+```python
+from crewai.flow.flow import Flow, start, listen, router, or_, and_
+from crewai.flow.human_feedback import human_feedback, HumanFeedbackResult
+```
+
+### `@start()` Decorator
+
+Marks entry points. Multiple `@start()` methods run in parallel.
+
+```python
+@start()                          # Unconditional start
+@start("method_or_label")        # Gate on prior method or router label
+@start(lambda self: condition)    # Conditional callable
+```
+
+### `@listen()` Decorator
+
+Triggers when a specified method completes. Receives that method's return value as argument.
+
+```python
+@listen(generate_city)            # Listen to method reference
+@listen("generate_city")          # Listen to method name string
+@listen("approved")               # Listen to router label string
+```
+
+### `@router()` Decorator
+
+Defines conditional routing. Returns a string label that `@listen` handlers match.
+
+```python
+@router(start_method)
+def route_decision(self):
+    if self.state.success_flag:
+        return "success"
+    else:
+        return "failed"
+
+@listen("success")
+def on_success(self): ...
+
+@listen("failed")
+def on_failure(self): ...
+```
+
+### `or_()` and `and_()`
+
+Control flow combinators for listening to multiple methods.
+
+```python
+from crewai.flow.flow import or_, and_
+
+@listen(or_(method_a, method_b))   # Fires when ANY of the methods complete
+def handler(self, result): ...
+
+@listen(and_(method_a, method_b))  # Fires when ALL of the methods complete
+def handler(self): ...
+```
+
+### `@human_feedback` Decorator
+
+**Requires CrewAI >= 1.8.0**. Pauses execution for human review.
+
+```python
+from crewai.flow.human_feedback import human_feedback, HumanFeedbackResult
+
+@start()
+@human_feedback(
+    message="Do you approve this content?",       # Prompt shown to user
+    emit=["approved", "rejected", "needs_revision"],  # Routing outcomes
+    llm="gpt-4o-mini",                           # LLM to interpret feedback
+    default_outcome="needs_revision",             # Fallback if no feedback
+)
+def generate_content(self):
+    return "Content to review..."
+
+@listen("approved")
+def on_approval(self, result: HumanFeedbackResult):
+    print(f"Feedback: {result.feedback}")
+    print(f"Output: {result.output}")
+```
+
+Access feedback history: Access feedback history:
+
+- `self.last_human_feedback` — most recent
+- `self.human_feedback_history` — all feedback as a list
+
+### Memory in Flows
+
+Every Flow has built-in memory methods:
+
+<Table
+  columns={["Method", "Description"]}
+  data={[
+    {
+      method: "`self.remember(content, **kwargs)`",
+      description: "Store content. Optional: `scope`, `categories`, `metadata`, `importance`",
+    },
+    {
+      method: "`self.recall(query, **kwargs)`",
+      description: "Retrieve memories. Optional: `scope`, `categories`, `limit`, `depth`",
+    },
+    {
+      method: "`self.extract_memories(content)`",
+      description: "Break text into atomic memory statements",
+    },
+  ]}
+/>
+
+```python
+class ResearchFlow(Flow):
+    @start()
+    def gather(self):
+        self.remember("PostgreSQL handles 10k connections", scope="/research/db")
+        return "findings..."
+
+    @listen(gather)
+    def analyze(self, findings):
+        past = self.recall("database performance", limit=10, depth="shallow")
+```
+
+Custom memory: `flow = MyFlow(memory=Memory(recency_weight=0.5))`
+
+---
+
+## 2. CrewAI Memory
+
+Unified `Memory` class replacing separate short-term, long-term, entity, and external memory.
+
+### Constructor
+
+```python
+from crewai import Memory
+
+memory = Memory(
+    llm="gpt-4o-mini",                    # Default. LLM for analysis
+    storage="lancedb",                     # "lancedb", path string, or StorageBackend instance
+    embedder=None,                         # Config dict, callable, or None (OpenAI default)
+    recency_weight=0.3,                    # Weight for recency in composite score
+    semantic_weight=0.5,                   # Weight for semantic similarity
+    importance_weight=0.2,                 # Weight for importance
+    recency_half_life_days=30,             # Days for recency to halve
+    consolidation_threshold=0.85,          # Similarity above which consolidation triggers
+    consolidation_limit=5,                 # Max records to compare during consolidation
+    default_importance=0.5,               # Importance when LLM analysis skipped
+    batch_dedup_threshold=0.98,           # Cosine similarity for intra-batch dedup
+    confidence_threshold_high=0.8,         # Recall confidence for direct return
+    confidence_threshold_low=0.5,         # Recall confidence for deeper exploration
+    complex_query_threshold=0.7,          # Complex query exploration threshold
+    exploration_budget=1,                 # LLM-driven exploration rounds in deep recall
+    query_analysis_threshold=200,         # Chars below which LLM analysis is skipped
+)
+```
+
+### Core Methods
+
+```python
+# Store — LLM infers scope, categories, importance
+memory.remember("We chose PostgreSQL for the user database.")
+memory.remember("Sprint velocity is 42 points", scope="/team/metrics")
+memory.remember(content, source="user:alice", private=True)
+
+# Batch store (non-blocking, background thread)
+memory.remember_many(["Fact A.", "Fact B.", "Fact C."])
+
+# Retrieve — ranked by composite score
+matches = memory.recall("What database did we choose?")
+matches = memory.recall(query, limit=10, depth="shallow")  # No LLM
+matches = memory.recall(query, limit=10, depth="deep")     # Default, LLM-guided
+matches = memory.recall(query, scope="/project/beta")
+matches = memory.recall(query, source="user:alice")
+
+# Extract atomic facts from text
+facts = memory.extract_memories("Meeting notes: We decided to migrate...")
+
+# Forget
+memory.forget(scope="/project/old")
+
+# Reset
+memory.reset()                    # All scopes
+memory.reset(scope="/project/old")  # Subtree only
+```
+
+### Scope Operations
+
+```python
+# Create scoped view (restricts all ops to subtree)
+agent_memory = memory.scope("/agent/researcher")
+agent_memory.remember("Found three papers.")   # Stored under /agent/researcher
+agent_memory.recall("papers")                  # Searches only /agent/researcher
+
+# Subscope
+project_memory = agent_memory.subscope("project-alpha")  # /agent/researcher/project-alpha
+```
+
+### Memory Slices
+
+Cross-scope views (multiple disjoint branches):
+
+```python
+# Read-only slice
+view = memory.slice(
+    scopes=["/agent/researcher", "/company/knowledge"],
+    read_only=True,
+)
+matches = view.recall("security policies", limit=5)
+# view.remember("...") → raises PermissionError
+
+# Read-write slice
+view = memory.slice(scopes=["/team/alpha", "/team/beta"], read_only=False)
+view.remember("Cross-team decision", scope="/team/alpha")
+```
+
+### Discovery
+
+```python
+memory.tree()                           # Full scope tree with record counts
+memory.tree("/project", max_depth=2)    # Subtree
+memory.info("/project")                 # ScopeInfo: record_count, categories, dates
+memory.list_scopes("/")                 # Immediate child scopes
+memory.list_categories()                # Category names and counts
+memory.list_records(scope="/project/alpha", limit=20)
+```
+
+### Embedder Providers
+
+<Table
+  columns={["Provider", "Key", "Typical Model"]}
+  data={[
+    { provider: "OpenAI (default)", key: "`openai`", model: "`text-embedding-3-small`" },
+    { provider: "Ollama", key: "`ollama`", model: "`mxbai-embed-large`" },
+    { provider: "Azure OpenAI", key: "`azure`", model: "`text-embedding-ada-002`" },
+    { provider: "Google AI", key: "`google-generativeai`", model: "`gemini-embedding-001`" },
+    { provider: "Google Vertex", key: "`google-vertex`", model: "`gemini-embedding-001`" },
+    { provider: "Cohere", key: "`cohere`", model: "`embed-english-v3.0`" },
+    { provider: "VoyageAI", key: "`voyageai`", model: "`voyage-3`" },
+    { provider: "AWS Bedrock", key: "`amazon-bedrock`", model: "`amazon.titan-embed-text-v1`" },
+    { provider: "Hugging Face", key: "`huggingface`", model: "`all-MiniLM-L6-v2`" },
+    { provider: "Jina", key: "`jina`", model: "`jina-embeddings-v2-base-en`" },
+    { provider: "IBM WatsonX", key: "`watsonx`", model: "`ibm/slate-30m-english-rtrvr`" },
+    {
+      provider: "Sentence Transformer",
+      key: "`sentence-transformer`",
+      model: "`all-MiniLM-L6-v2`",
+    },
+    { provider: "Custom", key: "`custom`", model: "(requires `embedding_callable`)" },
+  ]}
+/>
+
+```python
+memory = Memory(embedder={
+    "provider": "openai",
+    "config": {"model_name": "text-embedding-3-small"}
+})
+```
+
+### With Crews
+
+```python
+# Default memory
+crew = Crew(agents=[...], tasks=[...], memory=True)
+
+# Custom memory
+crew = Crew(agents=[...], tasks=[...], memory=Memory(recency_weight=0.4))
+
+# With custom embedder on crew
+crew = Crew(
+    agents=[...], tasks=[...], memory=True,
+    embedder={"provider": "openai", "config": {"model_name": "text-embedding-3-small"}}
+)
+```
+
+### Storage Backend
+
+- Default: **LanceDB** at `./.crewai/memory` (or `$CREWAI_STORAGE_DIR/memory`)
+- Custom: `Memory(storage="path/to/dir")` or implement `StorageBackend` protocol
+
+---
+
+## 3. CrewAI Knowledge Sources
+
+### Available Sources
+
+```python
+from crewai.knowledge.source.string_knowledge_source import StringKnowledgeSource
+from crewai.knowledge.source.crew_docling_source import CrewDoclingSource
+from crewai.knowledge.source.csv_knowledge_source import CSVKnowledgeSource
+from crewai.knowledge.source.text_file_knowledge_source import TextFileKnowledgeSource
+from crewai.knowledge.source.pdf_knowledge_source import PDFKnowledgeSource
+from crewai.knowledge.source.json_knowledge_source import JSONKnowledgeSource
+from crewai.knowledge.source.excel_knowledge_source import ExcelKnowledgeSource
+```
+
+### StringKnowledgeSource
+
+```python
+string_source = StringKnowledgeSource(
+    content="Users name is John. He is 30 years old."
+)
+```
+
+### CrewDoclingSource
+
+Requires: `uv add docling`
+
+```python
+content_source = CrewDoclingSource(
+    file_paths=[
+        "https://example.com/article",
+        "path/to/local/document.pdf",
+    ],
+)
+```
+
+### CSVKnowledgeSource
+
+```python
+csv_source = CSVKnowledgeSource(file_paths=["data.csv"])
+```
+
+### TextFileKnowledgeSource / PDFKnowledgeSource
+
+```python
+text_source = TextFileKnowledgeSource(file_paths=["document.txt", "another.txt"])
+pdf_source = PDFKnowledgeSource(file_paths=["document.pdf"])
+```
+
+### JSONKnowledgeSource / ExcelKnowledgeSource
+
+```python
+json_source = JSONKnowledgeSource(file_paths=["data.json"])
+excel_source = ExcelKnowledgeSource(file_paths=["data.xlsx"])
+```
+
+### Adding to Crew or Agent
+
+```python
+# Crew-level (accessible to all agents)
+crew = Crew(agents=[...], tasks=[...], knowledge_sources=[string_source, csv_source])
+
+# Agent-level
+agent = Agent(role="...", goal="...", backstory="...", knowledge_sources=[pdf_source])
+```
+
+### Custom Knowledge Source
+
+Extend `BaseKnowledgeSource`:
+
+```python
+from crewai.knowledge.source.base_knowledge_source import BaseKnowledgeSource
+
+class CustomSource(BaseKnowledgeSource):
+    def load_content(self) -> str:
+        # Return your custom content
+        return "Custom knowledge content..."
+
+    def add(self) -> None:
+        content = self.load_content()
+        chunks = self._chunk_text(content)
+        self.chunks.extend(chunks)
+        self.save_documents(metadata=self.metadata)
+```
+
+### Vector Store Configuration
+
+```python
+from crewai.rag.config.utils import set_rag_config, get_rag_client
+from crewai.rag.chromadb.config import ChromaDBConfig
+from crewai.rag.qdrant.config import QdrantConfig
+
+# ChromaDB (default)
+set_rag_config(ChromaDBConfig())
+
+# Qdrant
+set_rag_config(QdrantConfig())
+```
+
+---
+
+## 4. CrewAI Training
+
+### CLI
+
+```bash
+crewai train -n <n_iterations> -f <filename>
+```
+
+<Table
+  columns={["Flag", "Default", "Description"]}
+  data={[
+    { flag: "`-n, --n_iterations`", default: "`5`", description: "Number of training iterations" },
+    {
+      flag: "`-f, --filename`",
+      default: "`trained_agents_data.pkl`",
+      description: "Output file for trained data",
+    },
+  ]}
+/>
+
+### Programmatic
+
+```python
+crew = YourCrew().crew()
+crew.train(
+    n_iterations=2,
+    inputs={"topic": "AI"},
+    filename="your_model.pkl"
+)
+```
+
+### How It Works
+
+For each iteration, per agent:
+
+1. Agent produces `initial_output`
+2. You provide `human_feedback` inline
+3. Agent produces `improved_output` based on feedback
+4. Results saved to `training_data.pkl` (working) and final `trained_agents_data.pkl`
+
+After training, suggestions are automatically loaded and appended to task prompts during normal
+`kickoff()`.
+
+---
+
+## 5. CrewAI Testing
+
+### CLI
+
+```bash
+crewai test -n <n_iterations> -m <model>
+```
+
+<Table
+  columns={["Flag", "Default", "Description"]}
+  data={[
+    {
+      flag: "`-n, --n_iterations`",
+      default: "`2` (CLI: 3)",
+      description: "Number of test iterations",
+    },
+    { flag: "`-m, --model`", default: "`gpt-4o-mini`", description: "OpenAI model for evaluation" },
+  ]}
+/>
+
+### Programmatic
+
+```python
+crew = YourCrew().crew()
+crew.test(
+    n_iterations=5,
+    openai_model_name="gpt-4o"
+)
+```
+
+### Output
+
+Generates a performance table with:
+
+- Individual scores per task across runs
+- Average performance metrics
+- Associated agents per task
+- Overall crew score
+- Execution time
+
+**Limitation**: Only supports OpenAI models for evaluation (`openai_model_name`).
+
+---
+
+## 6. CrewAI CLI
+
+### Project Scaffolding
+
+```bash
+crewai create crew <name>     # Create a new crew project
+crewai create flow <name>     # Create a new flow project
+```
+
+### Execution
+
+```bash
+crewai run                    # Auto-detect crew or flow (v0.103.0+)
+crewai flow kickoff           # Legacy flow execution
+crewai install                # Install project dependencies
+```
+
+### Development & Testing
+
+```bash
+crewai train -n <iterations> -f <filename>    # Train agents
+crewai test -n <iterations> -m <model>        # Test and evaluate
+crewai replay -t <task_id>                    # Replay from specific task
+crewai chat                                   # Interactive crew session (v0.98.0+)
+```
+
+### Memory & Logging
+
+```bash
+crewai log-tasks-outputs                      # View latest task outputs
+crewai reset-memories [options]               # Clear memory storage
+  --all                                       # Reset all memory types
+  --long                                      # Reset long-term memory
+  --short                                     # Reset short-term memory
+  --entities                                  # Reset entity memory
+  --kickoff-outputs                           # Reset kickoff outputs
+  --knowledge                                 # Reset knowledge
+  --agent-knowledge                           # Reset agent knowledge
+crewai memory                                 # TUI memory browser
+crewai memory --storage-path ./my_memory      # Browse specific dir
+```
+
+### Other
+
+```bash
+crewai version [--tools]       # Show CrewAI version
+crewai flow plot               # Generate flow visualization
+```
+
+---
+
+## 7. CrewAI YAML Config & Decorators
+
+### Project Structure
+
+```
+your_project/
+├── src/your_project/
+│   ├── config/
+│   │   ├── agents.yaml          # Agent definitions
+│   │   └── tasks.yaml           # Task definitions
+│   ├── crew.py                  # Crew class with decorators
+│   └── main.py
+├── pyproject.toml
+└── .env
+```
+
+### agents.yaml
+
+```yaml
+researcher:
+  role: >
+    {topic} Senior Data Researcher
+  goal: >
+    Uncover cutting-edge developments in {topic}
+  backstory: >
+    You're a seasoned researcher with a knack for uncovering developments in {topic}.
+  llm: openai/gpt-4o # Optional: override default LLM
+  verbose: true
+```
+
+### tasks.yaml
+
+```yaml
+research_task:
+  description: >
+    Conduct thorough research about {topic}
+  expected_output: >
+    A list with 10 bullet points of relevant information about {topic}
+  agent: researcher
+  markdown: true
+  output_file: report.md
+```
+
+Variables like `{topic}` are replaced via `crew.kickoff(inputs={"topic": "AI"})`.
+
+### Decorators
+
+```python
+from crewai import Agent, Crew, Process, Task
+from crewai.project import CrewBase, agent, task, crew, before_kickoff, after_kickoff
+
+@CrewBase
+class MyCrew:
+    agents_config = "config/agents.yaml"
+    tasks_config = "config/tasks.yaml"
+
+    @before_kickoff
+    def prepare_inputs(self, inputs):
+        inputs["extra"] = "data"
+        return inputs
+
+    @after_kickoff
+    def process_output(self, output):
+        output.raw += "\nPost-processed."
+        return output
+
+    @agent
+    def researcher(self) -> Agent:
+        return Agent(
+            config=self.agents_config["researcher"],
+            tools=[SerperDevTool()],
+            verbose=True
+        )
+
+    @task
+    def research_task(self) -> Task:
+        return Task(config=self.tasks_config["research_task"])
+
+    @crew
+    def crew(self) -> Crew:
+        return Crew(
+            agents=self.agents,    # Auto-collected by @agent
+            tasks=self.tasks,      # Auto-collected by @task
+            process=Process.sequential,
+            verbose=True
+        )
+```
+
+<Table
+  columns={["Decorator", "Purpose"]}
+  data={[
+    { decorator: "`@CrewBase`", purpose: "Marks class as crew base, enables auto-collection" },
+    { decorator: "`@agent`", purpose: "Marks method returning an `Agent`" },
+    { decorator: "`@task`", purpose: "Marks method returning a `Task`" },
+    { decorator: "`@crew`", purpose: "Marks method returning the `Crew` object" },
+    { decorator: "`@before_kickoff`", purpose: "Runs before crew execution, can modify inputs" },
+    { decorator: "`@after_kickoff`", purpose: "Runs after crew execution, can modify output" },
+  ]}
+/>
+
+---
+
+## 8. CrewAI Pipelines / Multi-Crew Orchestration
+
+As of 2025-2026, the primary multi-crew orchestration mechanism is **Flows** (see Section 1). The
+older `Pipeline` class has been superseded by Flows.
+
+### Flows as Pipelines
+
+```python
+from crewai.flow.flow import Flow, start, listen
+
+class MultiCrewPipeline(Flow):
+    @start()
+    def research_phase(self):
+        return ResearchCrew().crew().kickoff(inputs=self.state)
+
+    @listen(research_phase)
+    def analysis_phase(self, research_output):
+        return AnalysisCrew().crew().kickoff(inputs={"research": research_output.raw})
+
+    @listen(analysis_phase)
+    def writing_phase(self, analysis_output):
+        return WritingCrew().crew().kickoff(inputs={"analysis": analysis_output.raw})
+```
+
+Scaffolding: `crewai create flow name_of_flow` generates the folder structure with `crews/`
+directory.
+
+---
+
+## 9. CrewAI LLM Configuration
+
+### `LLM` Class
+
+```python
+from crewai import LLM
+
+llm = LLM(
+    model="openai/gpt-4o",       # Required: provider/model-id
+    temperature=0.7,              # 0.0-1.0, controls randomness
+    timeout=120,                  # Seconds to wait
+    max_tokens=4000,              # Max response length
+    top_p=0.9,                    # Nucleus sampling
+    frequency_penalty=0.1,        # Reduce repetition
+    presence_penalty=0.1,        # Encourage topic diversity
+    response_format={"type": "json"},  # Structured output
+    seed=42,                      # Reproducible results
+    api_key="sk-...",             # Or use env vars
+    base_url="https://...",       # Custom endpoint
+)
+```
+
+### Supported Providers
+
+<Table
+  columns={["Provider", "Model Format", "Env Var"]}
+  data={[
+    { provider: "**OpenAI**", model: "`openai/gpt-4o`, `gpt-4o-mini`", env: "`OPENAI_API_KEY`" },
+    {
+      provider: "**Anthropic**",
+      model: "`anthropic/claude-3-5-sonnet-20241022`",
+      env: "`ANTHROPIC_API_KEY`",
+    },
+    {
+      provider: "**Google (Gemini)**",
+      model: "`gemini/gemini-2.0-flash`",
+      env: "`GEMINI_API_KEY`",
+    },
+    {
+      provider: "**Azure OpenAI**",
+      model: "`azure/<deployment>`",
+      env: "`AZURE_API_KEY`, `AZURE_API_BASE`, `AZURE_API_VERSION`",
+    },
+    {
+      provider: "**AWS Bedrock**",
+      model: "`bedrock/anthropic.claude-3-sonnet...`",
+      env: "AWS credentials",
+    },
+    { provider: "**Ollama (local)**", model: "`ollama/llama3.2`", env: "(none, local)" },
+    { provider: "**Groq**", model: "`groq/llama-3.3-70b-versatile`", env: "`GROQ_API_KEY`" },
+    {
+      provider: "**NVIDIA NIM**",
+      model: "`nvidia_nim/meta/llama-3.1-70b-instruct`",
+      env: "`NVIDIA_NIM_API_KEY`",
+    },
+    {
+      provider: "**Fireworks**",
+      model: "`fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct`",
+      env: "`FIREWORKS_API_KEY`",
+    },
+    {
+      provider: "**Together**",
+      model: "`together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo`",
+      env: "`TOGETHERAI_API_KEY`",
+    },
+    { provider: "**Cerebras**", model: "`cerebras/llama3.1-8b`", env: "`CEREBRAS_API_KEY`" },
+    {
+      provider: "**Sambanova**",
+      model: "`sambanova/Meta-Llama-3.1-8B-Instruct`",
+      env: "`SAMBANOVA_API_KEY`",
+    },
+    { provider: "**Deepseek**", model: "`deepseek/deepseek-chat`", env: "`DEEPSEEK_API_KEY`" },
+    { provider: "**Mistral**", model: "`mistral/mistral-large-latest`", env: "`MISTRAL_API_KEY`" },
+    { provider: "**IBM WatsonX**", model: "`watsonx/...`", env: "`WATSONX_API_KEY`" },
+    { provider: "**Cohere**", model: "`cohere/command-r-plus`", env: "`COHERE_API_KEY`" },
+    { provider: "**HuggingFace**", model: "`huggingface/...`", env: "`HUGGINGFACE_API_KEY`" },
+  ]}
+/>
+
+### Setting LLM
+
+```python
+# On Agent
+agent = Agent(role="...", goal="...", backstory="...", llm="openai/gpt-4o")
+
+# Via environment
+# MODEL=gpt-4o in .env
+
+# Via YAML
+# agents.yaml: llm: openai/gpt-4o
+
+# Function calling LLM (separate model for tool calls)
+agent = Agent(..., function_calling_llm="gpt-4o-mini")
+```
+
+### Crew-level LLM
+
+```python
+crew = Crew(
+    agents=[...], tasks=[...],
+    function_calling_llm="gpt-4o-mini",  # All agents use this for tool calling
+    manager_llm="gpt-4o",               # For hierarchical process manager
+    planning_llm="gpt-4o-mini",         # For planning mode
+)
+```
+
+---
+
+## 10. CrewAI Telemetry & Callbacks
+
+### Crew Callbacks
+
+```python
+def my_step_callback(step_output):
+    print(f"Agent step: {step_output}")
+
+def my_task_callback(task_output):
+    print(f"Task completed: {task_output.description}")
+
+crew = Crew(
+    agents=[...],
+    tasks=[...],
+    step_callback=my_step_callback,     # Called after each agent step
+    task_callback=my_task_callback,     # Called after each task completion
+    output_log_file=True,              # logs.txt in cwd
+    # output_log_file="custom.json",   # JSON format if .json extension
+    # output_log_file="custom.txt",    # Text format otherwise
+    verbose=True,
+    share_crew=False,                  # Share data with CrewAI team
+)
+```
+
+### Agent Step Callback
+
+```python
+agent = Agent(
+    role="...", goal="...", backstory="...",
+    step_callback=my_agent_callback,    # Overrides crew's step_callback for this agent
+)
+```
+
+### Task Callback
+
+```python
+task = Task(
+    description="...", expected_output="...", agent=agent,
+    callback=my_task_callback,          # Per-task callback
+)
+```
+
+### Telemetry
+
+Anonymous telemetry enabled by default. Disable with:
+
+```bash
+CREWAI_DISABLE_TELEMETRY=true
+# or
+OTEL_SDK_DISABLED=true
+```
+
+Data collected: CrewAI/Python versions, crew metadata, agent roles, task metadata, tool usage,
+execution data.
+
+### Execution Hooks / Events
+
+```python
+from crewai.events import BaseEventListener, MemoryQueryCompletedEvent
+
+class MyMonitor(BaseEventListener):
+    def setup_listeners(self, crewai_event_bus):
+        @crewai_event_bus.on(MemoryQueryCompletedEvent)
+        def on_query(source, event):
+            print(f"Query '{event.query}' took {event.query_time_ms:.0f}ms")
+```
+
+---
+
+## 11. CrewAI Code Execution
+
+### Agent Parameters
+
+```python
+agent = Agent(
+    role="Senior Python Developer",
+    goal="Write and execute Python code",
+    backstory="...",
+    allow_code_execution=True,        # Default: False
+    code_execution_mode="safe",       # "safe" (Docker) or "unsafe" (direct)
+    max_retry_limit=2,                # Retries on code execution failure
+)
+```
+
+<Table
+  columns={["Parameter", "Type", "Default", "Description"]}
+  data={[
+    {
+      parameter: "`allow_code_execution`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Enable code writing and execution",
+    },
+    {
+      parameter: "`code_execution_mode`",
+      type: '`Literal["safe", "unsafe"]`',
+      default: '`"safe"`',
+      description: '`"safe"` = Docker container, `"unsafe"` = host',
+    },
+    {
+      parameter: "`max_retry_limit`",
+      type: "`int`",
+      default: "`2`",
+      description: "Retries when code execution fails",
+    },
+  ]}
+/>
+
+### Execution Methods
+
+1. **Docker (recommended)**: Secure, isolated. Default when `code_execution_mode="safe"`
+2. **Sandbox**: Restricted Python if Docker unavailable
+3. **Unsafe**: Direct host execution (not recommended for production)
+
+For custom Docker images, use the `CodeInterpreterTool` from `crewai_tools`.
+
+---
+
+## 12. CrewAI Guardrails
+
+### Task Parameters
+
+```python
+task = Task(
+    description="Write a blog post",
+    expected_output="A blog post under 200 words",
+    agent=blog_agent,
+    guardrail=validate_function,          # Single guardrail
+    guardrails=[fn1, fn2, "LLM string"],  # Multiple (overrides guardrail)
+    guardrail_max_retries=3,              # Default: 3. Max retries on failure
+)
+```
+
+### Function-Based Guardrail Signature
+
+```python
+from crewai import TaskOutput
+from typing import Tuple, Any
+
+def my_guardrail(result: TaskOutput) -> Tuple[bool, Any]:
+    """
+    Args:
+        result: TaskOutput with .raw, .pydantic, .json_dict
+    Returns:
+        (True, validated_result) on success
+        (False, "error message") on failure
+    """
+    if len(result.raw.split()) > 200:
+        return (False, "Content exceeds 200 words")
+    return (True, result.raw.strip())
+```
+
+### LLM-Based Guardrail (String)
+
+```python
+task = Task(
+    description="Write a blog post",
+    expected_output="...",
+    agent=blog_agent,
+    guardrail="The blog post must be under 200 words and contain no jargon"
+)
+```
+
+### Multiple Guardrails (Mixed)
+
+```python
+task = Task(
+    ...,
+    guardrails=[
+        validate_word_count,                              # Function
+        "Content must be engaging for general audience",   # LLM string
+        "Writing style should be clear and concise",       # LLM string
+    ],
+    guardrail_max_retries=3
+)
+```
+
+Guardrails execute sequentially. If any fails, error goes back to agent for retry.
+
+**Note**: `max_retries` is deprecated → use `guardrail_max_retries`.
+
+---
+
+## 13. CrewAI Human Input
+
+### Task-Level (`human_input`)
+
+```python
+task = Task(
+    description="Analyze market data",
+    expected_output="Market analysis report",
+    agent=analyst,
+    human_input=True,      # Pauses before final answer for human review
+)
+```
+
+When enabled, agents pause before delivering final answer and prompt for user input.
+
+### Flow-Level (`@human_feedback`)
+
+See [Section 1 — Flows](#human_feedback-decorator).
+
+### Webhook-Based (Enterprise)
+
+For production/async workflows:
+
+1. Set `human_input=True` on task
+2. Provide webhook URL on kickoff
+3. Crew pauses in "Pending Human Input" state
+4. Receive webhook notification
+5. POST to `/resume` endpoint with `is_approve` flag and feedback
+
+```python
+# Resume via API
+POST /resume
+{
+    "execution_id": "...",
+    "is_approve": true,           # or false for rejection
+    "feedback": "Looks good!",
+    "webhook_url": "https://..."  # Must re-provide
+}
+```
+
+---
+
+## 14. CrewAI Async Execution
+
+### Crew-Level Async
+
+<Table
+  columns={["Method", "Type", "Description"]}
+  data={[
+    {
+      method: "`akickoff(inputs)`",
+      type: "Native async",
+      description: "True async/await through entire chain",
+    },
+    {
+      method: "`akickoff_for_each(inputs)`",
+      type: "Native async",
+      description: "Async execution for each input in list",
+    },
+    {
+      method: "`kickoff_async(inputs)`",
+      type: "Thread-based",
+      description: "Wraps sync in `asyncio.to_thread`",
+    },
+    {
+      method: "`kickoff_for_each_async(inputs)`",
+      type: "Thread-based",
+      description: "Thread-based for each input",
+    },
+    { method: "`kickoff(inputs)`", type: "Sync", description: "Standard synchronous" },
+    {
+      method: "`kickoff_for_each(inputs)`",
+      type: "Sync",
+      description: "Sequential for each input",
+    },
+  ]}
+/>
+
+```python
+import asyncio
+
+# Native async (recommended for high concurrency)
+async def main():
+    result = await crew.akickoff(inputs={"topic": "AI"})
+
+    # Multiple crews concurrently
+    results = await asyncio.gather(
+        crew_1.akickoff(inputs={"topic": "AI"}),
+        crew_2.akickoff(inputs={"topic": "ML"}),
+    )
+
+asyncio.run(main())
+```
+
+### Task-Level Async
+
+```python
+task = Task(
+    description="Research AI developments",
+    expected_output="...",
+    agent=researcher,
+    async_execution=True,   # Won't block next task in sequence
+)
+
+# Use context to wait for async tasks
+write_task = Task(
+    description="Write article",
+    expected_output="...",
+    agent=writer,
+    context=[task],          # Waits for async task to complete
+)
+```
+
+---
+
+## 15. CrewAI LangChain Tool Integration
+
+### LangChainTool Wrapper
+
+```python
+from crewai_tools import LangChainTool
+from langchain_community.tools import DuckDuckGoSearchRun
+
+# Wrap LangChain tool for CrewAI
+search_tool = LangChainTool(tool=DuckDuckGoSearchRun())
+
+agent = Agent(
+    role="Researcher",
+    goal="Find information",
+    backstory="Expert researcher",
+    tools=[search_tool],
+)
+```
+
+### Common LangChain Tools
+
+```python
+from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_community.utilities import GoogleSerperAPIWrapper
+
+# DuckDuckGo
+ddg_tool = LangChainTool(tool=DuckDuckGoSearchRun())
+
+# Google Serper
+from langchain_community.tools import Tool
+serper = GoogleSerperAPIWrapper()
+serper_tool = LangChainTool(
+    tool=Tool(name="Search", func=serper.run, description="Search the web")
+)
+```
+
+Install: `pip install crewai[tools] langchain-community`
+
+---
+
+## 16. CrewAI LlamaIndex Tool Integration
+
+### LlamaIndexTool Wrapper
+
+```python
+from crewai_tools import LlamaIndexTool
+
+# From a LlamaIndex tool
+from llama_index.tools.wolfram_alpha import WolframAlphaToolSpec
+wolfram_spec = WolframAlphaToolSpec(app_id="your-app-id")
+wolfram_tools = [LlamaIndexTool.from_tool(t) for t in wolfram_spec.to_tool_list()]
+
+# From a LlamaIndex query engine (RAG)
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+documents = SimpleDirectoryReader("data").load_data()
+index = VectorStoreIndex.from_documents(documents)
+query_engine = index.as_query_engine()
+
+query_tool = LlamaIndexTool.from_query_engine(
+    query_engine,
+    name="Financial Data",
+    description="Use this to look up financial information"
+)
+
+agent = Agent(
+    role="Financial Analyst",
+    goal="Analyze financial data",
+    backstory="...",
+    tools=[query_tool] + wolfram_tools,
+)
+```
+
+Install: `pip install crewai[tools] llama-index-core llama-index-readers-file`
+
+---
+
+## Quick Reference: All Crew Attributes
+
+<Table
+  columns={["Attribute", "Type", "Default", "Description"]}
+  data={[
+    {
+      attribute: "`tasks`",
+      type: "`List[Task]`",
+      default: "required",
+      description: "Tasks for the crew",
+    },
+    {
+      attribute: "`agents`",
+      type: "`List[Agent]`",
+      default: "required",
+      description: "Agents in the crew",
+    },
+    {
+      attribute: "`process`",
+      type: "`Process`",
+      default: "`sequential`",
+      description: "`Process.sequential` or `Process.hierarchical`",
+    },
+    {
+      attribute: "`verbose`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Enable detailed logging",
+    },
+    {
+      attribute: "`memory`",
+      type: "`bool \\| Memory`",
+      default: "`None`",
+      description: "Enable unified memory",
+    },
+    {
+      attribute: "`cache`",
+      type: "`bool`",
+      default: "`True`",
+      description: "Cache tool execution results",
+    },
+    {
+      attribute: "`max_rpm`",
+      type: "`int`",
+      default: "`None`",
+      description: "Rate limit (overrides agents)",
+    },
+    {
+      attribute: "`manager_llm`",
+      type: "`str \\| LLM`",
+      default: "`None`",
+      description: "LLM for hierarchical manager",
+    },
+    {
+      attribute: "`manager_agent`",
+      type: "`Agent`",
+      default: "`None`",
+      description: "Custom manager agent",
+    },
+    {
+      attribute: "`function_calling_llm`",
+      type: "`str \\| LLM`",
+      default: "`None`",
+      description: "LLM for tool calling (all agents)",
+    },
+    {
+      attribute: "`planning`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Enable pre-execution planning",
+    },
+    {
+      attribute: "`planning_llm`",
+      type: "`str \\| LLM`",
+      default: "`None`",
+      description: "LLM for planning",
+    },
+    {
+      attribute: "`step_callback`",
+      type: "`Callable`",
+      default: "`None`",
+      description: "Called after each agent step",
+    },
+    {
+      attribute: "`task_callback`",
+      type: "`Callable`",
+      default: "`None`",
+      description: "Called after each task",
+    },
+    {
+      attribute: "`output_log_file`",
+      type: "`bool \\| str`",
+      default: "`None`",
+      description: "Log file path or True for logs.txt",
+    },
+    {
+      attribute: "`share_crew`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Share data with CrewAI",
+    },
+    {
+      attribute: "`embedder`",
+      type: "`dict`",
+      default: '`{"provider": "openai"}`',
+      description: "Embedder config for memory",
+    },
+    {
+      attribute: "`knowledge_sources`",
+      type: "`List[BaseKnowledgeSource]`",
+      default: "`None`",
+      description: "Crew-level knowledge",
+    },
+    {
+      attribute: "`prompt_file`",
+      type: "`str`",
+      default: "`None`",
+      description: "Custom prompt JSON file",
+    },
+    {
+      attribute: "`stream`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Enable streaming output",
+    },
+  ]}
+/>
+
+## Quick Reference: All Agent Attributes
+
+<Table
+  columns={["Attribute", "Type", "Default", "Description"]}
+  data={[
+    {
+      attribute: "`role`",
+      type: "`str`",
+      default: "required",
+      description: "Agent's function/expertise",
+    },
+    { attribute: "`goal`", type: "`str`", default: "required", description: "Agent's objective" },
+    {
+      attribute: "`backstory`",
+      type: "`str`",
+      default: "required",
+      description: "Context and personality",
+    },
+    {
+      attribute: "`llm`",
+      type: "`str \\| LLM`",
+      default: "`gpt-4`",
+      description: "Language model",
+    },
+    {
+      attribute: "`tools`",
+      type: "`List[BaseTool]`",
+      default: "`[]`",
+      description: "Available tools",
+    },
+    {
+      attribute: "`function_calling_llm`",
+      type: "`Any`",
+      default: "`None`",
+      description: "Separate LLM for tool calls",
+    },
+    { attribute: "`max_iter`", type: "`int`", default: "`20`", description: "Max iterations" },
+    { attribute: "`max_rpm`", type: "`int`", default: "`None`", description: "Rate limit" },
+    {
+      attribute: "`max_execution_time`",
+      type: "`int`",
+      default: "`None`",
+      description: "Timeout in seconds",
+    },
+    { attribute: "`verbose`", type: "`bool`", default: "`False`", description: "Detailed logging" },
+    {
+      attribute: "`allow_delegation`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Can delegate to others",
+    },
+    {
+      attribute: "`step_callback`",
+      type: "`Callable`",
+      default: "`None`",
+      description: "Per-step callback",
+    },
+    { attribute: "`cache`", type: "`bool`", default: "`True`", description: "Cache tool results" },
+    {
+      attribute: "`allow_code_execution`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Enable code execution",
+    },
+    {
+      attribute: "`code_execution_mode`",
+      type: "`str`",
+      default: '`"safe"`',
+      description: '`"safe"` or `"unsafe"`',
+    },
+    {
+      attribute: "`max_retry_limit`",
+      type: "`int`",
+      default: "`2`",
+      description: "Retries on error",
+    },
+    {
+      attribute: "`respect_context_window`",
+      type: "`bool`",
+      default: "`True`",
+      description: "Auto-summarize on overflow",
+    },
+    {
+      attribute: "`multimodal`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Process images/audio/video",
+    },
+    {
+      attribute: "`inject_date`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Add current date to tasks",
+    },
+    {
+      attribute: "`date_format`",
+      type: "`str`",
+      default: '`"%Y-%m-%d"`',
+      description: "Date format string",
+    },
+    {
+      attribute: "`reasoning`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Plan before executing",
+    },
+    {
+      attribute: "`max_reasoning_attempts`",
+      type: "`int`",
+      default: "`None`",
+      description: "Planning iteration limit",
+    },
+    {
+      attribute: "`memory`",
+      type: "`bool \\| Memory \\| MemoryScope`",
+      default: "`None`",
+      description: "Agent memory",
+    },
+    {
+      attribute: "`knowledge_sources`",
+      type: "`List[BaseKnowledgeSource]`",
+      default: "`None`",
+      description: "Agent knowledge",
+    },
+    {
+      attribute: "`embedder`",
+      type: "`dict`",
+      default: "`None`",
+      description: "Custom embedder config",
+    },
+    {
+      attribute: "`use_system_prompt`",
+      type: "`bool`",
+      default: "`True`",
+      description: "Use system prompt",
+    },
+    {
+      attribute: "`system_template`",
+      type: "`str`",
+      default: "`None`",
+      description: "Custom system prompt",
+    },
+    {
+      attribute: "`prompt_template`",
+      type: "`str`",
+      default: "`None`",
+      description: "Custom prompt template",
+    },
+    {
+      attribute: "`response_template`",
+      type: "`str`",
+      default: "`None`",
+      description: "Custom response template",
+    },
+  ]}
+/>
+
+## Quick Reference: All Task Attributes
+
+<Table
+  columns={["Attribute", "Type", "Default", "Description"]}
+  data={[
+    { attribute: "`description`", type: "`str`", default: "required", description: "What the task entails" },
+    { attribute: "`expected_output`", type: "`str`", default: "required", description: "What completion looks like" },
+    { attribute: "`name`", type: "`str`", default: "`None`", description: "Task identifier" },
+    { attribute: "`agent`", type: "`BaseAgent`", default: "`None`", description: "Assigned agent" },
+    { attribute: "`tools`", type: "`List[BaseTool]`", default: "`[]`", description: "Task-specific tools" },
+    { attribute: "`context`", type: "`List[Task]`", default: "`None`", description: "Tasks whose output provides context" },
+    { attribute: "`async_execution`", type: "`bool`", default: "`False`", description: "Run asynchronously" },
+    { attribute: "`human_input`", type: "`bool`", default: "`False`", description: "Pause for human review" },
+    { attribute: "`markdown`", type: "`bool`", default: "`False`", description: "Format output as markdown" },
+    { attribute: "`config`", type: "`dict`", default: "`None`", description: "Task-specific config" },
+    { attribute: "`output_file`", type: "`str`", default: "`None`", description: "File path for output" },
+    { attribute: "`create_directory`", type: "`bool`", default: "`True`", description: "Auto-create dirs for output_file" },
+    { attribute: "`output_json`", type: "`Type[BaseModel]`", default: "`None`", description: "Pydantic model for JSON output" },
+    { attribute: "`output_pydantic`", type: "`Type[BaseModel]`", default: "`None`", description: "Pydantic model for structured output" },
+    { attribute: "`callback`", type: "`Callable`", default: "`None`", description: "Post-completion callback" },
+    { attribute: "`guardrail`", type: "`Callable \\| str`", default: "`None`", description: "Single validation function or LLM string" },
+    { attribute: "`guardrails`", type: "`List[Callable \\| str]`", default: "`None`", description: "Multiple guardrails (overrides guardrail)" },
+    { attribute: "`guardrail_max_retries`", type: "`int`", default: "`3`", description: "Max retries on guardrail failure" }
+  ]}
+/>    { attribute: "`memory`", type: "`bool \\| Memory \\| MemoryScope`", default: "`None`", description: "Agent memory" },
+    { attribute: "`knowledge_sources`", type: "`List[BaseKnowledgeSource]`", default: "`None`", description: "Agent knowledge" },
+    { attribute: "`embedder`", type: "`dict`", default: "`None`", description: "Custom embedder config" },
+    { attribute: "`use_system_prompt`", type: "`bool`", default: "`True`", description: "Use system prompt" },
+    { attribute: "`system_template`", type: "`str`", default: "`None`", description: "Custom system prompt" },
+    { attribute: "`prompt_template`", type: "`str`", default: "`None`", description: "Custom prompt template" },
+    { attribute: "`response_template`", type: "`str`", default: "`None`", description: "Custom response template" }
+  ]}
+/>
+
+## Quick Reference: All Task Attributes
+
+<Table
+  columns={["Attribute", "Type", "Default", "Description"]}
+  data={[
+    {
+      attribute: "`description`",
+      type: "`str`",
+      default: "required",
+      description: "What the task entails",
+    },
+    {
+      attribute: "`expected_output`",
+      type: "`str`",
+      default: "required",
+      description: "What completion looks like",
+    },
+    { attribute: "`name`", type: "`str`", default: "`None`", description: "Task identifier" },
+    { attribute: "`agent`", type: "`BaseAgent`", default: "`None`", description: "Assigned agent" },
+    {
+      attribute: "`tools`",
+      type: "`List[BaseTool]`",
+      default: "`[]`",
+      description: "Task-specific tools",
+    },
+    {
+      attribute: "`context`",
+      type: "`List[Task]`",
+      default: "`None`",
+      description: "Tasks whose output provides context",
+    },
+    {
+      attribute: "`async_execution`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Run asynchronously",
+    },
+    {
+      attribute: "`human_input`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Pause for human review",
+    },
+    {
+      attribute: "`markdown`",
+      type: "`bool`",
+      default: "`False`",
+      description: "Format output as markdown",
+    },
+    {
+      attribute: "`config`",
+      type: "`dict`",
+      default: "`None`",
+      description: "Task-specific config",
+    },
+    {
+      attribute: "`output_file`",
+      type: "`str`",
+      default: "`None`",
+      description: "File path for output",
+    },
+    {
+      attribute: "`create_directory`",
+      type: "`bool`",
+      default: "`True`",
+      description: "Auto-create dirs for output_file",
+    },
+    {
+      attribute: "`output_json`",
+      type: "`Type[BaseModel]`",
+      default: "`None`",
+      description: "Pydantic model for JSON output",
+    },
+    {
+      attribute: "`output_pydantic`",
+      type: "`Type[BaseModel]`",
+      default: "`None`",
+      description: "Pydantic model for structured output",
+    },
+    {
+      attribute: "`callback`",
+      type: "`Callable`",
+      default: "`None`",
+      description: "Post-completion callback",
+    },
+    {
+      attribute: "`guardrail`",
+      type: "`Callable \\| str`",
+      default: "`None`",
+      description: "Single validation function or LLM string",
+    },
+    {
+      attribute: "`guardrails`",
+      type: "`List[Callable \\| str]`",
+      default: "`None`",
+      description: "Multiple guardrails (overrides guardrail)",
+    },
+    {
+      attribute: "`guardrail_max_retries`",
+      type: "`int`",
+      default: "`3`",
+      description: "Max retries on guardrail failure",
+    },
+  ]}
+/>

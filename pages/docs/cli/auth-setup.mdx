@@ -1,0 +1,353 @@
+---
+title: CLI Authentication Setup
+description: Secure authentication setup for Zudoku CLI Tool
+---
+
+# CLI Authentication Setup
+
+This guide covers authentication setup for the Zudoku CLI Tool, enabling secure access to
+documentation repositories and enterprise features across interactive, automated, and containerized
+environments.
+
+## Authentication Methods
+
+The Zudoku CLI supports multiple authentication methods to accommodate different usage patterns:
+
+### API Keys (Recommended for Automation)
+
+API keys provide permanent, non-expiring credentials suitable for CI/CD pipelines and automated
+processes.
+
+#### Configuration
+
+```bash
+# Set API key
+zudoku config set auth.api_key your_api_key_here
+
+# Verify configuration
+zudoku config get auth.api_key
+```
+
+#### API Key Generation
+
+Generate API keys through the Zudoku dashboard:
+
+1. Navigate to Settings → API Keys
+2. Click "Generate New Key"
+3. Set permissions (read, write, admin)
+4. Configure expiration (optional)
+5. Copy and store securely
+
+#### CI/CD Integration
+
+For GitHub Actions:
+
+```yaml
+- name: Authenticate Zudoku CLI
+  run: zudoku config set auth.api_key ${{ secrets.ZUDOKU_API_KEY }}
+  env:
+    ZUDOKU_API_KEY: ${{ secrets.ZUDOKU_API_KEY }}
+```
+
+For Jenkins:
+
+```groovy
+pipeline {
+    stages {
+        stage('Setup Zudoku') {
+            steps {
+                sh 'zudoku config set auth.api_key $ZUDOKU_API_KEY'
+            }
+        }
+    }
+}
+```
+
+### Device Authorization Flow (Interactive)
+
+The device authorization flow enables secure authentication on machines without browsers, such as
+servers, containers, or IoT devices.
+
+#### Setup Process
+
+```bash
+# Initiate device authorization
+zudoku auth login --device
+
+# Follow the displayed instructions:
+# 1. Open the provided URL in a browser
+# 2. Enter the device code
+# 3. Grant permissions
+```
+
+#### Automated Device Flow
+
+For head-less environments:
+
+```bash
+# Non-interactive device authorization
+zudoku auth login --device --non-interactive
+
+# Returns device code and verification URI
+# Complete authorization on another device
+```
+
+### OAuth 2.0 + OIDC (Enterprise)
+
+Enterprise environments can integrate SAML or OIDC providers for seamless authentication.
+
+#### Configuration
+
+```json
+{
+  "auth": {
+    "oidc": {
+      "issuer": "https://your-identity-provider.com/oidc",
+      "client_id": "your-client-id",
+      "client_secret": "your-client-secret",
+      "scopes": ["openid", "profile", "email"]
+    }
+  }
+}
+```
+
+#### Enterprise SSO Setup
+
+```bash
+# Configure SSO provider
+zudoku config set auth.oidc.issuer https://your-tenant.okta.com/oauth2/default
+zudoku config set auth.oidc.client_id your-client-id
+zudoku config set auth.oidc.client_secret your-client-secret
+
+# Test connection
+zudoku auth test-oidc
+```
+
+### Certificate-Based Authentication
+
+For high-security environments, certificate authentication provides mutual TLS verification.
+
+#### Certificate Configuration
+
+```bash
+# Set client certificate
+zudoku config set auth.cert_path /path/to/client.crt
+zudoku config set auth.key_path /path/to/client.key
+
+# Optional: Set certificate authority
+zudoku config set auth.ca_path /path/to/ca.crt
+```
+
+## Credential Storage
+
+Credentials are securely stored using platform-specific secure storage:
+
+### MacOS Keychain
+
+```bash
+# Credentials stored in macOS Keychain
+zudoku config set auth.storage keychain
+```
+
+### Windows Credential Manager
+
+```bash
+# Credentials stored in Windows Credential Manager
+zudoku config set auth.storage wincred
+```
+
+### Linux Keyring
+
+```bash
+# Credentials stored in GNOME/KDE keyring
+zudoku config set auth.storage keyring
+```
+
+### Environment Variables (Docker)
+
+For containerized environments:
+
+```bash
+# Use environment variables for credential passing
+docker run -e ZUDOKU_API_KEY=your-key zudoku/cl:zudoku generate --source .
+```
+
+## Token Management
+
+### Automatic Token Refresh
+
+The CLI handles token renewal transparently:
+
+```bash
+# Tokens refresh automatically before expiration
+zudoku config set auth.refresh_threshold 300  # 5 minutes before expiration
+```
+
+### Manual Token Renewal
+
+Force token renewal when needed:
+
+```bash
+# Renew access token
+zudoku auth refresh
+```
+
+### Multiple Environment Support
+
+Configure different credentials per environment:
+
+```bash
+# Development environment
+zudoku config set --env development auth.api_key dev-key
+
+# Production environment
+zudoku config set --env production auth.api_key prod-key
+
+# Switch environments
+zudoku config use development
+```
+
+## Security Best Practices
+
+### Credential Rotation
+
+Regularly rotate API keys and certificates:
+
+```bash
+# Check key age
+zudoku auth check-expiry
+
+# Rotate keys when approaching expiration
+zudoku auth rotate-keys
+```
+
+### Audit Logging
+
+View authentication events:
+
+```bash
+# Show recent authentication events
+zudoku auth history --since 7d
+```
+
+### Permission Scoping
+
+Limit credentials to necessary permissions:
+
+```bash
+# Create read-only key for CI
+zudoku auth create-key --read-only ci-key
+```
+
+## Troubleshooting
+
+### Authentication Errors
+
+```bash
+# Test current authentication
+zudoku auth test
+
+# Reset authentication
+zudoku auth logout
+zudoku auth reset
+```
+
+### Network Issues
+
+For environments with proxies:
+
+```bash
+# Configure proxy
+zudoku config set proxy.http http://proxy.company.com:8080
+zudoku config set proxy.https http://proxy.company.com:8080
+```
+
+### Rate Limiting
+
+When hitting rate limits:
+
+```bash
+# Check rate limit status
+zudoku auth rate-limit-status
+
+# Configure retry behavior
+zudoku config set auth.retry.enabled true
+zudoku config set auth.retry.max_attempts 3
+```
+
+## Platform-Specific Configuration
+
+### GitHub Codespaces
+
+```bash
+# Use GitHub tokens automatically
+echo $GITHUB_TOKEN > ~/.zudoku/github_token
+zudoku config set auth.method github
+```
+
+### Kubernetes Pods
+
+```yaml
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: zudoku-cli
+      image: zudoku/cli:latest
+      env:
+        - name: ZUDOKU_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: zudoku-secrets
+              key: api-key
+```
+
+### Docker Compose
+
+```yaml
+version: "3.8"
+services:
+  zudoku:
+    image: zudoku/cli:latest
+    environment:
+      - ZUDOKU_API_KEY=${ZUDOKU_API_KEY}
+    volumes:
+      - .:/workspace
+    command: generate --output /workspace/docs
+```
+
+## Enterprise Features
+
+### Service Account Authentication
+
+For service-to-service communication:
+
+```bash
+# Use service account
+zudoku auth service-account --key-file service-key.json --project your-project
+```
+
+### Multi-Tenant Access
+
+Configure different tenants:
+
+```bash
+# Add multiple tenant configs
+zudoku config set auth.tenants.tenant1.api_key key1
+zudoku config set auth.tenants.tenant2.api_key key2
+
+# Switch tenants
+zudoku auth use-tenant tenant1
+```
+
+### Federation Support
+
+Integrate with identity federation:
+
+```bash
+# Configure identity federation
+zudoku auth setup-federation --provider aws-iam --role-arn arn:aws:iam::123456789012:role/zudoku-role
+```
+
+This authentication setup ensures the Zudoku CLI can securely access documentation resources across
+all deployment scenarios while maintaining enterprise-grade security and compliance.

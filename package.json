@@ -4,12 +4,15 @@
   "type": "module",
   "scripts": {
     "dev": "zudoku dev",
+    "dev:pathx-ai": "ZUDOKU_PUBLIC_DOMAIN=pathx-ai zudoku dev",
     "build": "zudoku build",
+    "build:pathx-ai": "ZUDOKU_PUBLIC_DOMAIN=pathx-ai zudoku build",
     "preview": "zudoku preview",
     "check:links": "lychee --config ./lychee.toml --remap \"https://zudoku.dev file://$PWD/dist\" --fallback-extensions html --root-dir $PWD/dist --include-fragments ./dist"
   },
   "dependencies": {
     "@joshwooding/vite-plugin-react-docgen-typescript": "^0.6.2",
+    "@zuplo/zudoku-plugin-monetization": "0.0.29",
     "mermaid": "^11.12.2",
     "motion": "12.23.24",
     "react": "catalog:",

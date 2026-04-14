@@ -1,0 +1,58 @@
+---
+domain: pathx-ai
+---
+
+# Stand Alone
+
+By default, when Auto-run is enabled, all spawned processes run in the background and you can
+continue using the terminal as your primary interface.
+
+When you want to run web servers or tail logs, you might want to run the process in the "Stand
+Alone" mode so it takes over and prevents you from running additional commands.
+
+## Enable "Stand Alone" mode
+
+To enable "Stand Alone" mode:
+
+1. In Waveterm's settings, search for `Stand Alone Mode` and enable it.
+   - In the General settings, toggle "Enable Stand-Alone Mode" setting.
+
+# Explicitly Run in the Foreground
+
+You can also explicitly run the command in the foreground so that your terminal gets blocked until
+the command is running.
+
+## Run in foreground
+
+### On Mac
+
+Use Control + Shift + R when entering a command to run it in the foreground.
+
+### On Windows
+
+Use Control + Meta + R when entering a command to run it in the foreground.
+
+You can also use `/runfg` for any command you type anywhere in the prompt.
+
+For example:
+
+```
+tail -f /var/log/system.log /runfg
+```
+
+This will run `tail -f /var/log/system.log` in the foreground.
+
+### Editing Commands
+
+When running commands in Foreground Mode, you can:
+
+- Edit commands with vi
+- Search through the output using vi or less
+- See full terminal prompts without any interference
+
+Foreground Mode can be exited by either:
+
+- Terminating the process with Control + C
+- Using the mouse to close the tab
+
+This provides a seamless experience for editing and reviewing your command outputs.

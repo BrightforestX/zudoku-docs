@@ -1,0 +1,447 @@
+---
+domain: "pathx.ai"
+---
+
+# System Design Problems & Solutions
+
+A comprehensive catalog of common system design problems encountered in large-scale distributed
+systems, with analysis and solutions.
+
+## Problem Categories
+
+### Design Problems
+
+- [URL Shortener](#url-shortener)
+- [Pastebin](#pastebin)
+- [Rate Limiter](#rate-limiter)
+- [Key-Value Store](#key-value-store)
+- [Distributed Cache](#distributed-cache)
+- [Search Autocomplete](#search-autocomplete)
+- [Web Crawler](#web-crawler)
+- [Duplicate File Detection](#duplicate-file-detection)
+- [News Feed](#news-feed)
+- [Social Network](#social-network)
+- [Search Engine](#search-engine)
+- [Real-time Gaming Leaderboard](#real-time-gaming-leaderboard)
+- [Payment System](#payment-system)
+- [Digital Wallet](#digital-wallet)
+- [Parking Lot](#parking-lot)
+- [Vending Machine](#vending-machine)
+- [ATM](#atm)
+- [Digital Asset Management (DAM)](#digital-asset-management-dam)
+- [File Storage](#file-storage)
+- [Video Streaming Service](#video-streaming-service)
+
+## URL Shortener
+
+**Requirements:** URL shortening service like bit.ly
+
+**Scale Estimate:** 10M DAU, 100M requests/day, read/write ratio 100:1
+
+**System Design:**
+
+- High-level: Application servers + database + cache
+- Database choices: SQL for relational queries, NoSQL for scale
+- 62^7 keys (~3.5T possible, base62 = [a-zA-Z0-9])
+
+**Scaling:**
+
+- Database sharding by hash of user ID
+- 6-8 character keys
+- CDN for redirect optimization
+- Analytics and click tracking
+
+**Failure Modes:** Cache misses, database bottlenecks, single point of failure in ID generation
+
+## Pastebin
+
+**Requirements:** Text sharing service like pastebin.com
+
+**Scale Estimate:** 1M DAU, 10M pastes/month, average paste size 10KB
+
+**System Design:**
+
+- High-level: Load balancer + application servers + database + blob storage
+- Content deduplication for space efficiency
+- Key generation: 62^n keys, sharing via short URLs
+
+**Scaling:**
+
+- Database for metadata (MySQL/PostgreSQL)
+- Blob storage for content (S3, GCS)
+- Caching (Redis) for popular pastes
+- CDN for global distribution
+
+**Failure Modes:** Data loss, blob storage unavailability, key collision
+
+## Rate Limiter
+
+**Requirements:** Prevent system abuse by limiting requests
+
+**Scale Estimate:** 10M DAU, 1B requests/day
+
+**System Design:**
+
+- Algorithms: Token bucket, leaky bucket, fixed window, sliding window
+- Counter-based vs distributed (Redis)
+- Multi-tier limits: per user/hour, per user/day, global limits
+
+**Scaling:**
+
+- In-memory data structures (Redis sorted sets)
+- Distributed rate limiting
+- Consistent hashing for fairness
+
+**Failure Modes:** Redis single point of failure, clock skew in distributed systems
+
+## Key-Value Store
+
+**Requirements:** High-performance key-value storage
+
+**Scale Estimate:** 1M qps writes, 10M qps reads, 100TB data
+
+**System Design:**
+
+- Consistent hashing for data distribution
+- Replication for fault tolerance
+- CAP tradeoffs: AP systems (Dynamo), CP systems (Cassandra)
+
+**Scaling:**
+
+- Horizontal scaling with partitioning
+- Read replicas for read-heavy loads
+- Compression and tiered storage
+
+**Failure Modes:** Network partitions, data inconsistency, node failures
+
+## Distributed Cache
+
+**Requirements:** Faster data access than database
+
+**Scale Estimate:** 100M qps, 1TB data, <1ms latency
+
+**System Design:**
+
+- Cache strategies: LRU, LFU, TTL
+- Architecture: Application cache + distributed cache
+- Invalidation: Write-through, write-behind, refresh-ahead
+
+**Scaling:**
+
+- Memcached/Redis clusters
+- Consistent hashing
+- Multi-level cache hierarchy
+
+**Failure Modes:** Cache stampede, hot keys, cold starts
+
+## Search Autocomplete
+
+**Requirements:** Type-ahead search suggestions
+
+**Scale Estimate:** 10M DAU, 100M queries/day
+
+**System Design:**
+
+- Data structure: Trie (prefix tree)
+- Top-k results per prefix
+- Real-time vs batch indexing
+
+**Scaling:**
+
+- Trie sharding by first character
+- Redis for fast lookups
+- Analytics-driven ranking
+
+**Failure Modes:** High cardinality prefixes, memory limits
+
+## Web Crawler
+
+**Requirements:** Systematic web crawling
+
+**Scale Estimate:** 1B pages, 1M qps
+
+**System Design:**
+
+- Components: Scheduler, fetchers, processors
+- Politeness: Robots.txt, rate limiting, backoff
+- URL frontier: politeness queues
+
+**Scaling:**
+
+- Distributed crawling (thousands of machines)
+- URL deduplication (Bloom filters)
+- Freshness tracking
+
+**Failure Modes:** Site quotas, duplicate content, infinite loops
+
+## Duplicate File Detection
+
+**Requirements:** Efficient duplicate detection in storage systems
+
+**Scale Estimate:** 1B files, real-time detection
+
+**System Design:**
+
+- Fingerprinting: SHA-256, MD5, content checksums
+- Bloom filters for exists checks
+- Rolling hashes for near-duplicate detection
+
+**Scaling:**
+
+- Distributed hashing
+- Hierarchical storage management
+- Similarity search (shingling, MinHash)
+
+**Failure Modes:** Hash collisions, false positives/negatives
+
+## News Feed
+
+**Requirements:** Social media feed generation
+
+**Scale Estimate:** 100M users, 1B events/day
+
+**System Design:**
+
+- Fanout-on-write vs fanout-on-read
+- Timeline tables vs materialized views
+- Push vs pull models
+
+**Scaling:**
+
+- Sharding by user ID
+- Redis for freshness
+- Best-effort delivery
+
+**Failure Modes:** Content moderation delays, high fanouts
+
+## Social Network
+
+**Requirements:** User relationships and interactions
+
+**Scale Estimate:** 1B users, complex queries
+
+**System Design:**
+
+- Graph database for relationships (Neo4j, JanusGraph)
+- Recommendations via graph algorithms
+- News feed algorithms
+
+**Scaling:**
+
+- Graph partitioning
+- Social graph analytics
+- Edge tables for SQL compatibility
+
+**Failure Modes:** Social engineering attacks, recommendation quality
+
+## Search Engine
+
+**Requirements:** Large-scale document search
+
+**Scale Estimate:** 10B docs, 100M queries/day
+
+**System Design:**
+
+- Inverted indexes for term-lookup
+- PageRank for ranking
+- Crawling infrastructure
+
+**Scaling:**
+
+- Distributed indexing (MapReduce)
+- Partitioning strategies
+- Real-time indexing
+
+**Failure Modes:** Index corruption, crawling traps
+
+## Real-time Gaming Leaderboard
+
+**Requirements:** Low-latency rankings
+
+**Scale Estimate:** 10M active players, real-time updates
+
+**System Design:**
+
+- Sorted sets (Redis ZSET)
+- Time-weighted scoring
+- Anti-cheating measures
+
+**Scaling:**
+
+- Sharding strategies
+- Memory optimization
+- Event sourcing for audit
+
+**Failure Modes:** Race conditions, cheater exploitation
+
+## Payment System
+
+**Requirements:** Secure, reliable transactions
+
+**Scale Estimate:** 10M txns/day, $99.9999% uptime
+
+**System Design:**
+
+- Double-entry accounting
+- Idempotency keys
+- Fraud detection pipelines
+
+**Scaling:**
+
+- Database clustering
+- Payment processing pipelines
+- Compliance and security
+
+**Failure Modes:** Double-charging, preventing chargebacks
+
+## Digital Wallet
+
+**Requirements:** Money storage and transfers
+
+**Scale Estimate:** 100M users, real-time balances
+
+**System Design:**
+
+- Balance validation
+- Transfer atomicity
+- Currency exchange
+
+**Scaling:**
+
+- Multi-currency support
+- High-volume transfers
+- Regulatory compliance
+
+**Failure Modes:** Lost funds, unauthorized transfers
+
+## Parking Lot
+
+**Requirements:** Spot allocation and management
+
+**Scale Estimate:** 100 lots, 10K spots, real-time
+
+**System Design:**
+
+- Spot status tracking
+- Allocation algorithms
+- Payment integration
+
+**Scaling:**
+
+- Geographic partitioning
+- Real-time status updates
+- Mobile app integration
+
+**Failure Modes:** Double-booking, payment disputes
+
+## Vending Machine
+
+**Requirements:** Automated dispensing
+
+**Scale Estimate:** 10K machines, distributed
+
+**System Design:**
+
+- Inventory management
+- Dispenser control
+- Remote monitoring
+
+**Scaling:**
+
+- Centralized inventory
+- Predictive restocking
+- Machine learning analytics
+
+**Failure Modes:** Jammed mechanisms, theft
+
+## ATM
+
+**Requirements:** Secure cash dispensing
+
+**Scale Estimate:** 100K machines, high security
+
+**System Design:**
+
+- Multi-factor authentication
+- PIN validation
+- Cash management
+
+**Scaling:**
+
+- Network security
+- Load balancing transactions
+- Fraud detection
+
+**Failure Modes:** Card skimming, ATM attacks
+
+## Digital Asset Management (DAM)
+
+**Requirements:** Rich media asset management
+
+**Scale Estimate:** 1M assets, multiple formats
+
+**System Design:**
+
+- Metadata extraction
+- Content-based search
+- Rights management
+
+**Scaling:**
+
+- CDN for media delivery
+- Transcoding pipelines
+- Taxonomy management
+
+**Failure Modes:** Copyright violations, data loss
+
+## File Storage
+
+**Requirements:** Reliable file storage and retrieval
+
+**Scale Estimate:** 1PB data, 100Gbps throughput
+
+**System Design:**
+
+- Distributed file systems
+- Metadata management
+- Content-addressable storage
+
+**Scaling:**
+
+- Erasure coding
+- Multi-region replication
+- Encryption at rest
+
+**Failure Modes:** Bit rot, data corruption
+
+## Video Streaming Service
+
+**Requirements:** Global video delivery
+
+**Scale Estimate:** 100M users, 1Pbps throughput
+
+**System Design:**
+
+- Adaptive bitrate streaming
+- Content delivery networks
+- Video transcoding
+
+**Scaling:**
+
+- Edge computing
+- Peer-to-peer overlays
+- Intelligent caching
+
+**Failure Modes:** Content piracy, network congestion
+
+## Interview Questions & Solutions
+
+For each problem, prepare:
+
+1. Functional requirements analysis
+2. Non-functional requirements (scale, latency, durability)
+3. High-level design (components, flow)
+4. Detailed design (APIs, schema, algorithms)
+5. Scaling considerations (horizontal vs vertical)
+6. Failure modes and recovery
+7. Security and compliance

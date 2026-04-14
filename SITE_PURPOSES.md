@@ -83,16 +83,18 @@ AI-powered or AI-enhanced solution.
 
 **Domain**: https://pathx.ai
 
-**Purpose**: Alternative AI domain for PathX brand, potentially a product variant or rebrand of
-BrightPath.
+**Purpose**: **Algorithm optimization** — benchmarking, hyperparameter tuning, profiling, and
+experiment tracking for ML and data-heavy workloads. Documented consistently with the PathX.ai MCP
+agent (`mcp://optimization.pathx.ai`) and `mcp-pathx-ai.json`.
 
-**Target Audience**: AI developers and product teams.
+**Target Audience**: ML engineers, data scientists, research engineers, and platform/performance
+engineers.
 
-**Content Scope**: Complete Zudoku documentation emphasizing:
+**Content Scope**: Zudoku documentation emphasizing:
 
-- Modern AI product development workflows
-- Developer portal for AI APIs
-- Technical documentation best practices
+- Benchmark design, reproducibility, and regression detection
+- Tuning workflows and multi-objective tradeoffs
+- Performance profiling and integration with CI/CD and MCP
 
 **Branch**: `pathx-ai` (production), `pathx-ai-staging` (staging)
 

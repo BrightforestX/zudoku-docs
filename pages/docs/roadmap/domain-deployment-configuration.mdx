@@ -1,0 +1,338 @@
+# Domain Deployment Configuration
+
+This guide documents the domain deployment configuration system for the Zudoku framework, which
+enables flexible configuration of domain-specific settings and product enablement across different
+trading platforms.
+
+## Configuration Schema Overview
+
+The deployment configuration is managed through a JSON schema (version 1.0) that supports
+hierarchical settings with global defaults and domain-specific overrides.
+
+### Top-Level Structure
+
+```json
+{
+  "schemaVersion": "1.0",
+  "global": {
+    /* Global default settings */
+  },
+  "domains": [
+    /* Domain-specific configurations */
+  ]
+}
+```
+
+## Global Settings
+
+The global section defines base configuration values that apply to all domains unless explicitly
+overridden.
+
+### Default Values
+
+Global default values control platform-wide limits and behaviors:
+
+```json
+"global": {
+  "defaultValues": {
+    "maxAgeForCachedFavorites": 0,
+    "maxDaysForCachedMarketData": 0,
+    "maxDaysForEconomicCalendar": 0,
+    "maxCustomIndicators": 15,
+    "maxFilesSize": 16,
+    "maxFavorites": 500,
+    "maxLinesInChart": 200,
+    "maxOwnIndicators": 15,
+    "maxSavedFilters": 100,
+    "maxScreens": 16,
+    "maxSymbolsInWatchlist": 500,
+    "maxTemplatesSize": 16,
+    "maxTimeframes": 10,
+    "maxWatchlists": 100,
+    "maxWorkspaceSize": 16,
+    "supportedLanguages": "ar|da|de|en|es|fr|he|hu|it|ja|ko|nl|no|pl|pt|ro|ru|sv|th|tr|zh|cs|sk|vi"
+  }
+}
+```
+
+### Responsive Flags
+
+Responsive flags control feature availability across different platforms:
+
+```json
+"responsiveFlags": {
+  "mobile": {
+    "alerts": true,
+    "economicCalendar": true,
+    "favorites": true,
+    "marketData": true,
+    "screener": true,
+    "watchlist": true,
+    "workspace": true
+  },
+  "web": {
+    "alerts": true,
+    "economicCalendar": true,
+    "favorites": true,
+    "marketData": true,
+    "screener": true,
+    "watchlist": true,
+    "workspace": true
+  }
+}
+```
+
+### Super Settings
+
+The super section contains detailed platform configuration flags, including feature toggles,
+branding options, and integration settings.
+
+## Domain Structure
+
+Each domain configuration follows this structure:
+
+```json
+{
+  "domain": "example.tv",
+  "settings": {
+    "global": {
+      /* Domain-specific overrides */
+    },
+    "products": [
+      /* Product enablement */
+    ]
+  }
+}
+```
+
+### Domain-Specific Settings
+
+Domains can override global default values and responsive flags:
+
+```json
+"settings": {
+  "global": {
+    "defaultValues": { /* Overrides for this domain */ },
+    "responsiveFlags": { /* Device-specific flags */ },
+    "super": {
+      "settings": { /* Platform feature toggles */ }
+    }
+  },
+  "products": [ /* See Product Enablement section */ ]
+}
+```
+
+## Product Enablement
+
+Each domain specifies which products are enabled:
+
+```json
+"products": [
+  {
+    "product": "Charting Library",
+    "enabled": true,
+    "additional_settings": {}
+  },
+  {
+    "product": "TradingView",
+    "enabled": true,
+    "additional_settings": {}
+  },
+  {
+    "product": "Screener",
+    "enabled": true,
+    "additional_settings": {}
+  },
+  {
+    "product": "Market Data",
+    "enabled": true,
+    "additional_settings": {}
+  },
+  {
+    "product": "Economic Calendar",
+    "enabled": true,
+    "additional_settings": {}
+  },
+  {
+    "product": "Alerts",
+    "enabled": true,
+    "additional_settings": {}
+  }
+]
+```
+
+## Common Platform Features
+
+### Trading Features
+
+- `platform.trading`: Enables trading capabilities
+- `platform.orders`: Order management
+- `platform.positions`: Position tracking
+- `platform.tradePanel`: Trading panel UI
+- `platform.paperTrading`: Paper trading mode
+
+### Alert System
+
+- `platform.alerts`: Basic alerts
+- `platform.priceAlert`: Price alerts
+- `platform.volumeAlert`: Volume alerts
+- `platform.internalAlerts`: Internal alert system
+
+### Data Features
+
+- `platform.marketData`: Market data access
+- `platform.economicCalendar`: Economic events
+- `platform.screener`: Stock screener
+- `platform.crypto`: Cryptocurrency data
+
+### Community Features
+
+- `platform.ideas`: Trading ideas
+- `platform.socialLogin`: Social authentication
+- `platform.news`: News feed
+- `platform.pulse`: Pulse feature
+
+### UI Components
+
+- `platform.headerWidget`: Header components
+- `platform.footerWidget`: Footer components
+- `platform.logo`: Logo display
+- `platform.themeSwitcher`: Theme switching
+
+### Export Features
+
+- `platform.exportData`: Data export
+- `platform.exportImage`: Image export
+- `platform.screenshot`: Screenshot functionality
+
+## Configuration Examples
+
+### Basic Domain Configuration
+
+```json
+{
+  "domain": "mydomain.tv",
+  "settings": {
+    "global": {
+      "defaultValues": {
+        "maxFavorites": 200,
+        "maxWatchlists": 50
+      },
+      "responsiveFlags": {
+        "mobile": {
+          "alerts": false
+        }
+      }
+    },
+    "products": [
+      {
+        "product": "Charting Library",
+        "enabled": true
+      }
+    ]
+  }
+}
+```
+
+### Trading-Enabled Domain
+
+```json
+{
+  "domain": "broker.tv",
+  "settings": {
+    "global": {
+      "super": {
+        "settings": {
+          "platform.trading": true,
+          "platform.orders": true,
+          "platform.positions": true,
+          "platform.tradePanel": true,
+          "platform.alerts": true
+        }
+      }
+    },
+    "products": [
+      {
+        "product": "Charting Library",
+        "enabled": true
+      },
+      {
+        "product": "TradingView",
+        "enabled": true
+      },
+      {
+        "product": "Alerts",
+        "enabled": true
+      }
+    ]
+  }
+}
+```
+
+## Operational Procedures
+
+### Adding a New Domain
+
+1. **Prepare Domain Settings**: Create the domain configuration object
+2. **Define Product Enablement**: Specify which products are enabled for the domain
+3. **Configure Global Overrides**: Set any domain-specific default value overrides
+4. **Set Platform Features**: Configure super settings for platform behavior
+5. **Validate Configuration**: Run configuration validation checks
+6. **Deploy Configuration**: Update the deployment-config.json file
+7. **Test Deployment**: Verify the domain loads with correct settings
+
+### Modifying Domain Settings
+
+1. **Locate Domain**: Find the domain object in the domains array
+2. **Update Settings**: Modify the settings object as needed
+3. **Validate Changes**: Check that enabled products match available settings
+4. **Test Changes**: Deploy and verify functionality
+
+### Removing a Domain
+
+1. **Backup Configuration**: Save current state for rollback
+2. **Remove Domain Object**: Delete the domain entry from domains array
+3. **Validate Removal**: Ensure no orphaned references
+4. **Deploy Changes**: Update configuration and verify removal
+
+### Configuration Validation
+
+The configuration system supports validation through:
+
+- Schema version checking
+- Required field presence
+- Product enablement consistency
+- Platform setting conflicts
+
+### Best Practices
+
+1. **Inheritance Utilization**: Use global defaults to avoid repetition
+2. **Minimal Overrides**: Only override what needs to be different per domain
+3. **Product Consistency**: Ensure enabled products match the platform's capabilities
+4. **Version Tracking**: Maintain schema version compatibility
+5. **Documentation**: Keep configuration changes documented with rationale
+
+### Troubleshooting
+
+**Common Issues:**
+
+- Product enabled but corresponding platform features disabled
+- Missing required settings for enabled products
+- Conflicting global vs domain settings
+- Invalid schema structure
+
+**Debug Steps:**
+
+1. Validate JSON syntax
+2. Check schema version compatibility
+3. Verify product enablement matches platform features
+4. Test with minimal domain configuration
+5. Check browser console for configuration loading errors
+
+### Version History
+
+- **v1.0**: Initial schema with global defaults, domain overrides, and product enablement
+  - Supports hierarchical configuration inheritance
+  - Platform feature toggles via super settings
+  - Responsive flags for mobile/web differentiation
+  - Product-based enablement system

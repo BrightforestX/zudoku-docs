@@ -1,6 +1,14 @@
 import reactDocgenTypescript from "@joshwooding/vite-plugin-react-docgen-typescript";
+import { defineConfig } from "vite";
 
-export default {
+export default defineConfig({
+  // ZUPLO_PUBLIC_* is required by @zuplo/zudoku-plugin-monetization (e.g. deployment name).
+  envPrefix: ["VITE_", "ZUDOKU_", "ZUPLO_PUBLIC_"],
+  define: {
+    "process.env.ZUDOKU_PUBLIC_DOMAIN": JSON.stringify(
+      process.env.ZUDOKU_PUBLIC_DOMAIN ?? "",
+    ),
+  },
   optimizeDeps: {
     include: ["motion/react"],
   },
@@ -13,4 +21,4 @@ export default {
       EXPERIMENTAL_useWatchProgram: false,
     }),
   ],
-};
+});

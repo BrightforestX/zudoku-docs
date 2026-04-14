@@ -1,0 +1,30 @@
+---
+domain: "pathx.ai"
+---
+
+# Data flow — brightpath_swarm
+
+How plans, agents, and repositories interact in the brightpath_swarm controller.
+
+## Sessions to Repos
+
+```mermaid
+flowchart LR
+    Sessions[.vscode/sessions.json] --> RepoList[Workspace repos]
+    RepoList --> Sync[website/scripts/sync-docs.js]
+    Sync --> DocsDir[website/docs per repo]
+    DocsDir --> Docusaurus[Docusaurus site]
+```
+
+## Flow summary
+
+1. **sessions.json** — Defines workspace roots (name, cwd) for the 10 repos.
+2. **workspace-repos.json** — Sync script uses relative paths from website/scripts/ to each repo.
+3. **sync-docs.js** — Copies all `*.md` from each repo into `website/docs/<repo_name>/`; copies
+   PathX_Matcher wireframes to `static/wireframes/`.
+4. **Docusaurus** — Serves the aggregated docs; sidebar groups by repo.
+
+## See also
+
+- [website/scripts/sync-docs.js](../website/scripts/sync-docs.js)
+- [website/scripts/workspace-repos.json](../website/scripts/workspace-repos.json)

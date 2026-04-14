@@ -5,23 +5,25 @@ description: Configure and use different AI providers with Brightpath CLI
 
 # Providers
 
-Brightpath supports multiple AI providers and platforms, each offering unique capabilities for different workflows. This guide covers setup and usage for all supported providers.
+Brightpath supports multiple AI providers and platforms, each offering unique capabilities for
+different workflows. This guide covers setup and usage for all supported providers.
 
 ## Overview
 
 Brightpath currently supports five providers:
 
-| Provider | Use Case | Key Features |
-|----------|----------|--------------|
-| **Cursor** | AI-powered code editing | Code generation, refactoring, documentation |
-| **Linear** | Issue tracking automation | Issue triage, project management, automation |
-| **Copilot** | Code suggestions | Code completion, explanation, generation |
-| **PostForMe** | Content distribution | Automated posting, content scheduling |
-| **Upload-Post** | File deployment | File uploads, deployment automation |
+| Provider        | Use Case                  | Key Features                                 |
+| --------------- | ------------------------- | -------------------------------------------- |
+| **Cursor**      | AI-powered code editing   | Code generation, refactoring, documentation  |
+| **Linear**      | Issue tracking automation | Issue triage, project management, automation |
+| **Copilot**     | Code suggestions          | Code completion, explanation, generation     |
+| **PostForMe**   | Content distribution      | Automated posting, content scheduling        |
+| **Upload-Post** | File deployment           | File uploads, deployment automation          |
 
-## Cursor Provider {#cursor}
+## Cursor Provider
 
-The Cursor provider integrates with Cursor's AI-powered code editing capabilities for code generation, refactoring, and documentation tasks.
+The Cursor provider integrates with Cursor's AI-powered code editing capabilities for code
+generation, refactoring, and documentation tasks.
 
 ### Setup
 
@@ -44,7 +46,7 @@ providers:
     api_url: https://api.cursor.sh
     timeout: 300s
     retry_attempts: 3
-    model: gpt-4  # Default model
+    model: gpt-4 # Default model
     max_tokens: 4096
 ```
 
@@ -112,17 +114,17 @@ providers:
     timeout: 300s
     retry_attempts: 3
     retry_delay: 5s
-    
+
     # Model preferences
     model: gpt-4
     fallback_models: [claude-3-sonnet, gpt-3.5-turbo]
     max_tokens: 4096
     temperature: 0.7
-    
+
     # Rate limiting
-    rate_limit: 100  # requests per minute
+    rate_limit: 100 # requests per minute
     concurrent_requests: 5
-    
+
     # Context settings
     include_git_history: true
     include_dependencies: true
@@ -153,9 +155,10 @@ brightpath run \
   --include-git-history
 ```
 
-## Linear Provider {#linear}
+## Linear Provider
 
-The Linear provider enables automation of issue tracking, project management, and workflow automation.
+The Linear provider enables automation of issue tracking, project management, and workflow
+automation.
 
 ### Setup
 
@@ -228,17 +231,17 @@ providers:
     api_url: https://api.linear.app
     api_key_env: LINEAR_API_KEY
     timeout: 60s
-    
+
     # Default settings
     default_team: YOUR_TEAM_ID
     default_project: YOUR_PROJECT_ID
     default_assignee: YOUR_USER_ID
-    
+
     # Automation rules
     auto_label: true
     auto_assign: true
     auto_priority: true
-    
+
     # Webhooks
     webhook_url: https://your-app.com/webhooks/linear
     webhook_events: [issue.create, issue.update]
@@ -277,7 +280,7 @@ brightpath linear insights \
   --output report.md
 ```
 
-## Copilot Provider {#copilot}
+## Copilot Provider
 
 The Copilot provider integrates GitHub Copilot for code suggestions, completions, and explanations.
 
@@ -285,7 +288,8 @@ The Copilot provider integrates GitHub Copilot for code suggestions, completions
 
 #### 1. Get GitHub Token
 
-Create a personal access token in [GitHub Settings](https://github.com/settings/tokens) with `copilot` scope.
+Create a personal access token in [GitHub Settings](https://github.com/settings/tokens) with
+`copilot` scope.
 
 #### 2. Set Environment Variables
 
@@ -348,16 +352,16 @@ providers:
     api_url: https://api.github.com
     api_key_env: GITHUB_TOKEN
     timeout: 120s
-    
+
     # Context settings
     use_workspace_context: true
     max_context_lines: 1000
     include_imports: true
-    
+
     # Suggestions
     suggestion_count: 3
     temperature: 0.8
-    
+
     # Code review
     review_focus: [security, performance, maintainability]
     auto_comment: false
@@ -387,7 +391,7 @@ brightpath copilot suggest \
   --prompt "Convert to functional component with hooks"
 ```
 
-## PostForMe Provider {#postforme}
+## PostForMe Provider
 
 The PostForMe provider automates content distribution and posting across multiple platforms.
 
@@ -463,10 +467,10 @@ providers:
     api_url: https://api.postforme.io
     api_key_env: POSTFORME_API_KEY
     timeout: 60s
-    
+
     # Default platforms
     default_platforms: [twitter, linkedin, mastodon]
-    
+
     # Content settings
     auto_hashtags: true
     auto_mentions: true
@@ -474,11 +478,11 @@ providers:
       twitter: 280
       linkedin: 3000
       mastodon: 500
-      
+
     # Media handling
     auto_optimize_images: true
     max_image_size: 5MB
-    
+
     # Scheduling
     timezone: America/New_York
     optimal_posting_times: true
@@ -507,7 +511,7 @@ brightpath postforme analytics \
   --platforms twitter,linkedin
 ```
 
-## Upload-Post Provider {#upload-post}
+## Upload-Post Provider
 
 The Upload-Post provider handles file uploads and deployment automation.
 
@@ -604,10 +608,10 @@ providers:
   upload_post:
     timeout: 300s
     retry_attempts: 3
-    
+
     # Default target
     default_target: s3
-    
+
     # S3 configuration
     s3:
       bucket: my-deployment-bucket
@@ -617,7 +621,7 @@ providers:
       public: true
       encryption: AES256
       storage_class: STANDARD
-      
+
     # GCS configuration
     gcs:
       bucket: my-gcs-bucket
@@ -625,19 +629,19 @@ providers:
       credentials_env: GOOGLE_APPLICATION_CREDENTIALS
       public: true
       storage_class: STANDARD
-      
+
     # Azure configuration
     azure:
       container: my-container
       account: my-account
       key_env: AZURE_STORAGE_KEY
       public: true
-      
+
     # Upload settings
     max_file_size: 100MB
     concurrent_uploads: 5
     chunk_size: 5MB
-    
+
     # CDN integration
     cdn:
       provider: cloudflare
@@ -724,13 +728,13 @@ rounds:
       - id: update-code
         provider: cursor
         task: "Update authentication logic"
-        
+
   - id: create-issue
     tasks:
       - id: track-changes
         provider: linear
         task: "Create issue to track authentication changes"
-        
+
   - id: review
     tasks:
       - id: review-changes
@@ -784,7 +788,7 @@ Increase timeout in configuration:
 ```yaml
 providers:
   cursor:
-    timeout: 600s  # 10 minutes
+    timeout: 600s # 10 minutes
 ```
 
 ### Rate Limiting
@@ -812,7 +816,8 @@ brightpath config show --section providers
 
 ## Best Practices
 
-1. **Use Environment Variables**: Store API keys in environment variables, not in configuration files
+1. **Use Environment Variables**: Store API keys in environment variables, not in configuration
+   files
 2. **Set Appropriate Timeouts**: Configure timeouts based on task complexity
 3. **Enable Retries**: Use automatic retries for transient failures
 4. **Monitor Costs**: Track provider costs, especially for paid APIs

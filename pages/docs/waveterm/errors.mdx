@@ -1,0 +1,28 @@
+---
+domain: "pathx.ai"
+---
+
+# Errors — brightpath_swarm
+
+Error handling strategy for the brightpath_swarm controller and documentation workflows.
+
+## Error handling strategy
+
+- **Fail fast** — Validation and path checks before sync/scripts run.
+- **Logging** — Scripts log failures with context (repo name, path, error message).
+- **User-facing messages** — Clear output when sync fails (e.g. missing repo, permission denied).
+
+## Error catalog
+
+| Condition            | Handling                                | Runbook                              |
+| -------------------- | --------------------------------------- | ------------------------------------ |
+| Repo path not found  | Exit with message; skip repo            | Verify workspace-repos.json paths    |
+| Sync script fails    | Log and exit; Docusaurus build may fail | Check sync-docs.js skip rules        |
+| MDX parse error      | File skipped; build continues           | See TROUBLESHOOTING.md               |
+| Wireframe copy fails | Log and continue                        | Verify PathX_Matcher wireframes path |
+
+## See also
+
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+- [brightpath_cli errors.md](../../apps/cli/brightpath_cli/docs/errors.md) — CLI error catalog
+  (agents, providers, E2B)

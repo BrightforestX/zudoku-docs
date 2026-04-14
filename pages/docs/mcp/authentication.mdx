@@ -1,0 +1,259 @@
+---
+title: MCP Server Authentication
+description: Secure authentication guide for Zudoku MCP Server access and API integration
+---
+
+# MCP Server Authentication
+
+The Zudoku MCP Server provides multiple authentication methods optimized for different use cases:
+programmatic API access, service-to-service communication, and CI/CD pipeline integration.
+
+## Authentication Methods
+
+### API Key Authentication
+
+For programmatic access and CI/CD integrations, use API keys for simple, stateless authentication.
+
+**Creating API Keys:**
+
+```bash
+# Generate a new API key
+zudoku-mcp-server admin create-key --name "ci-pipeline" --permissions read,write
+
+# Output includes the API key - store securely
+API_KEY=zk_your_generated_key_here
+```
+
+**Using API Keys:**
+
+```bash
+# In HTTP requests
+curl -H "Authorization: Bearer $API_KEY" \
+  https://your-mcp-server.com/api/v1/docs
+
+# In MCP client configuration
+export MCP_API_KEY=$API_KEY
+mcp-client connect --server https://your-mcp-server.com
+```
+
+### JWT Bearer Tokens
+
+For service-to-service communication and user-delegated access, use JWT tokens issued by your
+identity provider.
+
+**Token Request Flow:**
+
+```javascript
+// Example: Request JWT token for service access
+const token = await fetch("/oauth/token", {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: new URLSearchParams({
+    grant_type: "client_credentials",
+    client_id: "your-client-id",
+    client_secret: "your-client-secret",
+    audience: "https://your-mcp-server.com",
+  }),
+});
+```
+
+**Using JWT Tokens:**
+
+```bash
+# In HTTP requests
+curl -H "Authorization: Bearer eyJ0eXAi..." \
+  https://your-mcp-server.com/api/v1/schemas
+```
+
+### Certificate Authentication
+
+For highest security environments, use mutual TLS certificate authentication.
+
+**Certificate Setup:**
+
+```bash
+# Generate client certificate
+openssl req -new -newkey rsa:2048 -days 365 -nodes \
+  -keyout client.key -out client.csr \
+  -subj "/C=US/ST=State/L=City/O=Org/CN=client.example.com"
+
+# Server-side certificate management
+zudoku-mcp-server admin add-certificate --cert client.crt --permissions read
+```
+
+## Rate Limiting
+
+Authenticated requests have higher rate limits than anonymous access. Rate limits are applied per
+API key or certificate.
+
+- **Anonymous**: 100 requests/hour
+- **Authenticated**: 10,000 requests/hour
+- **Enterprise**: Custom limits based on SLA
+
+## Enterprise Integrations
+
+### AWS IAM Integration
+
+For AWS deployments, use IAM roles for authentication.
+
+```bash
+# Assume role and get temporary credentials
+aws sts assume-role --role-arn arn:aws:iam::account:role/MCPAccessRole
+
+# Configure MCP client with AWS credentials
+export AWS_REGION=us-east-1
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_SESSION_TOKEN=...
+
+mcp-client connect --provider aws --region $AWS_REGION
+```
+
+### Azure AD Integration
+
+Use Azure AD service principals for authentication.
+
+```bash
+# Login and get access token
+az login --service-principal -u <client-id> -p <client-secret> --tenant <tenant-id>
+
+# Set environment for MCP client
+export AZURE_CLIENT_ID=<client-id>
+export AZURE_CLIENT_SECRET=<client-secret>
+export AZURE_TENANT_ID=<tenant-id>
+
+mcp-client connect --provider azure
+```
+
+### GCP Service Accounts
+
+Authenticate using GCP service account keys.
+
+```json
+{
+  "type": "service_account",
+  "project_id": "your-project",
+  "private_key_id": "...",
+  "private_key": "...",
+  "client_email": "mcp@your-project.iam.gserviceaccount.com",
+  "client_id": "...",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token"
+}
+```
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+mcp-client connect --provider gcp
+```
+
+## CI/CD Pipeline Integration
+
+### GitHub Actions
+
+```yaml
+name: Deploy Documentation
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate and Deploy Docs
+        env:
+          MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
+        run: |
+          npm install -g zudoku-cli
+          zudoku generate --source . --output ./docs
+          mcp-client upload --server https://mcp.example.com --docs ./docs
+```
+
+### Jenkins Pipeline
+
+```groovy
+pipeline {
+    agent any
+    environment {
+        MCP_API_KEY = credentials('mcp-api-key')
+    }
+    stages {
+        stage('Generate Docs') {
+            steps {
+                sh 'zudoku generate --source . --output docs/'
+            }
+        }
+        stage('Deploy to MCP') {
+            steps {
+                sh 'mcp-client upload --server https://mcp.example.com --docs docs/'
+            }
+        }
+    }
+}
+```
+
+## Security Best Practices
+
+### Key Management
+
+- Rotate API keys quarterly
+- Use separate keys for different environments (dev/staging/prod)
+- Store keys in secure credential management systems (AWS Secrets Manager, Azure Key Vault,
+  HashiCorp Vault)
+
+### Certificate Lifecycle
+
+- Renew certificates before expiration (recommended: 30 days before)
+- Use certificate pinning to prevent MITM attacks
+- Implement certificate revocation checking
+
+### Monitoring and Audit
+
+Enable audit logging to track authentication events:
+
+```bash
+# Enable audit logging
+zudoku-mcp-server config set audit.enabled true
+zudoku-mcp-server config set audit.log_path /var/log/mcp-audit.log
+
+# View recent authentication attempts
+zudoku-mcp-server admin audit --filter auth --last 24h
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Invalid API Key:**
+
+```bash
+# Check key format
+echo $API_KEY | grep -q '^zk_' && echo "Valid format" || echo "Invalid format"
+
+# Verify key is active
+curl -H "Authorization: Bearer $API_KEY" https://your-mcp-server.com/api/v1/status
+```
+
+**JWT Token Expired:**
+
+Tokens automatically refresh if configured properly. Check token expiration:
+
+```bash
+# Decode JWT to check expiration
+echo $JWT_TOKEN | jq -R 'split(".") | .[1] | @base64d | fromjson | .exp'
+```
+
+**Certificate Errors:**
+
+```bash
+# Verify certificate chain
+openssl verify -CAfile ca.crt client.crt
+
+# Check certificate validity dates
+openssl x509 -in client.crt -text -noout | grep -A 2 "Validity"
+```
+
+## Migrating from Previous Versions
+
+If upgrading from MCP Server v1.x, authentication methods remain backward compatible, but we
+recommend migrating to JWT tokens for improved security and scalability.
