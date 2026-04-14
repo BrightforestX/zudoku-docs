@@ -1,0 +1,3 @@
+[submodule "brightpath_swarm"]
+	path = brightpath_swarm
+	url = https://github.com/BrightforestX/swarm.git

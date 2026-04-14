@@ -52,7 +52,7 @@ graph TB
 
 ## Complete Flow Diagram Index
 
-### User Experience Flows (1-5)
+### User Experience Flows {'(1-5)'}
 
 | #      | Flow                    | Description                              | Start Point                            | End Point                |
 | ------ | ----------------------- | ---------------------------------------- | -------------------------------------- | ------------------------ |
@@ -62,7 +62,7 @@ graph TB
 | **04** | `schedule-prefect-run`  | Schedule flow run via Prefect            | Schedule request → Prefect scheduling  | Schedule confirmation    |
 | **05** | `get-prefect-flow-run`  | Individual flow run metadata             | Flow run ID → Prefect API              | Run details retrieved    |
 
-### Flow Monitoring & Management (6-15)
+### Flow Monitoring & Management {'(6-15)'}
 
 | #      | Flow                           | Description                            | Purpose                     |
 | ------ | ------------------------------ | -------------------------------------- | --------------------------- |
@@ -77,7 +77,7 @@ graph TB
 | **14** | `get-prefect-scheduled-runs`   | Upcoming execution visibility          | Capacity planning           |
 | **15** | `get-prefect-late-runs`        | Delayed execution detection            | SLA monitoring              |
 
-### Deployment & Infrastructure Management (16-24)
+### Deployment & Infrastructure Management {'(16-24)'}
 
 | #      | Flow                               | Description                     | Operations                 |
 | ------ | ---------------------------------- | ------------------------------- | -------------------------- |
@@ -91,7 +91,7 @@ graph TB
 | **23** | `get-prefect-flows`                | Flow template discovery         | Available options catalog  |
 | **24** | `get-prefect-server-status`        | Infrastructure health checks    | Operational readiness      |
 
-### Integration & Connectivity (25-36)
+### Integration & Connectivity {'(25-36)'}
 
 | #      | Flow                                 | Description                      | Integration Points        |
 | ------ | ------------------------------------ | -------------------------------- | ------------------------- |
@@ -136,10 +136,10 @@ Request → Try Primary → On Failure → Try Fallback → On Failure → Grace
 
 | Flow Category     | Typical Latency | Throughput    | SLA Target    |
 | ----------------- | --------------- | ------------- | ------------- |
-| Action Generation | <500ms          | 1000 req/sec  | 99.5% <2s     |
-| Flow Execution    | <30s            | 100 req/sec   | 99.9% success |
-| Flow Monitoring   | <200ms          | 10000 req/sec | 99.9% <1s     |
-| OAuth Flows       | <5s             | 10 req/sec    | 95% <10s      |
+| Action Generation | &lt;500ms       | 1000 req/sec  | 99.5% &lt;2s  |
+| Flow Execution    | &lt;30s         | 100 req/sec   | 99.9% success |
+| Flow Monitoring   | &lt;200ms       | 10000 req/sec | 99.9% &lt;1s  |
+| OAuth Flows       | &lt;5s          | 10 req/sec    | 95% &lt;10s   |
 
 ## Reliability Patterns
 

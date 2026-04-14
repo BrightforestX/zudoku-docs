@@ -23,6 +23,7 @@ import {
 } from "./src/components/shared/index.js";
 import DiscordIcon from "./src/DiscordIcon";
 import GithubIcon from "./src/GithubIcon";
+import { Table } from "./src/components/MdxTable.tsx";
 
 const ThemePlayground = lazy(() => import("./src/ThemeEditor.js"));
 const LandingPage = lazy(() => import("./src/LandingPage"));
@@ -194,6 +195,7 @@ const config: ZudokuConfig = {
       Tab,
       Info,
       Warning,
+      Table,
     },
   },
   slots: {

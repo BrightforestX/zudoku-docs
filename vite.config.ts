@@ -15,7 +15,7 @@ export default defineConfig({
   plugins: [
     reactDocgenTypescript({
       savePropValueAsString: true,
-      include: ["../packages/zudoku/src/lib/ui/*.tsx"],
+      include: ["./node_modules/zudoku/src/lib/ui/*.tsx"],
       tsconfigPath: "./tsconfig.json",
       setDisplayName: true,
       EXPERIMENTAL_useWatchProgram: false,

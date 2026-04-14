@@ -126,23 +126,11 @@ Access feedback history: Access feedback history:
 
 Every Flow has built-in memory methods:
 
-<Table
-  columns={["Method", "Description"]}
-  data={[
-    {
-      method: "`self.remember(content, **kwargs)`",
-      description: "Store content. Optional: `scope`, `categories`, `metadata`, `importance`",
-    },
-    {
-      method: "`self.recall(query, **kwargs)`",
-      description: "Retrieve memories. Optional: `scope`, `categories`, `limit`, `depth`",
-    },
-    {
-      method: "`self.extract_memories(content)`",
-      description: "Break text into atomic memory statements",
-    },
-  ]}
-/>
+| Method | Description |
+| ------ | ----------- |
+| `self.remember(content, **kwargs)` | Store content. Optional: `scope`, `categories`, `metadata`, `importance` |
+| `self.recall(query, **kwargs)` | Retrieve memories. Optional: `scope`, `categories`, `limit`, `depth` |
+| `self.extract_memories(content)` | Break text into atomic memory statements |
 
 ```python
 class ResearchFlow(Flow):
@@ -261,28 +249,9 @@ memory.list_records(scope="/project/alpha", limit=20)
 
 ### Embedder Providers
 
-<Table
-  columns={["Provider", "Key", "Typical Model"]}
-  data={[
-    { provider: "OpenAI (default)", key: "`openai`", model: "`text-embedding-3-small`" },
-    { provider: "Ollama", key: "`ollama`", model: "`mxbai-embed-large`" },
-    { provider: "Azure OpenAI", key: "`azure`", model: "`text-embedding-ada-002`" },
-    { provider: "Google AI", key: "`google-generativeai`", model: "`gemini-embedding-001`" },
-    { provider: "Google Vertex", key: "`google-vertex`", model: "`gemini-embedding-001`" },
-    { provider: "Cohere", key: "`cohere`", model: "`embed-english-v3.0`" },
-    { provider: "VoyageAI", key: "`voyageai`", model: "`voyage-3`" },
-    { provider: "AWS Bedrock", key: "`amazon-bedrock`", model: "`amazon.titan-embed-text-v1`" },
-    { provider: "Hugging Face", key: "`huggingface`", model: "`all-MiniLM-L6-v2`" },
-    { provider: "Jina", key: "`jina`", model: "`jina-embeddings-v2-base-en`" },
-    { provider: "IBM WatsonX", key: "`watsonx`", model: "`ibm/slate-30m-english-rtrvr`" },
-    {
-      provider: "Sentence Transformer",
-      key: "`sentence-transformer`",
-      model: "`all-MiniLM-L6-v2`",
-    },
-    { provider: "Custom", key: "`custom`", model: "(requires `embedding_callable`)" },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ```python
 memory = Memory(embedder={
@@ -422,17 +391,9 @@ set_rag_config(QdrantConfig())
 crewai train -n <n_iterations> -f <filename>
 ```
 
-<Table
-  columns={["Flag", "Default", "Description"]}
-  data={[
-    { flag: "`-n, --n_iterations`", default: "`5`", description: "Number of training iterations" },
-    {
-      flag: "`-f, --filename`",
-      default: "`trained_agents_data.pkl`",
-      description: "Output file for trained data",
-    },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ### Programmatic
 
@@ -467,17 +428,9 @@ After training, suggestions are automatically loaded and appended to task prompt
 crewai test -n <n_iterations> -m <model>
 ```
 
-<Table
-  columns={["Flag", "Default", "Description"]}
-  data={[
-    {
-      flag: "`-n, --n_iterations`",
-      default: "`2` (CLI: 3)",
-      description: "Number of test iterations",
-    },
-    { flag: "`-m, --model`", default: "`gpt-4o-mini`", description: "OpenAI model for evaluation" },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ### Programmatic
 
@@ -642,17 +595,9 @@ class MyCrew:
         )
 ```
 
-<Table
-  columns={["Decorator", "Purpose"]}
-  data={[
-    { decorator: "`@CrewBase`", purpose: "Marks class as crew base, enables auto-collection" },
-    { decorator: "`@agent`", purpose: "Marks method returning an `Agent`" },
-    { decorator: "`@task`", purpose: "Marks method returning a `Task`" },
-    { decorator: "`@crew`", purpose: "Marks method returning the `Crew` object" },
-    { decorator: "`@before_kickoff`", purpose: "Runs before crew execution, can modify inputs" },
-    { decorator: "`@after_kickoff`", purpose: "Runs after crew execution, can modify output" },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ---
 
@@ -709,60 +654,9 @@ llm = LLM(
 
 ### Supported Providers
 
-<Table
-  columns={["Provider", "Model Format", "Env Var"]}
-  data={[
-    { provider: "**OpenAI**", model: "`openai/gpt-4o`, `gpt-4o-mini`", env: "`OPENAI_API_KEY`" },
-    {
-      provider: "**Anthropic**",
-      model: "`anthropic/claude-3-5-sonnet-20241022`",
-      env: "`ANTHROPIC_API_KEY`",
-    },
-    {
-      provider: "**Google (Gemini)**",
-      model: "`gemini/gemini-2.0-flash`",
-      env: "`GEMINI_API_KEY`",
-    },
-    {
-      provider: "**Azure OpenAI**",
-      model: "`azure/<deployment>`",
-      env: "`AZURE_API_KEY`, `AZURE_API_BASE`, `AZURE_API_VERSION`",
-    },
-    {
-      provider: "**AWS Bedrock**",
-      model: "`bedrock/anthropic.claude-3-sonnet...`",
-      env: "AWS credentials",
-    },
-    { provider: "**Ollama (local)**", model: "`ollama/llama3.2`", env: "(none, local)" },
-    { provider: "**Groq**", model: "`groq/llama-3.3-70b-versatile`", env: "`GROQ_API_KEY`" },
-    {
-      provider: "**NVIDIA NIM**",
-      model: "`nvidia_nim/meta/llama-3.1-70b-instruct`",
-      env: "`NVIDIA_NIM_API_KEY`",
-    },
-    {
-      provider: "**Fireworks**",
-      model: "`fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct`",
-      env: "`FIREWORKS_API_KEY`",
-    },
-    {
-      provider: "**Together**",
-      model: "`together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo`",
-      env: "`TOGETHERAI_API_KEY`",
-    },
-    { provider: "**Cerebras**", model: "`cerebras/llama3.1-8b`", env: "`CEREBRAS_API_KEY`" },
-    {
-      provider: "**Sambanova**",
-      model: "`sambanova/Meta-Llama-3.1-8B-Instruct`",
-      env: "`SAMBANOVA_API_KEY`",
-    },
-    { provider: "**Deepseek**", model: "`deepseek/deepseek-chat`", env: "`DEEPSEEK_API_KEY`" },
-    { provider: "**Mistral**", model: "`mistral/mistral-large-latest`", env: "`MISTRAL_API_KEY`" },
-    { provider: "**IBM WatsonX**", model: "`watsonx/...`", env: "`WATSONX_API_KEY`" },
-    { provider: "**Cohere**", model: "`cohere/command-r-plus`", env: "`COHERE_API_KEY`" },
-    { provider: "**HuggingFace**", model: "`huggingface/...`", env: "`HUGGINGFACE_API_KEY`" },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ### Setting LLM
 
@@ -877,29 +771,9 @@ agent = Agent(
 )
 ```
 
-<Table
-  columns={["Parameter", "Type", "Default", "Description"]}
-  data={[
-    {
-      parameter: "`allow_code_execution`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Enable code writing and execution",
-    },
-    {
-      parameter: "`code_execution_mode`",
-      type: '`Literal["safe", "unsafe"]`',
-      default: '`"safe"`',
-      description: '`"safe"` = Docker container, `"unsafe"` = host',
-    },
-    {
-      parameter: "`max_retry_limit`",
-      type: "`int`",
-      default: "`2`",
-      description: "Retries when code execution fails",
-    },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ### Execution Methods
 
@@ -1022,37 +896,9 @@ POST /resume
 
 ### Crew-Level Async
 
-<Table
-  columns={["Method", "Type", "Description"]}
-  data={[
-    {
-      method: "`akickoff(inputs)`",
-      type: "Native async",
-      description: "True async/await through entire chain",
-    },
-    {
-      method: "`akickoff_for_each(inputs)`",
-      type: "Native async",
-      description: "Async execution for each input in list",
-    },
-    {
-      method: "`kickoff_async(inputs)`",
-      type: "Thread-based",
-      description: "Wraps sync in `asyncio.to_thread`",
-    },
-    {
-      method: "`kickoff_for_each_async(inputs)`",
-      type: "Thread-based",
-      description: "Thread-based for each input",
-    },
-    { method: "`kickoff(inputs)`", type: "Sync", description: "Standard synchronous" },
-    {
-      method: "`kickoff_for_each(inputs)`",
-      type: "Sync",
-      description: "Sequential for each input",
-    },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ```python
 import asyncio
@@ -1169,425 +1015,24 @@ Install: `pip install crewai[tools] llama-index-core llama-index-readers-file`
 
 ## Quick Reference: All Crew Attributes
 
-<Table
-  columns={["Attribute", "Type", "Default", "Description"]}
-  data={[
-    {
-      attribute: "`tasks`",
-      type: "`List[Task]`",
-      default: "required",
-      description: "Tasks for the crew",
-    },
-    {
-      attribute: "`agents`",
-      type: "`List[Agent]`",
-      default: "required",
-      description: "Agents in the crew",
-    },
-    {
-      attribute: "`process`",
-      type: "`Process`",
-      default: "`sequential`",
-      description: "`Process.sequential` or `Process.hierarchical`",
-    },
-    {
-      attribute: "`verbose`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Enable detailed logging",
-    },
-    {
-      attribute: "`memory`",
-      type: "`bool \\| Memory`",
-      default: "`None`",
-      description: "Enable unified memory",
-    },
-    {
-      attribute: "`cache`",
-      type: "`bool`",
-      default: "`True`",
-      description: "Cache tool execution results",
-    },
-    {
-      attribute: "`max_rpm`",
-      type: "`int`",
-      default: "`None`",
-      description: "Rate limit (overrides agents)",
-    },
-    {
-      attribute: "`manager_llm`",
-      type: "`str \\| LLM`",
-      default: "`None`",
-      description: "LLM for hierarchical manager",
-    },
-    {
-      attribute: "`manager_agent`",
-      type: "`Agent`",
-      default: "`None`",
-      description: "Custom manager agent",
-    },
-    {
-      attribute: "`function_calling_llm`",
-      type: "`str \\| LLM`",
-      default: "`None`",
-      description: "LLM for tool calling (all agents)",
-    },
-    {
-      attribute: "`planning`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Enable pre-execution planning",
-    },
-    {
-      attribute: "`planning_llm`",
-      type: "`str \\| LLM`",
-      default: "`None`",
-      description: "LLM for planning",
-    },
-    {
-      attribute: "`step_callback`",
-      type: "`Callable`",
-      default: "`None`",
-      description: "Called after each agent step",
-    },
-    {
-      attribute: "`task_callback`",
-      type: "`Callable`",
-      default: "`None`",
-      description: "Called after each task",
-    },
-    {
-      attribute: "`output_log_file`",
-      type: "`bool \\| str`",
-      default: "`None`",
-      description: "Log file path or True for logs.txt",
-    },
-    {
-      attribute: "`share_crew`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Share data with CrewAI",
-    },
-    {
-      attribute: "`embedder`",
-      type: "`dict`",
-      default: '`{"provider": "openai"}`',
-      description: "Embedder config for memory",
-    },
-    {
-      attribute: "`knowledge_sources`",
-      type: "`List[BaseKnowledgeSource]`",
-      default: "`None`",
-      description: "Crew-level knowledge",
-    },
-    {
-      attribute: "`prompt_file`",
-      type: "`str`",
-      default: "`None`",
-      description: "Custom prompt JSON file",
-    },
-    {
-      attribute: "`stream`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Enable streaming output",
-    },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ## Quick Reference: All Agent Attributes
 
-<Table
-  columns={["Attribute", "Type", "Default", "Description"]}
-  data={[
-    {
-      attribute: "`role`",
-      type: "`str`",
-      default: "required",
-      description: "Agent's function/expertise",
-    },
-    { attribute: "`goal`", type: "`str`", default: "required", description: "Agent's objective" },
-    {
-      attribute: "`backstory`",
-      type: "`str`",
-      default: "required",
-      description: "Context and personality",
-    },
-    {
-      attribute: "`llm`",
-      type: "`str \\| LLM`",
-      default: "`gpt-4`",
-      description: "Language model",
-    },
-    {
-      attribute: "`tools`",
-      type: "`List[BaseTool]`",
-      default: "`[]`",
-      description: "Available tools",
-    },
-    {
-      attribute: "`function_calling_llm`",
-      type: "`Any`",
-      default: "`None`",
-      description: "Separate LLM for tool calls",
-    },
-    { attribute: "`max_iter`", type: "`int`", default: "`20`", description: "Max iterations" },
-    { attribute: "`max_rpm`", type: "`int`", default: "`None`", description: "Rate limit" },
-    {
-      attribute: "`max_execution_time`",
-      type: "`int`",
-      default: "`None`",
-      description: "Timeout in seconds",
-    },
-    { attribute: "`verbose`", type: "`bool`", default: "`False`", description: "Detailed logging" },
-    {
-      attribute: "`allow_delegation`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Can delegate to others",
-    },
-    {
-      attribute: "`step_callback`",
-      type: "`Callable`",
-      default: "`None`",
-      description: "Per-step callback",
-    },
-    { attribute: "`cache`", type: "`bool`", default: "`True`", description: "Cache tool results" },
-    {
-      attribute: "`allow_code_execution`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Enable code execution",
-    },
-    {
-      attribute: "`code_execution_mode`",
-      type: "`str`",
-      default: '`"safe"`',
-      description: '`"safe"` or `"unsafe"`',
-    },
-    {
-      attribute: "`max_retry_limit`",
-      type: "`int`",
-      default: "`2`",
-      description: "Retries on error",
-    },
-    {
-      attribute: "`respect_context_window`",
-      type: "`bool`",
-      default: "`True`",
-      description: "Auto-summarize on overflow",
-    },
-    {
-      attribute: "`multimodal`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Process images/audio/video",
-    },
-    {
-      attribute: "`inject_date`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Add current date to tasks",
-    },
-    {
-      attribute: "`date_format`",
-      type: "`str`",
-      default: '`"%Y-%m-%d"`',
-      description: "Date format string",
-    },
-    {
-      attribute: "`reasoning`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Plan before executing",
-    },
-    {
-      attribute: "`max_reasoning_attempts`",
-      type: "`int`",
-      default: "`None`",
-      description: "Planning iteration limit",
-    },
-    {
-      attribute: "`memory`",
-      type: "`bool \\| Memory \\| MemoryScope`",
-      default: "`None`",
-      description: "Agent memory",
-    },
-    {
-      attribute: "`knowledge_sources`",
-      type: "`List[BaseKnowledgeSource]`",
-      default: "`None`",
-      description: "Agent knowledge",
-    },
-    {
-      attribute: "`embedder`",
-      type: "`dict`",
-      default: "`None`",
-      description: "Custom embedder config",
-    },
-    {
-      attribute: "`use_system_prompt`",
-      type: "`bool`",
-      default: "`True`",
-      description: "Use system prompt",
-    },
-    {
-      attribute: "`system_template`",
-      type: "`str`",
-      default: "`None`",
-      description: "Custom system prompt",
-    },
-    {
-      attribute: "`prompt_template`",
-      type: "`str`",
-      default: "`None`",
-      description: "Custom prompt template",
-    },
-    {
-      attribute: "`response_template`",
-      type: "`str`",
-      default: "`None`",
-      description: "Custom response template",
-    },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ## Quick Reference: All Task Attributes
 
-<Table
-  columns={["Attribute", "Type", "Default", "Description"]}
-  data={[
-    { attribute: "`description`", type: "`str`", default: "required", description: "What the task entails" },
-    { attribute: "`expected_output`", type: "`str`", default: "required", description: "What completion looks like" },
-    { attribute: "`name`", type: "`str`", default: "`None`", description: "Task identifier" },
-    { attribute: "`agent`", type: "`BaseAgent`", default: "`None`", description: "Assigned agent" },
-    { attribute: "`tools`", type: "`List[BaseTool]`", default: "`[]`", description: "Task-specific tools" },
-    { attribute: "`context`", type: "`List[Task]`", default: "`None`", description: "Tasks whose output provides context" },
-    { attribute: "`async_execution`", type: "`bool`", default: "`False`", description: "Run asynchronously" },
-    { attribute: "`human_input`", type: "`bool`", default: "`False`", description: "Pause for human review" },
-    { attribute: "`markdown`", type: "`bool`", default: "`False`", description: "Format output as markdown" },
-    { attribute: "`config`", type: "`dict`", default: "`None`", description: "Task-specific config" },
-    { attribute: "`output_file`", type: "`str`", default: "`None`", description: "File path for output" },
-    { attribute: "`create_directory`", type: "`bool`", default: "`True`", description: "Auto-create dirs for output_file" },
-    { attribute: "`output_json`", type: "`Type[BaseModel]`", default: "`None`", description: "Pydantic model for JSON output" },
-    { attribute: "`output_pydantic`", type: "`Type[BaseModel]`", default: "`None`", description: "Pydantic model for structured output" },
-    { attribute: "`callback`", type: "`Callable`", default: "`None`", description: "Post-completion callback" },
-    { attribute: "`guardrail`", type: "`Callable \\| str`", default: "`None`", description: "Single validation function or LLM string" },
-    { attribute: "`guardrails`", type: "`List[Callable \\| str]`", default: "`None`", description: "Multiple guardrails (overrides guardrail)" },
-    { attribute: "`guardrail_max_retries`", type: "`int`", default: "`3`", description: "Max retries on guardrail failure" }
-  ]}
-/>    { attribute: "`memory`", type: "`bool \\| Memory \\| MemoryScope`", default: "`None`", description: "Agent memory" },
-    { attribute: "`knowledge_sources`", type: "`List[BaseKnowledgeSource]`", default: "`None`", description: "Agent knowledge" },
-    { attribute: "`embedder`", type: "`dict`", default: "`None`", description: "Custom embedder config" },
-    { attribute: "`use_system_prompt`", type: "`bool`", default: "`True`", description: "Use system prompt" },
-    { attribute: "`system_template`", type: "`str`", default: "`None`", description: "Custom system prompt" },
-    { attribute: "`prompt_template`", type: "`str`", default: "`None`", description: "Custom prompt template" },
-    { attribute: "`response_template`", type: "`str`", default: "`None`", description: "Custom response template" }
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+
 
 ## Quick Reference: All Task Attributes
 
-<Table
-  columns={["Attribute", "Type", "Default", "Description"]}
-  data={[
-    {
-      attribute: "`description`",
-      type: "`str`",
-      default: "required",
-      description: "What the task entails",
-    },
-    {
-      attribute: "`expected_output`",
-      type: "`str`",
-      default: "required",
-      description: "What completion looks like",
-    },
-    { attribute: "`name`", type: "`str`", default: "`None`", description: "Task identifier" },
-    { attribute: "`agent`", type: "`BaseAgent`", default: "`None`", description: "Assigned agent" },
-    {
-      attribute: "`tools`",
-      type: "`List[BaseTool]`",
-      default: "`[]`",
-      description: "Task-specific tools",
-    },
-    {
-      attribute: "`context`",
-      type: "`List[Task]`",
-      default: "`None`",
-      description: "Tasks whose output provides context",
-    },
-    {
-      attribute: "`async_execution`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Run asynchronously",
-    },
-    {
-      attribute: "`human_input`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Pause for human review",
-    },
-    {
-      attribute: "`markdown`",
-      type: "`bool`",
-      default: "`False`",
-      description: "Format output as markdown",
-    },
-    {
-      attribute: "`config`",
-      type: "`dict`",
-      default: "`None`",
-      description: "Task-specific config",
-    },
-    {
-      attribute: "`output_file`",
-      type: "`str`",
-      default: "`None`",
-      description: "File path for output",
-    },
-    {
-      attribute: "`create_directory`",
-      type: "`bool`",
-      default: "`True`",
-      description: "Auto-create dirs for output_file",
-    },
-    {
-      attribute: "`output_json`",
-      type: "`Type[BaseModel]`",
-      default: "`None`",
-      description: "Pydantic model for JSON output",
-    },
-    {
-      attribute: "`output_pydantic`",
-      type: "`Type[BaseModel]`",
-      default: "`None`",
-      description: "Pydantic model for structured output",
-    },
-    {
-      attribute: "`callback`",
-      type: "`Callable`",
-      default: "`None`",
-      description: "Post-completion callback",
-    },
-    {
-      attribute: "`guardrail`",
-      type: "`Callable \\| str`",
-      default: "`None`",
-      description: "Single validation function or LLM string",
-    },
-    {
-      attribute: "`guardrails`",
-      type: "`List[Callable \\| str]`",
-      default: "`None`",
-      description: "Multiple guardrails (overrides guardrail)",
-    },
-    {
-      attribute: "`guardrail_max_retries`",
-      type: "`int`",
-      default: "`3`",
-      description: "Max retries on guardrail failure",
-    },
-  ]}
-/>
+
+> _(Table converted in monorepo build; see BrightforestX/zudoku or restore JSX `Table` after MDX fixes.)_
+

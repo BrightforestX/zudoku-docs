@@ -1,6 +1,7 @@
 {
-  "name": "docs",
+  "name": "zudoku-docs",
   "version": "0.0.1",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "zudoku dev",
@@ -13,22 +14,25 @@
   "dependencies": {
     "@joshwooding/vite-plugin-react-docgen-typescript": "^0.6.2",
     "@zuplo/zudoku-plugin-monetization": "0.0.29",
+    "clsx": "^2.1.1",
     "mermaid": "^11.12.2",
     "motion": "12.23.24",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.1.0",
     "@types/mdast": "4.0.4",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
     "@types/unist": "^3.0.3",
     "mdast-util-directive": "^3.1.0",
     "playwright-bdd": "^8.4.2",
     "unified": "^11.0.5",
     "unist-util-visit": "5.0.0",
-    "zudoku": "workspace:*"
+    "vite": "6.4.1",
+    "zudoku": "0.66.1"
   },
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@10.24.0"
 }

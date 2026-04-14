@@ -51,16 +51,15 @@ curl -I https://github.com 2>/dev/null | head -1
 
 To verify assets are properly migrated from the submodule:
 
-![Verified Integration Image](/waveterm-assets/verified-homepage-integration.webp){height="200"
-width="300"}
+![Verified Integration Image](/waveterm-assets/verified-homepage-integration.webp)
 
 ### Common Quick Fixes
 
 | Issue                   | Quick Fix                                                    |
-| ----------------------- | ------------------------------------------------------------ | -------------- |
+| ----------------------- | ------------------------------------------------------------ |
 | Scripts not executable  | `chmod +x .github/scripts/**/*.sh`                           |
 | Docker containers stuck | `docker stop $(docker ps -aq) && docker rm $(docker ps -aq)` |
-| Ports in use            | `lsof -ti:PORT                                               | xargs kill -9` |
+| Ports in use            | `lsof -ti:PORT` piped to `xargs kill -9` (see shell docs)   |
 | Test data stale         | `./.github/scripts/utilities/cleanup-test-data.sh`           |
 | Go module issues        | `go mod tidy && go mod download`                             |
 | Node module issues      | `rm -rf node_modules && npm ci`                              |

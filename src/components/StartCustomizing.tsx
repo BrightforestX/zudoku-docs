@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { cn } from "../../../packages/zudoku/src/lib/util/cn";
+import { cn } from "../lib/cn.js";
 import { BoxLongshadow } from "./BoxLongshadow";
 import Cursor from "./Cursor";
 import ZudokuLogo from "./ZudokuLogo";
