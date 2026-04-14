@@ -59,6 +59,29 @@ pnpm preview
 
 `wrangler.toml` in this repo documents `pages_build_output_dir` for CLI deploys (`npx wrangler pages deploy dist --project-name=zudoku-docs`) and can be aligned with the dashboard per [Wrangler configuration for Pages](https://developers.cloudflare.com/pages/functions/wrangler-configuration/).
 
+### Deploy from GitHub Actions (CI)
+
+The workflow [`.github/workflows/cloudflare-pages.yml`](.github/workflows/cloudflare-pages.yml) builds on every push to `main` and uploads `dist/` with [cloudflare/pages-action](https://github.com/cloudflare/pages-action).
+
+1. In Cloudflare: **Workers & Pages** → create a Pages project named **`zudoku-docs`** if you do not already have one (any creation path is fine; the Action will upload new deployments).
+2. Create an [API token](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/) with **Account** → **Cloudflare Pages** → **Edit** (and **Account** → **Account Settings** → **Read** if your token template requires it).
+3. Copy your **Account ID** from the Cloudflare dashboard (right sidebar on the account home page).
+4. In GitHub: **BrightforestX/zudoku-docs** → **Settings** → **Secrets and variables** → **Actions** → add:
+   - `CLOUDFLARE_API_TOKEN`
+   - `CLOUDFLARE_ACCOUNT_ID`
+
+Use **either** the dashboard Git integration **or** this Action for the same branch, not both, or you may get duplicate builds/deployments.
+
+### Deploy from your machine (Wrangler)
+
+```bash
+pnpm run build:pages
+npx wrangler login   # once, opens a browser
+npx wrangler pages deploy dist --project-name=zudoku-docs
+```
+
+Non-interactive / CI shells need `CLOUDFLARE_API_TOKEN` set instead of `wrangler login`.
+
 ## Framework dependency
 
 This package depends on the published [`zudoku`](https://www.npmjs.com/package/zudoku) npm package (pinned in `package.json`). If you need unpublished changes from the monorepo fork, point `devDependencies.zudoku` at a git URL or local path and reinstall.
