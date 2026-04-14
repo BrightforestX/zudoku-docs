@@ -34,6 +34,31 @@ pnpm build
 pnpm preview
 ```
 
+## Deploy (Cloudflare Pages)
+
+1. In the [Cloudflare dashboard](https://dash.cloudflare.com/) go to **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+2. Select the **BrightforestX/zudoku-docs** repository (install the Cloudflare GitHub app on the org if prompted).
+3. Configure the build:
+
+   | Setting | Value |
+   |--------|--------|
+   | **Framework preset** | None |
+   | **Root directory** | `/` (repository root) |
+   | **Build command** | `pnpm run build:pages` |
+   | **Build output directory** | `dist` |
+
+4. Set **Environment variables** (recommended):
+
+   | Variable | Value |
+   |----------|--------|
+   | `NODE_VERSION` | `22` |
+
+   Optional: set `ZUDOKU_PUBLIC_DOMAIN` (e.g. `pathx-ai`) if you use domain-scoped MCP OpenAPI like `pnpm run build:pathx-ai` locally.
+
+5. Save and deploy. Production builds use `build:pages`, which runs `git submodule update --init --recursive` before `zudoku build` so the `brightpath_swarm` submodule is present. If the submodule repo is **private**, grant the Cloudflare GitHub app access to that repository as well.
+
+`wrangler.toml` in this repo documents `pages_build_output_dir` for CLI deploys (`npx wrangler pages deploy dist --project-name=zudoku-docs`) and can be aligned with the dashboard per [Wrangler configuration for Pages](https://developers.cloudflare.com/pages/functions/wrangler-configuration/).
+
 ## Framework dependency
 
 This package depends on the published [`zudoku`](https://www.npmjs.com/package/zudoku) npm package (pinned in `package.json`). If you need unpublished changes from the monorepo fork, point `devDependencies.zudoku` at a git URL or local path and reinstall.

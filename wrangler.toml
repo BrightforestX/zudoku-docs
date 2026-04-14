@@ -1,0 +1,8 @@
+# Cloudflare Pages — build output for `wrangler pages deploy` and dashboard sync.
+# After connecting the GitHub repo, set the dashboard build output directory to `dist` (or enable
+# Wrangler-as-source-of-truth per https://developers.cloudflare.com/pages/functions/wrangler-configuration/).
+#
+# Replace `name` with your Pages project name if it differs.
+name = "zudoku-docs"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-04-01"

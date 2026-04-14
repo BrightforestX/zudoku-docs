@@ -7,6 +7,7 @@
     "dev": "zudoku dev",
     "dev:pathx-ai": "ZUDOKU_PUBLIC_DOMAIN=pathx-ai zudoku dev",
     "build": "zudoku build",
+    "build:pages": "git submodule update --init --recursive && zudoku build",
     "build:pathx-ai": "ZUDOKU_PUBLIC_DOMAIN=pathx-ai zudoku build",
     "preview": "zudoku preview",
     "check:links": "lychee --config ./lychee.toml --remap \"https://zudoku.dev file://$PWD/dist\" --fallback-extensions html --root-dir $PWD/dist --include-fragments ./dist"
@@ -34,5 +35,8 @@
     "vite": "6.4.1",
     "zudoku": "0.66.1"
   },
-  "packageManager": "pnpm@10.24.0"
+  "packageManager": "pnpm@10.24.0",
+  "engines": {
+    "node": ">=20"
+  }
 }
